@@ -1,6 +1,6 @@
 [project]
 name = "clawdeck"
-version = "0.5.3"
+version = "0.5.4"
 description = "Clawdeck - An intelligent AI coding assistant CLI tool powered by Anthropic Claude"
 authors = [
     {name = "Yiqiao Yin", email = "yiqiao.yin@wyn-associates.com"}
