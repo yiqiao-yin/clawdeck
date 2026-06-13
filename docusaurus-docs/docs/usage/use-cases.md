@@ -501,7 +501,7 @@ You: /model
 
 [Model Information Table]
 Model: Sonnet 4
-Full ID: claude-sonnet-4-20250514
+Full ID: claude-sonnet-4-6
 Description: Balanced performance - general coding & analysis
 Input Cost: $3.00/M tokens
 Output Cost: $15.00/M tokens
@@ -513,13 +513,13 @@ Usage: /model <name>  (e.g., /model haiku)
 **Switching Models Mid-Session:**
 ```bash
 You: /model haiku
-✓ Switched to Haiku (claude-3-5-haiku-20241022)
+✓ Switched to Haiku (claude-haiku-4-5)
 
 You: List all Python files in this directory
 Clawdeck: [Uses Haiku - fast and cheap for simple task]
 
 You: /model opus
-✓ Switched to Opus 4 (claude-opus-4-20250514)
+✓ Switched to Opus 4 (claude-opus-4-8)
 
 You: Refactor my entire application architecture
 Clawdeck: [Uses Opus - most capable for complex reasoning]
@@ -613,7 +613,7 @@ clawdeck --model haiku
 clawdeck --model opus
 
 # Use full model ID
-clawdeck --model claude-sonnet-4-20250514
+clawdeck --model claude-sonnet-4-6
 ```
 
 **Pro Tips:**
@@ -650,7 +650,7 @@ clawdeck --model claude-sonnet-4-20250514
 
 ```yaml
 # Personal preferences that apply to all projects
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 max_tokens: 4096
 temperature: 0.7
 
@@ -700,7 +700,7 @@ commands:
   migrate: "alembic upgrade head"
 
 # Override model for this project (optional)
-model: claude-3-5-haiku-20241022  # Use faster model for simple project
+model: claude-haiku-4-5  # Use faster model for simple project
 ```
 
 #### Configuration Priority
@@ -727,7 +727,7 @@ $ clawdeck
 
 • Loaded user config from: /home/user/.clawdeck/config.yaml
 • Custom instructions loaded
-✓ Connected using model: claude-sonnet-4-20250514
+✓ Connected using model: claude-sonnet-4-6
 ```
 
 ##### Workflow 2: Project-Specific Context
@@ -760,7 +760,7 @@ $ clawdeck
 • Loaded project config from: .clawdeck.yaml
 • Custom instructions loaded
 • Project context loaded
-✓ Connected using model: claude-sonnet-4-20250514
+✓ Connected using model: claude-sonnet-4-6
 
 You: Help me implement a new transformer model
 
@@ -777,7 +777,7 @@ You: /config
 
 Current Configuration
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Model                   claude-sonnet-4-20250514
+Model                   claude-sonnet-4-6
 Max Tokens              4096
 Temperature             0.7
 ─────────────────────────────────────────────
@@ -849,7 +849,7 @@ context: |
 dependencies: [torch, transformers, scikit-learn]
 commands:
   train: "python train.py"
-model: claude-sonnet-4-20250514  # Use more capable model
+model: claude-sonnet-4-6  # Use more capable model
 ```
 
 **Result:** When you work in the FastAPI project, the AI knows about FastAPI and REST APIs. When you switch to the ML project, it knows about PyTorch and transformers. Both use your personal preferences (type hints, docstrings, etc.).
@@ -4017,7 +4017,7 @@ export CLAUDE_CODE_USE_BEDROCK=1
 
 # Optional: Customize region and model
 export AWS_REGION="us-west-2"  # Default: us-east-1
-export ANTHROPIC_MODEL="us.anthropic.claude-sonnet-4-20250514-v1:0"
+export ANTHROPIC_MODEL="us.anthropic.claude-sonnet-4-5-20250929-v1:0"
 
 # Use Clawdeck
 clawdeck "write a script to analyze data"
@@ -4027,7 +4027,7 @@ clawdeck "write a script to analyze data"
 ```
 🌩️  AWS Bedrock mode enabled
 📡 Region: us-west-2
-🤖 Model: us.anthropic.claude-sonnet-4-20250514-v1:0
+🤖 Model: us.anthropic.claude-sonnet-4-5-20250929-v1:0
 
 Clawdeck: I'll create a Python script to analyze data.csv...
 ```
@@ -4142,7 +4142,7 @@ clawdeck "process EU customer data"
 ```bash
 🌩️  AWS Bedrock mode enabled
 📡 Region: eu-central-1
-🤖 Model: us.anthropic.claude-sonnet-4-20250514-v1:0
+🤖 Model: us.anthropic.claude-sonnet-4-5-20250929-v1:0
 ```
 
 ---
@@ -4152,7 +4152,7 @@ clawdeck "process EU customer data"
 **Scenario:** You want to use a specific Claude model available in AWS Bedrock.
 
 **Available Bedrock Models:**
-- `us.anthropic.claude-sonnet-4-20250514-v1:0` - Latest Sonnet
+- `us.anthropic.claude-sonnet-4-5-20250929-v1:0` - Latest Sonnet
 - `anthropic.claude-3-5-sonnet-20241022-v2:0` - Sonnet 3.5
 - `anthropic.claude-3-opus-20240229-v1:0` - Opus (most capable)
 - `anthropic.claude-3-haiku-20240307-v1:0` - Haiku (fastest, cheapest)

@@ -144,7 +144,7 @@ async def main():
     test_configs = []
 
     if anthropic_key:
-        test_configs.append(("Anthropic Claude", 1, "claude-sonnet-4-20250514"))
+        test_configs.append(("Anthropic Claude", 1, "claude-sonnet-4-6"))
 
     if gemini_key:
         test_configs.append(("Google Gemini", 3, None))

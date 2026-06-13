@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/yiqiao-yin/clawdeck/main/docusaurus-docs/static/img/clawdeck_logo.png" alt="Clawdeck" width="320">
+</p>
+
 # Clawdeck CLI
 
 An intelligent AI coding assistant CLI tool powered by Anthropic Claude.
@@ -83,7 +87,7 @@ Clawdeck CLI supports four AI providers. Choose one:
 ```bash
 export CHOOSE_CLIENT=1
 export ANTHROPIC_API_KEY=your_key_here
-export ANTHROPIC_MODEL=claude-sonnet-4-20250514
+export ANTHROPIC_MODEL=claude-sonnet-4-6
 ```
 
 **Using .env file (recommended):**
@@ -91,7 +95,7 @@ export ANTHROPIC_MODEL=claude-sonnet-4-20250514
 # Create .env file in your project directory
 CHOOSE_CLIENT=1
 ANTHROPIC_API_KEY=your_key_here
-ANTHROPIC_MODEL=claude-sonnet-4-20250514
+ANTHROPIC_MODEL=claude-sonnet-4-6
 ```
 
 **Get your API key:** [Anthropic Console](https://console.anthropic.com/)
@@ -108,7 +112,7 @@ export AWS_ACCESS_KEY_ID=your_access_key
 export AWS_SECRET_ACCESS_KEY=your_secret_key
 export AWS_SESSION_TOKEN=your_session_token
 export AWS_REGION=us-west-2
-export ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0
+export ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-5-20250929-v1:0
 ```
 
 **Using .env file (recommended):**
@@ -119,7 +123,7 @@ AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_SESSION_TOKEN=your_session_token
 AWS_REGION=us-west-2
-ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0
+ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-5-20250929-v1:0
 ```
 
 **Requirements:** Valid AWS account with Bedrock access
@@ -545,7 +549,7 @@ You: /model
 [Shows current model: Sonnet 4, pricing: $3.00/$15.00 per M tokens]
 
 You: /model haiku
-✓ Switched to Haiku (claude-3-5-haiku-20241022)
+✓ Switched to Haiku (claude-haiku-4-5)
 
 You: /save my_analysis_session.json
 ✓ Session saved to: my_analysis_session.json
@@ -752,7 +756,7 @@ git push origin main
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `ANTHROPIC_API_KEY` | Anthropic API key | None (required) |
-| `ANTHROPIC_MODEL` | Model to use (e.g., claude-sonnet-4-20250514) | Auto-selected |
+| `ANTHROPIC_MODEL` | Model to use (e.g., claude-sonnet-4-6) | Auto-selected |
 
 ### Google Gemini (CHOOSE_CLIENT=3) 🆕
 
@@ -769,7 +773,7 @@ git push origin main
 | `AWS_SECRET_ACCESS_KEY` | AWS secret access key | None (required) |
 | `AWS_SESSION_TOKEN` | AWS session token (optional, for temporary credentials) | None |
 | `AWS_REGION` | AWS region for Bedrock (e.g., us-west-2) | `us-east-1` |
-| `ANTHROPIC_MODEL` | Model ARN (e.g., us.anthropic.claude-sonnet-4-20250514-v1:0) | Auto-selected |
+| `ANTHROPIC_MODEL` | Model ARN (e.g., us.anthropic.claude-sonnet-4-5-20250929-v1:0) | Auto-selected |
 
 ### Integration Tokens (Optional)
 
@@ -812,7 +816,7 @@ AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_SESSION_TOKEN=your_session_token
 AWS_REGION=us-west-2
-ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0
+ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-5-20250929-v1:0
 MAX_TOKEN=4096
 GH_TOKEN=ghp_your_github_token
 HF_TOKEN=hf_your_huggingface_token

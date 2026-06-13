@@ -33,7 +33,7 @@ touch ~/.clawdeck/config.yaml
 
 ```yaml
 # ~/.clawdeck/config.yaml
-model: "claude-sonnet-4-20250514"
+model: "claude-sonnet-4-6"
 max_tokens: 4096
 temperature: 0.1
 
@@ -149,7 +149,7 @@ Environment variables override all configuration files:
 
 ```bash
 ANTHROPIC_API_KEY=your_key_here
-ANTHROPIC_MODEL=claude-sonnet-4-20250514
+ANTHROPIC_MODEL=claude-sonnet-4-6
 ```
 
 </TabItem>
@@ -160,7 +160,7 @@ AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_SESSION_TOKEN=your_session_token
 AWS_REGION=us-west-2
-ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0
+ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-5-20250929-v1:0
 ```
 
 </TabItem>
@@ -206,7 +206,7 @@ max_tokens: 4096
 # Workspace-specific overrides
 workspaces:
   ml_projects:
-    model: "claude-sonnet-4-20250514"  # Better for complex ML tasks
+    model: "claude-sonnet-4-6"  # Better for complex ML tasks
     max_tokens: 8192
     custom_instructions: |
       Focus on scientific computing best practices:
@@ -334,7 +334,7 @@ Create a shared `.clawdeck.yaml` in your project repository:
 
 ```yaml
 # .clawdeck.yaml - Team settings
-model: "claude-sonnet-4-20250514"  # Consistent model for team
+model: "claude-sonnet-4-6"  # Consistent model for team
 max_tokens: 4096
 temperature: 0.1  # Consistent, less random responses
 

@@ -226,7 +226,7 @@ def suggest_model(task_description: str) -> str:
 **File:** `~/.clawdeck/config.yaml`
 ```yaml
 # Default settings
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 max_tokens: 4096
 temperature: 0.7
 

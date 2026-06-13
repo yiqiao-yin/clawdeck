@@ -27,11 +27,11 @@ class TestAnthropicFileReading:
         # Configure environment exactly as documented for users:
         # export CHOOSE_CLIENT=1
         # export ANTHROPIC_API_KEY=your_key_here  # find in .env file
-        # export ANTHROPIC_MODEL=claude-sonnet-4-20250514
+        # export ANTHROPIC_MODEL=claude-sonnet-4-6
 
         # Set hardcoded values as documented
         os.environ['CHOOSE_CLIENT'] = '1'  # Anthropic API
-        os.environ['ANTHROPIC_MODEL'] = 'claude-sonnet-4-20250514'
+        os.environ['ANTHROPIC_MODEL'] = 'claude-sonnet-4-6'
 
         # Get API key from .env file (already loaded via load_dotenv)
         anthropic_key = os.getenv('ANTHROPIC_API_KEY')

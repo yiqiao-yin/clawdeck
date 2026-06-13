@@ -125,12 +125,12 @@ You: /load data_analysis_session.json
 ### Model Switching
 ```
 You: /model
-🤖 **Current Model: claude-sonnet-4-20250514**
+🤖 **Current Model: claude-sonnet-4-6**
 💰 Pricing: $3.00/$15.00 per M tokens (input/output)
 📊 Context Window: 200K tokens
 
 You: /model haiku
-✓ Switched to Claude 3.5 Haiku (claude-3-5-haiku-20241022)
+✓ Switched to Claude 3.5 Haiku (claude-haiku-4-5)
 💰 New pricing: $0.25/$1.25 per M tokens
 
 You: /model gemini-2.5-flash

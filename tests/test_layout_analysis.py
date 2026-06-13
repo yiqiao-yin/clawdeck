@@ -26,7 +26,7 @@ async def test_layout_analysis():
     # Test configuration - using Anthropic by default
     os.environ['CHOOSE_CLIENT'] = '1'
     os.environ['ANTHROPIC_API_KEY'] = '<your_anthropic_key_here>'
-    os.environ['ANTHROPIC_MODEL'] = 'claude-sonnet-4-20250514'
+    os.environ['ANTHROPIC_MODEL'] = 'claude-sonnet-4-6'
 
     print("🔬 PyMuPDF Layout Analysis Test")
     print("=" * 50)

@@ -21,10 +21,10 @@ class TestImageProcessor:
 
     def test_processor_initialization(self):
         """Test processor initializes with correct parameters."""
-        processor = ImageProcessor(api_key="test-key", model="claude-sonnet-4-20250514")
+        processor = ImageProcessor(api_key="test-key", model="claude-sonnet-4-6")
 
         assert processor.api_key == "test-key"
-        assert processor.model == "claude-sonnet-4-20250514"
+        assert processor.model == "claude-sonnet-4-6"
 
     def test_processor_initialization_default_model(self):
         """Test processor initializes with default model."""

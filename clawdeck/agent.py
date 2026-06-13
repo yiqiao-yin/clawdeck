@@ -202,7 +202,7 @@ class ClawdeckAgent:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model: str = "claude-sonnet-4-20250514",
+        model: str = "claude-sonnet-4-6",
         use_history: bool = True,
         config: Optional[ClawdeckConfig] = None,
         use_bedrock: Optional[bool] = None,
@@ -216,7 +216,7 @@ class ClawdeckAgent:
 
         Args:
             api_key: Anthropic, Gemini, or OpenAI API key (required if not using Bedrock)
-            model: Model to use (default: claude-sonnet-4-20250514)
+            model: Model to use (default: claude-sonnet-4-6)
             use_history: Whether to send conversation history with each request (default: True)
             config: Optional ClawdeckConfig object with user/project configuration
             use_bedrock: Explicitly set Bedrock mode (overrides env var)
@@ -343,20 +343,22 @@ class ClawdeckAgent:
             if env_model:
                 # Environment variable takes highest priority for runtime override
                 self.model_name = env_model
-            elif config_model and config_model != "claude-sonnet-4-20250514":
+            elif config_model and config_model != "claude-sonnet-4-6":
                 # Use config model if it's explicitly set (not the default)
                 self.model_name = config_model
-            elif model != "claude-sonnet-4-20250514":
+            elif model != "claude-sonnet-4-6":
                 # Use provided model parameter if it's not the default
                 self.model_name = model
             else:
                 # Use appropriate default based on authentication mode
                 if self.use_bedrock:
-                    # Bedrock requires ARN format
-                    self.model_name = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+                    # Bedrock cross-region inference profile format.
+                    # NOTE: verify this profile ID exists in your AWS region/account;
+                    # bump to a 4.6 profile once confirmed (cannot be tested without AWS creds).
+                    self.model_name = "us.anthropic.claude-sonnet-4-5-20250929-v1:0"
                 else:
                     # Anthropic API uses model ID format
-                    self.model_name = "claude-sonnet-4-20250514"
+                    self.model_name = "claude-sonnet-4-6"
 
         self.use_history = use_history
         # Phase 5.9: Store pydantic-ai messages for proper context retention
@@ -3941,7 +3943,7 @@ You can restart the task by running the command again.
             # Initialize summarizer (Phase 5.2: Enable semantic matching)
             summarizer = ChunkSummarizer(
                 api_key=self.api_key,
-                model="claude-3-5-haiku-20241022",
+                model="claude-haiku-4-5",
                 enable_embeddings=True
             )
 
@@ -4704,15 +4706,15 @@ You can restart the task by running the command again.
             True if successful, False otherwise
 
         Supported models:
-            - haiku: claude-3-5-haiku-20241022 (fast & cheap)
-            - sonnet: claude-sonnet-4-20250514 (balanced, default)
-            - opus: claude-opus-4-20250514 (most capable)
+            - haiku: claude-haiku-4-5 (fast & cheap)
+            - sonnet: claude-sonnet-4-6 (balanced, default)
+            - opus: claude-opus-4-8 (most capable)
         """
         # Model mapping for convenience
         model_map = {
-            "haiku": "claude-3-5-haiku-20241022",
-            "sonnet": "claude-sonnet-4-20250514",
-            "opus": "claude-opus-4-20250514"
+            "haiku": "claude-haiku-4-5",
+            "sonnet": "claude-sonnet-4-6",
+            "opus": "claude-opus-4-8"
         }
 
         # Resolve model name
@@ -4767,9 +4769,9 @@ You can restart the task by running the command again.
         """
         # Model pricing (per million tokens)
         pricing = {
-            "claude-3-5-haiku-20241022": {"input": 0.25, "output": 1.25, "name": "Haiku"},
-            "claude-sonnet-4-20250514": {"input": 3.00, "output": 15.00, "name": "Sonnet 4"},
-            "claude-opus-4-20250514": {"input": 15.00, "output": 75.00, "name": "Opus 4"}
+            "claude-haiku-4-5": {"input": 1.00, "output": 5.00, "name": "Haiku 4.5"},
+            "claude-sonnet-4-6": {"input": 3.00, "output": 15.00, "name": "Sonnet 4.6"},
+            "claude-opus-4-8": {"input": 5.00, "output": 25.00, "name": "Opus 4.8"}
         }
 
         model_info = pricing.get(self.model_name, {
@@ -4789,9 +4791,9 @@ You can restart the task by running the command again.
     def _get_model_description(self, model_name: str) -> str:
         """Get description for a model."""
         descriptions = {
-            "claude-3-5-haiku-20241022": "Fast & economical - best for simple tasks",
-            "claude-sonnet-4-20250514": "Balanced performance - general coding & analysis",
-            "claude-opus-4-20250514": "Most capable - complex reasoning & architecture"
+            "claude-haiku-4-5": "Fast & economical - best for simple tasks",
+            "claude-sonnet-4-6": "Balanced performance - general coding & analysis",
+            "claude-opus-4-8": "Most capable - complex reasoning & architecture"
         }
         return descriptions.get(model_name, "Custom model")
 

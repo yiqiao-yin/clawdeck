@@ -289,7 +289,7 @@ class TestBedrockAgent:
             agent = ClawdeckAgent(use_bedrock=True)
 
             # Verify Bedrock default model ARN is used
-            assert agent.model_name == "us.anthropic.claude-sonnet-4-20250514-v1:0"
+            assert agent.model_name == "us.anthropic.claude-sonnet-4-5-20250929-v1:0"
 
     def test_bedrock_mode_missing_credentials(self):
         """Test that Bedrock mode raises error with missing credentials."""
@@ -358,11 +358,11 @@ class TestBedrockAgent:
         with patch.dict(os.environ, {
             'AWS_ACCESS_KEY_ID': 'AKIA...',
             'AWS_SECRET_ACCESS_KEY': 'secret',
-            'ANTHROPIC_MODEL': 'us.anthropic.claude-sonnet-4-20250514-v1:0',
+            'ANTHROPIC_MODEL': 'us.anthropic.claude-sonnet-4-6-v1:0',
         }):
             agent = ClawdeckAgent(use_bedrock=True)
 
-            assert agent.model_name == 'us.anthropic.claude-sonnet-4-20250514-v1:0'
+            assert agent.model_name == 'us.anthropic.claude-sonnet-4-6-v1:0'
 
     @patch('pydantic_ai.models.bedrock.BedrockConverseModel')
     @patch('clawdeck.agent.Agent')

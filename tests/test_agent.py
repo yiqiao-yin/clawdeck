@@ -37,10 +37,10 @@ class TestClawdeckAgent:
 
     def test_agent_initialization(self):
         """Test that agent initializes correctly"""
-        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-6")
         assert agent.api_key == "test_key"
         # In Anthropic mode, model name should be the original one passed
-        assert agent.model_name == "claude-sonnet-4-20250514"
+        assert agent.model_name == "claude-sonnet-4-6"
         assert agent.conversation_history == []
         assert not agent.use_bedrock
         assert not agent.use_gemini
@@ -268,7 +268,7 @@ class TestHistoryManagement:
     def test_save_session(self):
         """Test saving session to JSON file"""
         import tempfile
-        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-6")
         agent.conversation_history = [
             {"role": "user", "content": "Test message"}
         ]
@@ -288,7 +288,7 @@ class TestHistoryManagement:
             with open(filepath, 'r') as f:
                 data = json.load(f)
 
-            assert data["model"] == "claude-sonnet-4-20250514"
+            assert data["model"] == "claude-sonnet-4-6"
             assert len(data["conversation_history"]) == 1
             assert data["total_input_tokens"] == 100
             assert data["total_output_tokens"] == 50
@@ -318,7 +318,7 @@ class TestHistoryManagement:
 
             # Create a test session file
             session_data = {
-                "model": "claude-sonnet-4-20250514",
+                "model": "claude-sonnet-4-6",
                 "conversation_history": [
                     {"role": "user", "content": "Test"}
                 ],
@@ -682,30 +682,34 @@ class TestFileManagementTools:
 class TestModelSwitching:
     """Tests for model switching functionality"""
 
-    def test_get_model_info_default(self):
+    def test_get_model_info_default(self, monkeypatch):
         """Test get_model_info returns correct info for default model"""
-        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
+        # Isolate from any ambient ANTHROPIC_MODEL (e.g. a .env pin) which would
+        # otherwise override the passed model (env has highest resolution priority).
+        monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-6")
         info = agent.get_model_info()
 
-        assert info["current_model"] == "claude-sonnet-4-20250514"
-        assert info["display_name"] == "Sonnet 4"
+        assert info["current_model"] == "claude-sonnet-4-6"
+        assert info["display_name"] == "Sonnet 4.6"
         assert info["input_cost_per_million"] == 3.00
         assert info["output_cost_per_million"] == 15.00
         assert "Balanced" in info["description"]
 
-    def test_get_model_info_haiku(self):
+    def test_get_model_info_haiku(self, monkeypatch):
         """Test get_model_info for Haiku model"""
-        agent = ClawdeckAgent(api_key="test_key", model="claude-3-5-haiku-20241022")
+        monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
+        agent = ClawdeckAgent(api_key="test_key", model="claude-haiku-4-5")
         info = agent.get_model_info()
 
-        assert info["display_name"] == "Haiku"
-        assert info["input_cost_per_million"] == 0.25
-        assert info["output_cost_per_million"] == 1.25
+        assert info["display_name"] == "Haiku 4.5"
+        assert info["input_cost_per_million"] == 1.00
+        assert info["output_cost_per_million"] == 5.00
         assert "Fast" in info["description"]
 
     def test_switch_model_short_name(self):
         """Test switching model using short name"""
-        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-6")
 
         # Switch to haiku using short name
         success = agent.switch_model("haiku")
@@ -713,19 +717,19 @@ class TestModelSwitching:
 
         # Verify model changed
         info = agent.get_model_info()
-        assert info["display_name"] == "Haiku"
-        assert agent.model_name == "claude-3-5-haiku-20241022"
+        assert info["display_name"] == "Haiku 4.5"
+        assert agent.model_name == "claude-haiku-4-5"
 
     def test_switch_model_full_name(self):
         """Test switching model using full model ID"""
-        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-6")
 
         # Switch using full name
-        success = agent.switch_model("claude-3-5-haiku-20241022")
+        success = agent.switch_model("claude-haiku-4-5")
         assert success is True
 
         # Verify model changed
-        assert agent.model_name == "claude-3-5-haiku-20241022"
+        assert agent.model_name == "claude-haiku-4-5"
 
     def test_switch_model_case_insensitive(self):
         """Test model switching is case insensitive"""
@@ -762,13 +766,13 @@ class TestModelSwitching:
         """Test _get_model_description method"""
         agent = ClawdeckAgent(api_key="test_key")
 
-        desc_haiku = agent._get_model_description("claude-3-5-haiku-20241022")
+        desc_haiku = agent._get_model_description("claude-haiku-4-5")
         assert "Fast" in desc_haiku
 
-        desc_sonnet = agent._get_model_description("claude-sonnet-4-20250514")
+        desc_sonnet = agent._get_model_description("claude-sonnet-4-6")
         assert "Balanced" in desc_sonnet
 
-        desc_opus = agent._get_model_description("claude-opus-4-20250514")
+        desc_opus = agent._get_model_description("claude-opus-4-8")
         assert "capable" in desc_opus
 
         desc_unknown = agent._get_model_description("unknown-model")

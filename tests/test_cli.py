@@ -14,7 +14,7 @@ class TestSlashCommands:
 
     def setup_method(self):
         """Set up test fixtures"""
-        self.agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
+        self.agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-6")
 
     def test_clear_command(self):
         """Test /clear command"""
@@ -107,7 +107,7 @@ class TestSlashCommands:
 
             # Create a test session file
             session_data = {
-                "model": "claude-sonnet-4-20250514",
+                "model": "claude-sonnet-4-6",
                 "conversation_history": [
                     {"role": "user", "content": "Loaded message"}
                 ],
@@ -278,7 +278,7 @@ class TestSlashCommands:
 
         assert handled is True
         assert "✓" in message or "Switched" in message
-        assert self.agent.model_name == "claude-3-5-haiku-20241022"
+        assert self.agent.model_name == "claude-haiku-4-5"
 
     def test_model_command_switch_opus(self):
         """Test /model command switches to opus"""
@@ -303,7 +303,7 @@ class TestSlashCommands:
 
         # Create a config
         config = ClawdeckConfig(
-            model="claude-sonnet-4-20250514",
+            model="claude-sonnet-4-6",
             max_tokens=4096,
             custom_instructions="Use type hints"
         )

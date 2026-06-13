@@ -23,7 +23,7 @@ class ClawdeckConfig:
     """Configuration for Clawdeck CLI."""
 
     # Model settings
-    model: str = "claude-sonnet-4-20250514"
+    model: str = "claude-sonnet-4-6"
     max_tokens: int = 4096
     temperature: float = 0.7
 
@@ -367,7 +367,7 @@ def create_default_user_config() -> bool:
 # Location: ~/.clawdeck/config.yaml
 
 # Default model settings
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 max_tokens: 4096
 temperature: 0.7
 
@@ -445,7 +445,7 @@ commands:
   build: "python setup.py build"
 
 # Optional: Override model settings for this project
-# model: claude-3-5-haiku-20241022  # Use faster model for simple projects
+# model: claude-haiku-4-5  # Use faster model for simple projects
 # max_tokens: 8192
 # temperature: 0.5
 """

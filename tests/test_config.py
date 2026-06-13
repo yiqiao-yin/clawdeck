@@ -26,7 +26,7 @@ class TestClawdeckConfig:
         """Test that default values are set correctly"""
         config = ClawdeckConfig()
 
-        assert config.model == "claude-sonnet-4-20250514"
+        assert config.model == "claude-sonnet-4-6"
         assert config.max_tokens == 4096
         assert config.temperature == 0.7
         assert config.custom_instructions == ""
@@ -127,7 +127,7 @@ class TestLoadUserConfig:
             config_path.parent.mkdir(parents=True, exist_ok=True)
 
             config_data = {
-                "model": "claude-3-5-haiku-20241022",
+                "model": "claude-haiku-4-5",
                 "max_tokens": 8192,
                 "custom_instructions": "Use type hints"
             }
@@ -185,14 +185,14 @@ class TestMergeConfigs:
         """Test merging empty configs returns defaults"""
         config = merge_configs({}, {})
 
-        assert config.model == "claude-sonnet-4-20250514"
+        assert config.model == "claude-sonnet-4-6"
         assert config.max_tokens == 4096
         assert config.temperature == 0.7
 
     def test_merge_user_config_only(self):
         """Test merging with only user config"""
         user_config = {
-            "model": "claude-3-5-haiku-20241022",
+            "model": "claude-haiku-4-5",
             "max_tokens": 8192,
             "custom_instructions": "Use type hints",
             "aliases": {"test": "pytest tests/"}
@@ -200,7 +200,7 @@ class TestMergeConfigs:
 
         config = merge_configs(user_config, {})
 
-        assert config.model == "claude-3-5-haiku-20241022"
+        assert config.model == "claude-haiku-4-5"
         assert config.max_tokens == 8192
         assert config.custom_instructions == "Use type hints"
         assert config.aliases == {"test": "pytest tests/"}
@@ -222,13 +222,13 @@ class TestMergeConfigs:
     def test_merge_project_overrides_user(self):
         """Test that project config overrides user config"""
         user_config = {
-            "model": "claude-sonnet-4-20250514",
+            "model": "claude-sonnet-4-6",
             "max_tokens": 4096,
             "custom_instructions": "User instructions"
         }
 
         project_config = {
-            "model": "claude-3-5-haiku-20241022",
+            "model": "claude-haiku-4-5",
             "max_tokens": 8192,
             "custom_instructions": "Project instructions"
         }
@@ -236,7 +236,7 @@ class TestMergeConfigs:
         config = merge_configs(user_config, project_config)
 
         # Project should override
-        assert config.model == "claude-3-5-haiku-20241022"
+        assert config.model == "claude-haiku-4-5"
         assert config.max_tokens == 8192
         # Both instructions should be present
         assert "User instructions" in config.custom_instructions
@@ -263,7 +263,7 @@ class TestLoadConfig:
             user_config_path = Path(tmpdir) / ".clawdeck" / "config.yaml"
             user_config_path.parent.mkdir(parents=True, exist_ok=True)
 
-            user_data = {"model": "claude-sonnet-4-20250514", "max_tokens": 4096}
+            user_data = {"model": "claude-sonnet-4-6", "max_tokens": 4096}
 
             with open(user_config_path, 'w') as f:
                 yaml.dump(user_data, f)
@@ -279,7 +279,7 @@ class TestLoadConfig:
                 with patch('clawdeck.config.get_project_config_path', return_value=project_config_path):
                     config = load_config()
 
-                    assert config.model == "claude-sonnet-4-20250514"
+                    assert config.model == "claude-sonnet-4-6"
                     assert config.max_tokens == 4096
                     assert config.project_context == "Test project"
 
@@ -302,7 +302,7 @@ class TestCreateDefaultConfigs:
                 with open(config_path) as f:
                     content = f.read()
                     assert "model:" in content
-                    assert "claude-sonnet-4-20250514" in content
+                    assert "claude-sonnet-4-6" in content
 
     def test_create_default_user_config_already_exists(self):
         """Test creating default user config when it already exists"""
@@ -348,14 +348,17 @@ class TestCreateDefaultConfigs:
 class TestConfigWithAgent:
     """Tests for config integration with agent"""
 
-    def test_agent_uses_config_model(self):
+    def test_agent_uses_config_model(self, monkeypatch):
         """Test that agent uses model from config"""
         from clawdeck.agent import ClawdeckAgent
 
-        config = ClawdeckConfig(model="claude-3-5-haiku-20241022")
+        # Isolate from any ambient ANTHROPIC_MODEL (e.g. a .env pin), which has
+        # higher resolution priority than config and would mask this behavior.
+        monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
+        config = ClawdeckConfig(model="claude-haiku-4-5")
         agent = ClawdeckAgent(api_key="test_key", config=config)
 
-        assert agent.model_name == "claude-3-5-haiku-20241022"
+        assert agent.model_name == "claude-haiku-4-5"
 
     def test_agent_without_config_uses_default(self):
         """Test that agent uses default model without config"""
@@ -363,15 +366,15 @@ class TestConfigWithAgent:
 
         agent = ClawdeckAgent(api_key="test_key")
 
-        assert agent.model_name == "claude-sonnet-4-20250514"
+        assert agent.model_name == "claude-sonnet-4-6"
 
     def test_agent_cli_arg_overrides_config(self):
         """Test that CLI model argument overrides config"""
         from clawdeck.agent import ClawdeckAgent
 
-        config = ClawdeckConfig(model="claude-sonnet-4-20250514")
-        agent = ClawdeckAgent(api_key="test_key", model="claude-3-5-haiku-20241022", config=config)
+        config = ClawdeckConfig(model="claude-sonnet-4-6")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-haiku-4-5", config=config)
 
         # CLI arg should take precedence (Note: This is a design decision for the test)
         # In current implementation, config model is used if config is provided
-        assert agent.model_name == "claude-sonnet-4-20250514"  # Config takes precedence
+        assert agent.model_name == "claude-sonnet-4-6"  # Config takes precedence

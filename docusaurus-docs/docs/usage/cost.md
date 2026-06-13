@@ -2,9 +2,9 @@
 
 This document provides a detailed breakdown of the costs associated with using Clawdeck CLI, which is powered by Anthropic Claude.
 
-## 💰 Pricing (Anthropic Claude Sonnet 4)
+## 💰 Pricing (Anthropic Claude Sonnet 4.6)
 
-As of January 2025, the default model `claude-sonnet-4-20250514` pricing:
+The default model `claude-sonnet-4-6` pricing:
 
 ### Token Costs
 
@@ -753,7 +753,7 @@ Total: ~$0.025
 
 ### 6. **Use Smaller Model for Simple Tasks**
 
-**Current:** Uses `claude-sonnet-4-20250514` by default
+**Current:** Uses `claude-sonnet-4-6` by default
 
 **Alternative:** Could add option for Claude Haiku for simple tasks:
 - Haiku pricing: ~$0.25 per million input tokens (88% cheaper)
@@ -923,7 +923,7 @@ clawdeck
 You: /config
 
 # Output shows:
-Model            claude-sonnet-4-20250514
+Model            claude-sonnet-4-6
 Max Tokens       4096  ← Current limit
 Temperature      0.7
 ```

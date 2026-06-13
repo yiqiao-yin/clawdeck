@@ -31,8 +31,8 @@ console = Console(width=console_width, force_terminal=True)
 )
 @click.option(
     '--model',
-    default='claude-sonnet-4-20250514',
-    help='Claude model to use (default: claude-sonnet-4-20250514)'
+    default='claude-sonnet-4-6',
+    help='Claude model to use (default: claude-sonnet-4-6)'
 )
 @click.option(
     '--max-internet-search-limit',
@@ -262,7 +262,7 @@ def main(api_key, model, max_internet_search_limit, max_token, show_browser):
     # Initialize agent with config
     try:
         # Use model from CLI arg if provided, otherwise use config model
-        if model != 'claude-sonnet-4-20250514':  # If user specified a different model
+        if model != 'claude-sonnet-4-6':  # If user specified a different model
             agent = ClawdeckAgent(api_key=api_key, model=model, config=config, max_search_limit=max_internet_search_limit, show_browser=show_browser)
         else:
             agent = ClawdeckAgent(api_key=api_key, config=config, max_search_limit=max_internet_search_limit, show_browser=show_browser)

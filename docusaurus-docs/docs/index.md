@@ -44,14 +44,14 @@ Clawdeck CLI supports multiple AI providers:
 ```bash
 export CHOOSE_CLIENT=1
 export ANTHROPIC_API_KEY=your_key_here
-export ANTHROPIC_MODEL=claude-sonnet-4-20250514
+export ANTHROPIC_MODEL=claude-sonnet-4-6
 ```
 
 **Get API Key:** [Anthropic Console](https://console.anthropic.com/)
 
 **Available Models:**
-- `claude-sonnet-4-20250514` - Most capable (default)
-- `claude-3-5-haiku-20241022` - Fastest and cheapest
+- `claude-sonnet-4-6` - Most capable (default)
+- `claude-haiku-4-5` - Fastest and cheapest
 - `claude-opus-4-1-20250805` - Most powerful
 
 </TabItem>
@@ -66,7 +66,7 @@ export AWS_ACCESS_KEY_ID=your_access_key
 export AWS_SECRET_ACCESS_KEY=your_secret_key
 export AWS_SESSION_TOKEN=your_session_token
 export AWS_REGION=us-west-2
-export ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0
+export ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-5-20250929-v1:0
 ```
 
 **Requirements:** Valid AWS account with Bedrock access

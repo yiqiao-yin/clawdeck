@@ -19,10 +19,10 @@ class TestChunkSummarizer:
 
     def test_summarizer_initialization(self):
         """Test summarizer initializes with correct parameters."""
-        summarizer = ChunkSummarizer(api_key="test-key", model="claude-3-5-haiku-20241022")
+        summarizer = ChunkSummarizer(api_key="test-key", model="claude-haiku-4-5")
 
         assert summarizer.api_key == "test-key"
-        assert summarizer.model == "claude-3-5-haiku-20241022"
+        assert summarizer.model == "claude-haiku-4-5"
         assert summarizer.summary_tokens == 100
         assert summarizer.tag_count == 8
 
@@ -194,7 +194,7 @@ TAGS: [expenses, Q1, food, gas, utilities, budget, financial, quarterly]""")]
         # Verify API was called correctly
         mock_client.messages.create.assert_called_once()
         call_args = mock_client.messages.create.call_args
-        assert call_args[1]["model"] == "claude-3-5-haiku-20241022"
+        assert call_args[1]["model"] == "claude-haiku-4-5"
         assert call_args[1]["max_tokens"] == 200
 
     @pytest.mark.asyncio
