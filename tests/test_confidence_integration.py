@@ -7,9 +7,9 @@ automation tools, and orchestrator components.
 
 import pytest
 from unittest.mock import Mock, AsyncMock, patch
-from src.wyn360.tools.browser.dom_analyzer import DOMExtractor, DOMElement, DOMAnalysis
-from src.wyn360.tools.browser.browser_automation_tools import BrowserAutomationTools
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.dom_analyzer import DOMExtractor, DOMElement, DOMAnalysis
+from clawdeck.tools.browser.browser_automation_tools import BrowserAutomationTools
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationOrchestrator,
     ActionRequest,
     ActionResult,

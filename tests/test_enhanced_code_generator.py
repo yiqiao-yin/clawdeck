@@ -9,13 +9,13 @@ import asyncio
 import re
 from unittest.mock import Mock, patch, AsyncMock
 
-from wyn360_cli.tools.browser.enhanced_code_generator import (
+from clawdeck.tools.browser.enhanced_code_generator import (
     EnhancedCodeGenerator,
     CodeGenerationContext,
     TaskComplexity,
     CodeOptimizationLevel
 )
-from wyn360_cli.tools.browser.code_templates import AutomationTemplates
+from clawdeck.tools.browser.code_templates import AutomationTemplates
 
 
 class TestCodeGenerationContext:

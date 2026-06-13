@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 from unittest.mock import Mock, patch, AsyncMock
 
-from wyn360_cli.browser_use import (
+from clawdeck.browser_use import (
     is_valid_url,
     count_tokens,
     smart_truncate,
@@ -259,7 +259,7 @@ class TestFetchWebsiteContent:
         assert "Invalid URL" in content
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_use.check_playwright_installed')
+    @patch('clawdeck.browser_use.check_playwright_installed')
     async def test_fetch_playwright_not_installed(self, mock_check):
         """Test fetching when Playwright is not installed"""
         mock_check.return_value = (False, "Playwright not installed")
@@ -272,8 +272,8 @@ class TestFetchWebsiteContent:
         assert "Playwright" in content
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_use.check_playwright_installed')
-    @patch('wyn360_cli.browser_use.AsyncWebCrawler')
+    @patch('clawdeck.browser_use.check_playwright_installed')
+    @patch('clawdeck.browser_use.AsyncWebCrawler')
     async def test_fetch_successful(self, mock_crawler_class, mock_check):
         """Test successful website fetch"""
         # Mock Playwright check
@@ -300,8 +300,8 @@ class TestFetchWebsiteContent:
         assert "Test Content" in content
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_use.check_playwright_installed')
-    @patch('wyn360_cli.browser_use.AsyncWebCrawler')
+    @patch('clawdeck.browser_use.check_playwright_installed')
+    @patch('clawdeck.browser_use.AsyncWebCrawler')
     async def test_fetch_failed(self, mock_crawler_class, mock_check):
         """Test failed website fetch"""
         # Mock Playwright check
@@ -327,8 +327,8 @@ class TestFetchWebsiteContent:
         assert "Failed to fetch" in content
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_use.check_playwright_installed')
-    @patch('wyn360_cli.browser_use.AsyncWebCrawler')
+    @patch('clawdeck.browser_use.check_playwright_installed')
+    @patch('clawdeck.browser_use.AsyncWebCrawler')
     async def test_fetch_with_truncation(self, mock_crawler_class, mock_check):
         """Test fetching with content truncation"""
         # Mock Playwright check

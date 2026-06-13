@@ -2,13 +2,13 @@
 
 *New in v0.4.0*
 
-WYN360 CLI now includes a persistent memory system and an extensible skills framework, allowing the assistant to remember context across sessions and users to define custom slash commands.
+Clawdeck CLI now includes a persistent memory system and an extensible skills framework, allowing the assistant to remember context across sessions and users to define custom slash commands.
 
 ---
 
 ## Memory System
 
-The memory system stores knowledge in `~/.wyn360/memory/` as individual Markdown files with YAML frontmatter. A `MEMORY.md` index file provides a quick reference for all stored memories.
+The memory system stores knowledge in `~/.clawdeck/memory/` as individual Markdown files with YAML frontmatter. A `MEMORY.md` index file provides a quick reference for all stored memories.
 
 ### Memory Types
 
@@ -60,7 +60,7 @@ Don't add docstrings to functions I didn't ask you to change.
 
 ### Relevance Selection
 
-When you send a message, WYN360 automatically searches stored memories for relevant context. The system scores each memory based on keyword overlap with your query and boosts results by type relevance (e.g., "feedback" memories are boosted when you ask about approach or style).
+When you send a message, Clawdeck automatically searches stored memories for relevant context. The system scores each memory based on keyword overlap with your query and boosts results by type relevance (e.g., "feedback" memories are boosted when you ask about approach or style).
 
 ---
 
@@ -72,8 +72,8 @@ Skills are user-defined slash commands loaded from YAML files. They let you crea
 
 | Location | Scope | Priority |
 |----------|-------|----------|
-| `~/.wyn360/skills/` | User-level (all projects) | Lower |
-| `.wyn360/skills/` | Project-level (current repo) | Higher (overrides user) |
+| `~/.clawdeck/skills/` | User-level (all projects) | Lower |
+| `.clawdeck/skills/` | Project-level (current repo) | Higher (overrides user) |
 
 Project-level skills override user-level skills with the same name.
 
@@ -82,7 +82,7 @@ Project-level skills override user-level skills with the same name.
 Create a `.yaml` file in either skills directory:
 
 ```yaml
-# ~/.wyn360/skills/review.yaml
+# ~/.clawdeck/skills/review.yaml
 name: review
 description: Review code changes and suggest improvements
 aliases:

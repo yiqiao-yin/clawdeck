@@ -7,7 +7,7 @@ Tests DOM extraction, element analysis, and confidence scoring functionality.
 import pytest
 from unittest.mock import Mock, AsyncMock, patch
 import json
-from src.wyn360.tools.browser.dom_analyzer import (
+from clawdeck.tools.browser.dom_analyzer import (
     DOMExtractor,
     DOMElement,
     DOMAnalysis,

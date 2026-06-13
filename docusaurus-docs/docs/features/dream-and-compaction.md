@@ -31,15 +31,15 @@ The dream runs as a **background task** — it doesn't block your session. You k
    - Project architecture decisions
    - Feedback (what worked, what was corrected)
    - References to external tools and resources
-4. Saves them to `~/.wyn360/memory/` automatically
+4. Saves them to `~/.clawdeck/memory/` automatically
 
 ### When Will My First Dream Happen?
 
 After you've:
-- Used WYN360 for at least **24 hours** (calendar time, not usage time)
-- Completed at least **3 separate sessions** (start wyn360, chat, exit = 1 session)
+- Used Clawdeck for at least **24 hours** (calendar time, not usage time)
+- Completed at least **3 separate sessions** (start clawdeck, chat, exit = 1 session)
 
-If you just installed WYN360 today, you won't see a dream until tomorrow at the earliest.
+If you just installed Clawdeck today, you won't see a dream until tomorrow at the earliest.
 
 ### Commands
 

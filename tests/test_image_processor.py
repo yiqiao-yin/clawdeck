@@ -13,7 +13,7 @@ Tests cover:
 
 import pytest
 from unittest.mock import Mock, MagicMock, patch, AsyncMock
-from wyn360_cli.document_readers import ImageProcessor, HAS_PIL
+from clawdeck.document_readers import ImageProcessor, HAS_PIL
 
 
 class TestImageProcessor:
@@ -200,7 +200,7 @@ class TestImageProcessor:
         assert "sunset" in markdown
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.Anthropic')
+    @patch('clawdeck.document_readers.Anthropic')
     async def test_describe_image_success(self, mock_anthropic_class):
         """Test successful image description."""
         # Mock the Anthropic client
@@ -227,7 +227,7 @@ class TestImageProcessor:
         assert result["tokens_used"] == 1175  # input + output
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.Anthropic')
+    @patch('clawdeck.document_readers.Anthropic')
     async def test_describe_image_with_context(self, mock_anthropic_class):
         """Test image description with context."""
         # Mock the Anthropic client
@@ -253,7 +253,7 @@ class TestImageProcessor:
         assert result["image_type"] == "diagram"
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.Anthropic')
+    @patch('clawdeck.document_readers.Anthropic')
     async def test_describe_image_handles_error(self, mock_anthropic_class):
         """Test image description error handling."""
         # Mock the Anthropic client to raise an error
@@ -274,7 +274,7 @@ class TestImageProcessor:
         assert result["tokens_used"] == 0
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.Anthropic')
+    @patch('clawdeck.document_readers.Anthropic')
     async def test_describe_images_batch(self, mock_anthropic_class):
         """Test batch image processing."""
         # Mock the Anthropic client

@@ -10,7 +10,7 @@ Tests cover:
 
 import pytest
 import asyncio
-from wyn360_cli.document_readers import ChunkSummarizer
+from clawdeck.document_readers import ChunkSummarizer
 from unittest.mock import Mock, patch, AsyncMock
 
 
@@ -21,7 +21,7 @@ class TestParallelSummarization:
     async def test_summarize_chunks_parallel_basic(self):
         """Test basic parallel chunk summarization."""
         # Mock Anthropic client
-        with patch('wyn360_cli.document_readers.Anthropic') as mock_anthropic:
+        with patch('clawdeck.document_readers.Anthropic') as mock_anthropic:
             mock_client = Mock()
             mock_response = Mock()
             mock_response.content = [Mock(text="SUMMARY: Test summary\nTAGS: [tag1, tag2, tag3]")]
@@ -54,7 +54,7 @@ class TestParallelSummarization:
     @pytest.mark.asyncio
     async def test_summarize_chunks_parallel_batching(self):
         """Test that batching works correctly."""
-        with patch('wyn360_cli.document_readers.Anthropic') as mock_anthropic:
+        with patch('clawdeck.document_readers.Anthropic') as mock_anthropic:
             mock_client = Mock()
             mock_response = Mock()
             mock_response.content = [Mock(text="SUMMARY: Test summary\nTAGS: [tag1, tag2]")]
@@ -82,7 +82,7 @@ class TestParallelSummarization:
     @pytest.mark.asyncio
     async def test_summarize_chunks_parallel_error_handling(self):
         """Test that errors in parallel processing are handled gracefully."""
-        with patch('wyn360_cli.document_readers.Anthropic') as mock_anthropic:
+        with patch('clawdeck.document_readers.Anthropic') as mock_anthropic:
             mock_client = Mock()
 
             # Make the first call fail, second succeed
@@ -135,7 +135,7 @@ class TestParallelSummarization:
     @pytest.mark.asyncio
     async def test_summarize_chunks_parallel_preserves_order(self):
         """Test that parallel summarization preserves chunk order."""
-        with patch('wyn360_cli.document_readers.Anthropic') as mock_anthropic:
+        with patch('clawdeck.document_readers.Anthropic') as mock_anthropic:
             mock_client = Mock()
             mock_response = Mock()
             mock_response.content = [Mock(text="SUMMARY: Test summary\nTAGS: [tag1, tag2]")]
@@ -164,7 +164,7 @@ class TestParallelSummarization:
     @pytest.mark.asyncio
     async def test_summarize_chunks_parallel_batch_size_one(self):
         """Test parallel summarization with batch_size=1 (sequential-like)."""
-        with patch('wyn360_cli.document_readers.Anthropic') as mock_anthropic:
+        with patch('clawdeck.document_readers.Anthropic') as mock_anthropic:
             mock_client = Mock()
             mock_response = Mock()
             mock_response.content = [Mock(text="SUMMARY: Test\nTAGS: [tag1]")]

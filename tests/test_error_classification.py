@@ -7,7 +7,7 @@ Tests the error analysis and classification functionality.
 import pytest
 from unittest.mock import Mock
 
-from wyn360_cli.tools.browser.error_classification import (
+from clawdeck.tools.browser.error_classification import (
     ErrorClassifier,
     ErrorRecoveryPlanner,
     ErrorCategory,

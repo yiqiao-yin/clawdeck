@@ -166,7 +166,7 @@ Query across multiple cached documents simultaneously, enabling cross-document a
 
 ### Implementation Summary
 **MultiDocumentRetriever Class** (~ 230 lines)
-- Added to `wyn360_cli/document_readers.py` at line 1560
+- Added to `clawdeck/document_readers.py` at line 1560
 - Integrates with existing ChunkCache and ChunkRetriever
 - 4 core methods for multi-document operations
 
@@ -183,7 +183,7 @@ Query across multiple cached documents simultaneously, enabling cross-document a
 - ✅ Works with both semantic and keyword matching
 
 ### Files Modified
-- `wyn360_cli/document_readers.py`: +230 lines (MultiDocumentRetriever class)
+- `clawdeck/document_readers.py`: +230 lines (MultiDocumentRetriever class)
 - `tests/test_multi_document_retriever.py`: NEW, 515 lines, 12 tests
 - `pyproject.toml`: version 0.3.33 → 0.3.34
 - `docs/ROADMAP_PHASE5_SUMMARY.md`: Updated Phase 5.5 status
@@ -340,7 +340,7 @@ DocumentChunker(
 - ✅ **Integration tests** verify all features work together
 
 ### Files Modified
-- `wyn360_cli/document_readers.py`: DocumentChunker class enhanced (~450 lines added)
+- `clawdeck/document_readers.py`: DocumentChunker class enhanced (~450 lines added)
 - `tests/test_adaptive_chunking.py`: NEW, 213 lines, 8 tests
 - `tests/test_overlapping_chunks.py`: NEW, 222 lines, 11 tests
 - `tests/test_content_aware_chunking.py`: NEW, 303 lines, 14 tests

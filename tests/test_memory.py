@@ -4,7 +4,7 @@ import pytest
 import tempfile
 import shutil
 from pathlib import Path
-from wyn360_cli.memory import MemoryManager, MemoryEntry
+from clawdeck.memory import MemoryManager, MemoryEntry
 
 
 class TestMemoryManager:

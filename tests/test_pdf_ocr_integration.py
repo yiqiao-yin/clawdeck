@@ -22,7 +22,7 @@ sys.modules['pdf2image'] = MagicMock()
 sys.modules['pymupdf'] = MagicMock()
 sys.modules['pdfplumber'] = MagicMock()
 
-from wyn360_cli.document_readers import PDFReader, OCRProcessor
+from clawdeck.document_readers import PDFReader, OCRProcessor
 
 
 class TestPDFOCRIntegration:
@@ -59,10 +59,10 @@ class TestPDFOCRIntegration:
             assert reader.enable_ocr is False
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', True)
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pymupdf')
-    @patch('wyn360_cli.document_readers.OCRProcessor')
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', True)
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pymupdf')
+    @patch('clawdeck.document_readers.OCRProcessor')
     async def test_read_with_ocr_enabled_pymupdf(self, mock_ocr_class, mock_pymupdf):
         """Test reading PDF with OCR enabled (pymupdf)."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
@@ -110,10 +110,10 @@ class TestPDFOCRIntegration:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', True)
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pymupdf')
-    @patch('wyn360_cli.document_readers.OCRProcessor')
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', True)
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pymupdf')
+    @patch('clawdeck.document_readers.OCRProcessor')
     async def test_read_text_based_pdf_no_ocr(self, mock_ocr_class, mock_pymupdf):
         """Test that text-based PDFs don't trigger OCR."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
@@ -145,11 +145,11 @@ class TestPDFOCRIntegration:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PDFPLUMBER', True)
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.HAS_PDF2IMAGE', True)
-    @patch('wyn360_cli.document_readers.pdfplumber')
-    @patch('wyn360_cli.document_readers.OCRProcessor')
+    @patch('clawdeck.document_readers.HAS_PDFPLUMBER', True)
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.HAS_PDF2IMAGE', True)
+    @patch('clawdeck.document_readers.pdfplumber')
+    @patch('clawdeck.document_readers.OCRProcessor')
     async def test_read_with_ocr_pdfplumber(self, mock_ocr_class, mock_pdfplumber):
         """Test reading PDF with OCR enabled (pdfplumber engine)."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
@@ -167,7 +167,7 @@ class TestPDFOCRIntegration:
             mock_pdfplumber.open.return_value = mock_pdf
 
             # Mock pdf2image
-            with patch('wyn360_cli.document_readers.convert_from_path') as mock_convert:
+            with patch('clawdeck.document_readers.convert_from_path') as mock_convert:
                 mock_image = MagicMock()
                 mock_convert.return_value = [mock_image]
 
@@ -199,9 +199,9 @@ class TestPDFOCRIntegration:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', True)
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', False)
-    @patch('wyn360_cli.document_readers.pymupdf')
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', True)
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', False)
+    @patch('clawdeck.document_readers.pymupdf')
     async def test_ocr_graceful_fallback_no_tesseract(self, mock_pymupdf):
         """Test graceful fallback when Tesseract not installed."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
@@ -229,10 +229,10 @@ class TestPDFOCRIntegration:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', True)
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pymupdf')
-    @patch('wyn360_cli.document_readers.OCRProcessor')
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', True)
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pymupdf')
+    @patch('clawdeck.document_readers.OCRProcessor')
     async def test_hybrid_pdf_mixed_pages(self, mock_ocr_class, mock_pymupdf):
         """Test hybrid PDF with both scanned and text-based pages."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:

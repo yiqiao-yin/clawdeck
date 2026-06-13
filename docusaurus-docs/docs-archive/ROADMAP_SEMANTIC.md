@@ -1,4 +1,4 @@
-# WYN360 CLI - Semantic Matching Implementation Roadmap
+# Clawdeck CLI - Semantic Matching Implementation Roadmap
 
 **Status:** ✅ Phase 5.2 - COMPLETED (v0.3.31)
 **Priority:** High
@@ -55,7 +55,7 @@ This roadmap outlines the implementation of **Semantic Matching** - a feature th
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    WYN360 Agent                              │
+│                    Clawdeck Agent                              │
 │  ┌────────────────────────────────────────────────────┐     │
 │  │  read_word() / read_pdf() / read_excel()           │     │
 │  │  - Creates chunks with summaries and tags          │     │
@@ -163,7 +163,7 @@ dependencies = [
 
 **Step 2: Create EmbeddingModel Class**
 
-Location: `wyn360_cli/document_readers.py` (new class)
+Location: `clawdeck/document_readers.py` (new class)
 
 ```python
 class EmbeddingModel:
@@ -246,7 +246,7 @@ class EmbeddingModel:
 
 #### Files Modified
 - `pyproject.toml` - Add dependencies
-- `wyn360_cli/document_readers.py` - Add EmbeddingModel class (~150 lines)
+- `clawdeck/document_readers.py` - Add EmbeddingModel class (~150 lines)
 
 #### Tests Required
 - `test_embedding_model.py`:
@@ -266,7 +266,7 @@ class EmbeddingModel:
 
 **Step 1: Update ChunkSummarizer to Compute Embeddings**
 
-Location: `wyn360_cli/document_readers.py` (modify ChunkSummarizer)
+Location: `clawdeck/document_readers.py` (modify ChunkSummarizer)
 
 ```python
 class ChunkSummarizer:
@@ -322,7 +322,7 @@ class ChunkSummarizer:
 ```
 
 #### Files Modified
-- `wyn360_cli/document_readers.py` - Update ChunkSummarizer (~50 lines)
+- `clawdeck/document_readers.py` - Update ChunkSummarizer (~50 lines)
 
 #### Tests Required
 - `test_chunk_summarizer.py` (update existing):
@@ -340,7 +340,7 @@ class ChunkSummarizer:
 
 **Step 1: Update query_chunks() Method**
 
-Location: `wyn360_cli/document_readers.py` (modify ChunkSummarizer)
+Location: `clawdeck/document_readers.py` (modify ChunkSummarizer)
 
 ```python
 def query_chunks(
@@ -417,12 +417,12 @@ def query_chunks(
 
 **Step 2: Update Agent to Use Semantic Matching**
 
-Location: `wyn360_cli/agent.py` (no changes needed!)
+Location: `clawdeck/agent.py` (no changes needed!)
 
 The agent already calls `query_chunks()`, so semantic matching will be automatic.
 
 #### Files Modified
-- `wyn360_cli/document_readers.py` - Update query_chunks() (~80 lines)
+- `clawdeck/document_readers.py` - Update query_chunks() (~80 lines)
 
 #### Tests Required
 - `test_semantic_matching.py` (NEW):
@@ -444,7 +444,7 @@ The agent already calls `query_chunks()`, so semantic matching will be automatic
 
 **Step 1: Update ChunkCache to Store Embeddings**
 
-Location: `wyn360_cli/document_readers.py` (modify ChunkCache)
+Location: `clawdeck/document_readers.py` (modify ChunkCache)
 
 No changes needed! Embeddings are already part of chunk dictionaries, so they'll be automatically cached with chunks.
 
@@ -490,7 +490,7 @@ Tests:
 
 import time
 import pytest
-from wyn360_cli.document_readers import ChunkSummarizer, EmbeddingModel
+from clawdeck.document_readers import ChunkSummarizer, EmbeddingModel
 
 
 def test_retrieval_accuracy():
@@ -685,8 +685,8 @@ Add benchmark results to ROADMAP_SEMANTIC.md.
 - [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) - Model choice
 
 ### Related Files
-- `wyn360_cli/document_readers.py` - Core implementation
-- `wyn360_cli/agent.py` - Agent integration
+- `clawdeck/document_readers.py` - Core implementation
+- `clawdeck/agent.py` - Agent integration
 - `docs/ROADMAP_DOCUMENTS.md` - Parent roadmap
 
 ---
@@ -750,8 +750,8 @@ Add benchmark results to ROADMAP_SEMANTIC.md.
 - **7 embedding model tests** have mocking issues (non-blocking)
 
 ### Files Modified
-- `wyn360_cli/document_readers.py` (+368 lines): EmbeddingModel, ChunkSummarizer, ChunkRetriever updates
-- `wyn360_cli/agent.py` (+84 lines): Integration with all document readers
+- `clawdeck/document_readers.py` (+368 lines): EmbeddingModel, ChunkSummarizer, ChunkRetriever updates
+- `clawdeck/agent.py` (+84 lines): Integration with all document readers
 - `tests/test_embedding_model.py` (NEW, 284 lines): Unit tests
 - `tests/test_excel_embedding_integration.py` (NEW, 236 lines): Integration tests
 - `pyproject.toml`: Added dependencies (sentence-transformers, torch, numpy)

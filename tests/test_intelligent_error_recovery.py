@@ -9,19 +9,19 @@ import asyncio
 import re
 from unittest.mock import Mock, AsyncMock, patch
 
-from wyn360_cli.tools.browser.intelligent_error_recovery import (
+from clawdeck.tools.browser.intelligent_error_recovery import (
     IntelligentErrorRecovery,
     RecoveryStrategy,
     RecoveryAttempt,
     RecoverySession
 )
-from wyn360_cli.tools.browser.error_classification import (
+from clawdeck.tools.browser.error_classification import (
     ErrorClassifier,
     ErrorCategory,
     ErrorSeverity,
     ErrorAnalysis
 )
-from wyn360_cli.tools.browser.enhanced_code_generator import CodeGenerationContext
+from clawdeck.tools.browser.enhanced_code_generator import CodeGenerationContext
 
 
 class TestErrorClassifier:
@@ -439,7 +439,7 @@ result = {"test": "success"}
         browser_context = {'page': Mock()}
 
         # Test successful execution
-        with patch('wyn360_cli.tools.browser.intelligent_error_recovery.SecurePythonSandbox') as MockSandbox:
+        with patch('clawdeck.tools.browser.intelligent_error_recovery.SecurePythonSandbox') as MockSandbox:
             mock_instance = MockSandbox.return_value
             mock_instance.execute_automation_script = AsyncMock(return_value={
                 'success': True,
@@ -452,7 +452,7 @@ result = {"test": "success"}
             assert error_msg is None
 
         # Test failed execution
-        with patch('wyn360_cli.tools.browser.intelligent_error_recovery.SecurePythonSandbox') as MockSandbox:
+        with patch('clawdeck.tools.browser.intelligent_error_recovery.SecurePythonSandbox') as MockSandbox:
             mock_instance = MockSandbox.return_value
             mock_instance.execute_automation_script = AsyncMock(return_value={
                 'success': False,

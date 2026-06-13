@@ -7,7 +7,7 @@ Tests the token counting functionality for DOM-first browser automation operatio
 import pytest
 import os
 from unittest.mock import Mock, AsyncMock, patch
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 class TestDOMTokenCounting:
@@ -15,11 +15,11 @@ class TestDOMTokenCounting:
 
     @pytest.fixture
     def mock_agent(self):
-        """Create a mock WYN360Agent for testing"""
+        """Create a mock ClawdeckAgent for testing"""
         with patch.dict(os.environ, {'ANTHROPIC_API_KEY': 'test-key'}):
-            with patch('wyn360_cli.agent.AnthropicModel'):
-                with patch('wyn360_cli.agent.Agent'):
-                    agent = WYN360Agent()
+            with patch('clawdeck.agent.AnthropicModel'):
+                with patch('clawdeck.agent.Agent'):
+                    agent = ClawdeckAgent()
                     return agent
 
     def test_dom_token_tracking_initialization(self, mock_agent):
@@ -202,7 +202,7 @@ class TestDOMTokenCounting:
         mock_ctx = Mock()
 
         # Mock the browser_tools.analyze_page_dom method
-        with patch('wyn360_cli.agent.browser_tools.analyze_page_dom') as mock_analyze:
+        with patch('clawdeck.agent.browser_tools.analyze_page_dom') as mock_analyze:
             mock_analyze.return_value = {
                 'success': True,
                 'title': 'Test Page',
@@ -232,7 +232,7 @@ class TestDOMTokenCounting:
         mock_ctx = Mock()
 
         # Mock the browser_tools.execute_dom_action method
-        with patch('wyn360_cli.agent.browser_tools.execute_dom_action') as mock_execute:
+        with patch('clawdeck.agent.browser_tools.execute_dom_action') as mock_execute:
             mock_execute.return_value = {
                 'success': True,
                 'action': 'click',
@@ -261,10 +261,10 @@ class TestDOMTokenCounting:
         mock_ctx = Mock()
 
         # Mock required dependencies
-        with patch('wyn360_cli.agent.browser_tools.analyze_page_dom') as mock_analyze:
-            with patch('wyn360_cli.agent.automation_orchestrator.decide_automation_approach') as mock_decide:
-                with patch('wyn360_cli.agent.automation_orchestrator.record_execution_result'):
-                    with patch('wyn360_cli.agent.automation_orchestrator.get_decision_analytics') as mock_analytics:
+        with patch('clawdeck.agent.browser_tools.analyze_page_dom') as mock_analyze:
+            with patch('clawdeck.agent.automation_orchestrator.decide_automation_approach') as mock_decide:
+                with patch('clawdeck.agent.automation_orchestrator.record_execution_result'):
+                    with patch('clawdeck.agent.automation_orchestrator.get_decision_analytics') as mock_analytics:
 
                         # Setup mocks
                         mock_analyze.return_value = {
@@ -275,7 +275,7 @@ class TestDOMTokenCounting:
                             'dom_analysis_text': 'DOM analysis for test'
                         }
 
-                        from src.wyn360.tools.browser import AutomationApproach
+                        from clawdeck.tools.browser import AutomationApproach
                         mock_context = Mock()
                         mock_context.dom_confidence = 0.85
                         mock_context.page_complexity = 'moderate'

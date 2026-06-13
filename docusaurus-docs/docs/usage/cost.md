@@ -1,6 +1,6 @@
-# WYN360 CLI - Cost Analysis & Estimation
+# Clawdeck CLI - Cost Analysis & Estimation
 
-This document provides a detailed breakdown of the costs associated with using WYN360 CLI, which is powered by Anthropic Claude.
+This document provides a detailed breakdown of the costs associated with using Clawdeck CLI, which is powered by Anthropic Claude.
 
 ## 💰 Pricing (Anthropic Claude Sonnet 4)
 
@@ -185,7 +185,7 @@ print(f"Estimated autonomous browsing cost: ${estimated_cost:.2f}")
 
 ## 📊 Token Breakdown Per Request
 
-Every interaction with WYN360 CLI consists of several components that contribute to token usage:
+Every interaction with Clawdeck CLI consists of several components that contribute to token usage:
 
 ### 1. System Prompt (~1,000 tokens)
 
@@ -745,7 +745,7 @@ Total: ~$0.025
 
 **Problem:** Long conversation history increases context tokens (if implemented).
 
-**Current:** WYN360 stores history in memory but doesn't send full history yet.
+**Current:** Clawdeck stores history in memory but doesn't send full history yet.
 
 **Future consideration:** If conversation history is sent with each request, periodically restart CLI to clear history.
 
@@ -761,7 +761,7 @@ Total: ~$0.025
 
 **Command:**
 ```bash
-wyn360 --model claude-haiku-3-5-20250304
+clawdeck --model claude-haiku-3-5-20250304
 ```
 
 **Potential savings:** 80-90% for simple operations
@@ -779,7 +779,7 @@ wyn360 --model claude-haiku-3-5-20250304
 
 ### Method 2: API Response Headers (Future Enhancement)
 
-Could add token tracking to WYN360:
+Could add token tracking to Clawdeck:
 
 ```python
 # Potential feature
@@ -858,7 +858,7 @@ Total monthly cost: $1.32
 
 **Comparison:**
 - GitHub Copilot: $10/month (fixed)
-- WYN360 CLI: ~$1.32/month (usage-based)
+- Clawdeck CLI: ~$1.32/month (usage-based)
 - **Savings:** ~$8.68/month (87% cheaper for typical usage)
 
 ---
@@ -903,7 +903,7 @@ Total monthly cost: $1.32
 
 **What is max_tokens?**
 
-The `max_tokens` setting controls the maximum length of Claude's response. By default, WYN360 CLI is configured with `max_tokens: 4096`, which provides balanced responses for most use cases.
+The `max_tokens` setting controls the maximum length of Claude's response. By default, Clawdeck CLI is configured with `max_tokens: 4096`, which provides balanced responses for most use cases.
 
 **How it Affects Cost:**
 
@@ -919,7 +919,7 @@ Higher `max_tokens` values allow longer responses but increase output token cost
 You can check your current `max_tokens` setting using the `/config` command:
 
 ```bash
-wyn360
+clawdeck
 You: /config
 
 # Output shows:
@@ -938,13 +938,13 @@ Edit your user configuration file to apply the setting across all projects:
 
 ```bash
 # Edit user config
-nano ~/.wyn360/config.yaml
+nano ~/.clawdeck/config.yaml
 
 # Change line:
 max_tokens: 8192  # Or 16384, 32768, etc.
 ```
 
-**User Config Location:** `~/.wyn360/config.yaml`
+**User Config Location:** `~/.clawdeck/config.yaml`
 
 #### Option 2: Per Project
 
@@ -952,13 +952,13 @@ Override the setting for a specific project by creating/editing a project config
 
 ```bash
 # Create/edit project config in your project root
-nano .wyn360.yaml
+nano .clawdeck.yaml
 
 # Add:
 max_tokens: 16384
 ```
 
-**Project Config Location:** `.wyn360.yaml` (in your project root directory)
+**Project Config Location:** `.clawdeck.yaml` (in your project root directory)
 
 **Note:** Project config overrides user config, which overrides the default (4096).
 
@@ -999,7 +999,7 @@ Cost: $0.09 (output only) - 7.5× more expensive
 ### Best Practices
 
 1. **Start with default (4096)** - Suitable for 90% of use cases
-2. **Increase for specific projects** - Use project config (`.wyn360.yaml`) when you need longer responses
+2. **Increase for specific projects** - Use project config (`.clawdeck.yaml`) when you need longer responses
 3. **Monitor with `/tokens`** - Check actual usage to see if you're hitting limits
 4. **Use `/clear` regularly** - Reset conversation history to control input token costs
 5. **Balance quality vs cost** - Higher limits enable longer responses but cost more
@@ -1012,20 +1012,20 @@ Cost: $0.09 (output only) - 7.5× more expensive
 
 | Tool | Pricing Model | Typical Monthly Cost |
 |------|---------------|---------------------|
-| **WYN360 CLI** | Pay-per-use | $1-5 for regular users |
+| **Clawdeck CLI** | Pay-per-use | $1-5 for regular users |
 | **GitHub Copilot** | Fixed subscription | $10/month |
 | **Cursor IDE** | Fixed subscription | $20/month |
 | **ChatGPT Plus** | Fixed subscription | $20/month |
 | **Direct API Usage** | Pay-per-use | $5-50+ (depending on usage) |
 
-**WYN360 Advantages:**
+**Clawdeck Advantages:**
 - ✅ Only pay for what you use
 - ✅ No monthly commitment
 - ✅ Transparent token usage
 - ✅ Can be very cost-effective for light users
 - ✅ Full control over model selection
 
-**When WYN360 Might Cost More:**
+**When Clawdeck Might Cost More:**
 - Heavy daily usage (200+ sessions/day)
 - Very large codebases (constant file reading)
 - Compared to flat-rate tools if you use heavily
@@ -1050,7 +1050,7 @@ Per Request Cost ≈ Base ($0.0045) + Tool Calls ($0.003-0.015 each) + Response 
 
 ### Recommendation:
 
-For **most developers**, WYN360 CLI will cost **$1-3 per month** - significantly less than subscription-based alternatives while providing similar capabilities.
+For **most developers**, Clawdeck CLI will cost **$1-3 per month** - significantly less than subscription-based alternatives while providing similar capabilities.
 
 ---
 
@@ -1058,7 +1058,7 @@ For **most developers**, WYN360 CLI will cost **$1-3 per month** - significantly
 
 - **Anthropic Pricing:** https://www.anthropic.com/pricing
 - **Usage Console:** https://console.anthropic.com/
-- **WYN360 Documentation:** [USE_CASES.md](use-cases.md)
+- **Clawdeck Documentation:** [USE_CASES.md](use-cases.md)
 - **Token Counting:** https://platform.openai.com/tokenizer (similar to Claude)
 
 ---

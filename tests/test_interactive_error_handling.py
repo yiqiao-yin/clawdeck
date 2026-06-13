@@ -7,19 +7,19 @@ and user choice mechanisms for browser automation.
 
 import pytest
 from unittest.mock import Mock, AsyncMock, patch
-from src.wyn360.tools.browser.interactive_error_handler import (
+from clawdeck.tools.browser.interactive_error_handler import (
     InteractiveErrorHandler,
     InteractiveErrorContext,
     RecoveryAction,
     RecoveryOption,
     interactive_error_handler
 )
-from src.wyn360.tools.browser.unified_error_handling import (
+from clawdeck.tools.browser.unified_error_handling import (
     ErrorContext,
     ErrorCategory,
     unified_error_handler
 )
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationApproach,
     ActionResult
 )

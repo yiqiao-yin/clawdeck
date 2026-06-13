@@ -1,6 +1,6 @@
 # Features Overview
 
-WYN360 CLI provides comprehensive AI-powered development assistance through a rich set of integrated features.
+Clawdeck CLI provides comprehensive AI-powered development assistance through a rich set of integrated features.
 
 ## Core AI Capabilities
 
@@ -21,7 +21,7 @@ WYN360 CLI provides comprehensive AI-powered development assistance through a ri
 ### 🧠 [Memory & Skills](agentic-memory.md)
 - **Persistent Memory** - Remember context across sessions (user preferences, project decisions, feedback)
 - **Relevance Selection** - Automatically surfaces the most relevant memories per query
-- **Custom Skills** - Define reusable slash commands via YAML files in `~/.wyn360/skills/`
+- **Custom Skills** - Define reusable slash commands via YAML files in `~/.clawdeck/skills/`
 - **Skill Aliases** - Multiple names for the same skill (e.g., `/review`, `/cr`)
 
 ### 📋 [Planning & Sub-Agents](planning-and-agents.md)

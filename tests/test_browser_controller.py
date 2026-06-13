@@ -2,15 +2,15 @@
 
 import pytest
 from unittest.mock import Mock, AsyncMock, patch
-from wyn360_cli.browser_controller import BrowserController, BrowserControllerError
+from clawdeck.browser_controller import BrowserController, BrowserControllerError
 
 
 class TestBrowserControllerInitialization:
     """Test browser initialization and cleanup."""
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_initialize_success(self, mock_playwright):
         """Test successful browser initialization."""
         # Setup mocks
@@ -37,8 +37,8 @@ class TestBrowserControllerInitialization:
         mock_page.set_default_timeout.assert_called_once_with(30000)
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_initialize_already_initialized(self, mock_playwright):
         """Test initialization when already initialized."""
         # Setup mocks
@@ -63,8 +63,8 @@ class TestBrowserControllerInitialization:
         assert mock_pw_instance.chromium.launch.call_count == 1
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_cleanup(self, mock_playwright):
         """Test browser cleanup."""
         # Setup mocks
@@ -95,8 +95,8 @@ class TestBrowserControllerInitialization:
         mock_pw_instance.stop.assert_called_once()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_context_manager(self, mock_playwright):
         """Test async context manager."""
         # Setup mocks
@@ -123,8 +123,8 @@ class TestBrowserNavigation:
     """Test browser navigation."""
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_navigate_success(self, mock_playwright):
         """Test successful navigation."""
         # Setup mocks
@@ -147,7 +147,7 @@ class TestBrowserNavigation:
         await controller.navigate("https://example.com")
 
         # Verify (Phase 5.4: now includes timeout parameter)
-        from wyn360_cli.browser_controller import BrowserConfig
+        from clawdeck.browser_controller import BrowserConfig
         mock_page.goto.assert_called_once_with(
             "https://example.com",
             wait_until='networkidle',
@@ -167,8 +167,8 @@ class TestBrowserActions:
     """Test browser action execution."""
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_action_click(self, mock_playwright):
         """Test click action."""
         # Setup mocks
@@ -196,12 +196,12 @@ class TestBrowserActions:
         # Verify (Phase 5.4: now uses configurable ACTION_TIMEOUT)
         assert result['success'] is True
         assert result['action'] == 'click'
-        from wyn360_cli.browser_controller import BrowserConfig
+        from clawdeck.browser_controller import BrowserConfig
         mock_page.click.assert_called_once_with('#submit-btn', timeout=BrowserConfig.ACTION_TIMEOUT)
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_action_type(self, mock_playwright):
         """Test type action."""
         # Setup mocks
@@ -235,8 +235,8 @@ class TestBrowserActions:
         mock_page.type.assert_called_once_with('#search', 'test query', delay=50)
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_action_scroll(self, mock_playwright):
         """Test scroll action."""
         # Setup mocks
@@ -268,8 +268,8 @@ class TestBrowserActions:
         mock_page.evaluate.assert_called_once_with("window.scrollBy(0, 500)")
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_action_extract(self, mock_playwright):
         """Test extract action."""
         # Setup mocks
@@ -303,8 +303,8 @@ class TestBrowserActions:
         assert result['data'][0] == "Test Text"
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_action_wait(self, mock_playwright):
         """Test wait action."""
         # Setup mocks
@@ -333,8 +333,8 @@ class TestBrowserActions:
         assert result['action'] == 'wait'
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_action_unknown(self, mock_playwright):
         """Test unknown action type."""
         # Setup mocks
@@ -366,8 +366,8 @@ class TestBrowserScreenshot:
     """Test screenshot capture."""
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_take_screenshot(self, mock_playwright):
         """Test screenshot capture."""
         # Setup mocks
@@ -406,8 +406,8 @@ class TestBrowserPageState:
     """Test page state extraction."""
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_get_page_state(self, mock_playwright):
         """Test page state extraction."""
         # Setup mocks
@@ -442,8 +442,8 @@ class TestBrowserElementFinding:
     """Test element finding strategies."""
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_find_element_by_selector(self, mock_playwright):
         """Test finding element by CSS selector."""
         # Setup mocks
@@ -471,8 +471,8 @@ class TestBrowserElementFinding:
         mock_page.query_selector.assert_called_once_with('#test-element')
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.browser_controller.HAS_PLAYWRIGHT', True)
-    @patch('wyn360_cli.browser_controller.async_playwright')
+    @patch('clawdeck.browser_controller.HAS_PLAYWRIGHT', True)
+    @patch('clawdeck.browser_controller.async_playwright')
     async def test_find_element_by_xpath(self, mock_playwright):
         """Test finding element by XPath."""
         # Setup mocks

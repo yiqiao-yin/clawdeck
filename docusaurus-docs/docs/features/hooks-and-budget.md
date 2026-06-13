@@ -2,7 +2,7 @@
 
 *New in v0.4.0*
 
-WYN360 CLI provides a hook system for customizing the request/response pipeline and a token budget manager that automatically continues responses cut short by token limits.
+Clawdeck CLI provides a hook system for customizing the request/response pipeline and a token budget manager that automatically continues responses cut short by token limits.
 
 ---
 
@@ -43,7 +43,7 @@ Every message, every response, every tool call — hooks are watching. The built
 
 ### Built-in Hooks (Always Running)
 
-WYN360 ships with two hooks that are **active by default** in every session:
+Clawdeck ships with two hooks that are **active by default** in every session:
 
 **Safety Check** (`builtin_safety_check`) — runs on every message you type:
 - Scans for destructive patterns: `rm -rf`, `DROP TABLE`, `DELETE FROM`, `format c:`
@@ -75,7 +75,7 @@ Total execution time: 2.4ms
 For advanced users, hooks can be registered in Python:
 
 ```python
-from wyn360_cli.hooks import HookManager, HookPoint, HookContext, HookResult
+from clawdeck.hooks import HookManager, HookPoint, HookContext, HookResult
 
 manager = HookManager()
 
@@ -151,7 +151,7 @@ After every AI response, the system automatically:
 ```
 You: Explain the entire authentication architecture
 
-WYN360: [Generates 4096 tokens, gets cut off mid-paragraph]
+Clawdeck: [Generates 4096 tokens, gets cut off mid-paragraph]
         [Auto-continue: 25% of budget used (1024/4096 tokens). Continuation 1/5.]
         [AI continues where it left off...]
         [Auto-continue: 50% of budget used (2048/4096 tokens). Continuation 2/5.]
@@ -168,7 +168,7 @@ The budget is set by your `max_token` setting:
 
 ```bash
 # Set a higher budget for longer responses
-wyn360 --max-token 8192
+clawdeck --max-token 8192
 
 # Or via environment variable
 export MAX_TOKEN=8192

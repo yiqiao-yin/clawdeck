@@ -4,7 +4,7 @@ Process images, charts, diagrams, and visual content within documents using AI v
 
 ## Overview
 
-Vision Mode enables WYN360 CLI to understand and analyze visual content in documents, providing insights from charts, diagrams, screenshots, and other images.
+Vision Mode enables Clawdeck CLI to understand and analyze visual content in documents, providing insights from charts, diagrams, screenshots, and other images.
 
 ## Supported Formats
 
@@ -19,7 +19,7 @@ Vision Mode enables WYN360 CLI to understand and analyze visual content in docum
 ```
 You: Read report.docx
 
-WYN360: [Processes text only, ignores images]
+Clawdeck: [Processes text only, ignores images]
 # Cost: $0.00 for images
 ```
 
@@ -27,7 +27,7 @@ WYN360: [Processes text only, ignores images]
 ```
 You: Read report.docx with describe mode
 
-WYN360: [Extracts alt text and captions only]
+Clawdeck: [Extracts alt text and captions only]
 📊 [Image 1]: Revenue chart showing quarterly data
 📐 [Image 2]: System architecture diagram
 # Cost: $0.00 for images (no API calls)
@@ -37,7 +37,7 @@ WYN360: [Extracts alt text and captions only]
 ```
 You: Read report.docx with vision mode
 
-WYN360: [Full AI analysis of images]
+Clawdeck: [Full AI analysis of images]
 📊 **[Image 1]:** Bar chart showing quarterly revenue growth from Q1 to Q4.
 Q4 shows the highest revenue at approximately $2.5M, representing a 23%
 increase from Q3. All quarters show positive growth year-over-year.

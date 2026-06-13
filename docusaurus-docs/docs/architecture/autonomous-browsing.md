@@ -2,7 +2,7 @@
 
 > **Current Implementation** (v0.3.78)
 
-WYN360-CLI features a sophisticated browser automation system that uses a **DOM-first approach** with intelligent fallback strategies. The system combines fast DOM analysis, AI-powered Stagehand automation, and vision-based fallbacks to provide reliable web interaction capabilities while maintaining cost efficiency and performance.
+Clawdeck-CLI features a sophisticated browser automation system that uses a **DOM-first approach** with intelligent fallback strategies. The system combines fast DOM analysis, AI-powered Stagehand automation, and vision-based fallbacks to provide reliable web interaction capabilities while maintaining cost efficiency and performance.
 
 ## Overview
 
@@ -36,12 +36,12 @@ graph TD
     K --> E
     J -->|No| L["Report Failure"]
 
-    style A fill:#e1f5fe
-    style B fill:#e8f5e8
-    style D fill:#c8e6c9
-    style E fill:#fff3e0
-    style F fill:#fce4ec
-    style H fill:#c8e6c9
+    style A fill:#666666
+    style B fill:#5f5f5f
+    style D fill:#707070
+    style E fill:#595959
+    style F fill:#636363
+    style H fill:#707070
 ```
 
 ## Cost & Performance Optimization
@@ -73,7 +73,7 @@ Fast webpage structure analysis for automation planning.
 - Navigation structure mapping
 - Confidence score calculation for automation success
 
-**File:** `wyn360_cli/tools/browser/dom_analyzer.py`
+**File:** `clawdeck/tools/browser/dom_analyzer.py`
 
 ### 2. Browser Manager
 Centralized browser lifecycle and session management.
@@ -84,7 +84,7 @@ Centralized browser lifecycle and session management.
 - Resource cleanup and memory management
 - Concurrent session support
 
-**File:** `wyn360_cli/tools/browser/browser_manager.py`
+**File:** `clawdeck/tools/browser/browser_manager.py`
 
 ### 3. Unified Automation Interface
 High-level orchestration layer for approach selection and execution.
@@ -95,7 +95,7 @@ High-level orchestration layer for approach selection and execution.
 - Performance monitoring and cost optimization
 - Error handling and retry logic
 
-**File:** `wyn360_cli/tools/browser/unified_automation_interface.py`
+**File:** `clawdeck/tools/browser/unified_automation_interface.py`
 
 ### 4. Stagehand Integration
 AI-powered automation for complex web interactions.
@@ -106,7 +106,7 @@ AI-powered automation for complex web interactions.
 - Modern SPA and JavaScript-heavy site support
 - Context-aware automation planning
 
-**File:** `wyn360_cli/tools/browser/stagehand_integration.py`
+**File:** `clawdeck/tools/browser/stagehand_integration.py`
 
 ### 5. Vision Fallback Integration
 Visual analysis and interaction for complex scenarios.
@@ -117,7 +117,7 @@ Visual analysis and interaction for complex scenarios.
 - CAPTCHA and dynamic content handling
 - Accessibility-independent interaction
 
-**File:** `wyn360_cli/tools/browser/vision_fallback_integration.py`
+**File:** `clawdeck/tools/browser/vision_fallback_integration.py`
 
 ### 6. Enhanced Automation Orchestrator
 Coordination layer managing multiple automation approaches.
@@ -128,7 +128,7 @@ Coordination layer managing multiple automation approaches.
 - Error classification and recovery strategies
 - Learning from success/failure patterns
 
-**File:** `wyn360_cli/tools/browser/enhanced_automation_orchestrator.py`
+**File:** `clawdeck/tools/browser/enhanced_automation_orchestrator.py`
 
 ## Browser Control Features
 
@@ -137,11 +137,11 @@ Control browser visibility for debugging and development:
 
 ```bash
 # Show browser window during automation
-wyn360 --show-browser
+clawdeck --show-browser
 
 # Environment variable option
-export WYN360_BROWSER_SHOW=1
-wyn360
+export CLAWDECK_BROWSER_SHOW=1
+clawdeck
 ```
 
 ### Headless Mode (Default)
@@ -347,10 +347,10 @@ System:
 
 ```bash
 # Environment variables for browser behavior
-export WYN360_BROWSER_SHOW=1              # Show browser window
-export WYN360_DOM_CONFIDENCE_THRESHOLD=0.7   # DOM approach threshold
-export WYN360_MAX_AUTOMATION_STEPS=15        # Maximum steps per session
-export WYN360_AUTOMATION_TIMEOUT=300         # Total timeout in seconds
+export CLAWDECK_BROWSER_SHOW=1              # Show browser window
+export CLAWDECK_DOM_CONFIDENCE_THRESHOLD=0.7   # DOM approach threshold
+export CLAWDECK_MAX_AUTOMATION_STEPS=15        # Maximum steps per session
+export CLAWDECK_AUTOMATION_TIMEOUT=300         # Total timeout in seconds
 ```
 
 ### Approach Selection
@@ -443,7 +443,7 @@ performance_stats = {
 **Solutions:**
 1. **Check page complexity:** Sites with heavy JavaScript may need Stagehand
 2. **Verify element accessibility:** Ensure proper form labels and IDs
-3. **Enable browser visibility:** `wyn360 --show-browser` to debug
+3. **Enable browser visibility:** `clawdeck --show-browser` to debug
 4. **Lower confidence threshold:** Allow DOM approach on borderline cases
 
 ### Stagehand Integration Problems
@@ -493,10 +493,10 @@ performance_stats = {
 ### 3. Use Browser Visibility Strategically
 ```bash
 # Development and debugging
-wyn360 --show-browser
+clawdeck --show-browser
 
 # Production and scripts
-wyn360  # headless mode for performance
+clawdeck  # headless mode for performance
 ```
 
 ### 4. Monitor Performance & Costs
@@ -542,5 +542,5 @@ wyn360  # headless mode for performance
 
 ---
 
-*Generated with WYN360-CLI v0.3.78*
+*Generated with Clawdeck-CLI v0.3.78*
 *Intelligent Browser Automation with DOM-First Architecture*

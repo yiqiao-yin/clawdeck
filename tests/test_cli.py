@@ -5,8 +5,8 @@ import tempfile
 import json
 from pathlib import Path
 from unittest.mock import Mock, patch
-from wyn360_cli.agent import WYN360Agent
-from wyn360_cli.cli import handle_slash_command
+from clawdeck.agent import ClawdeckAgent
+from clawdeck.cli import handle_slash_command
 
 
 class TestSlashCommands:
@@ -14,7 +14,7 @@ class TestSlashCommands:
 
     def setup_method(self):
         """Set up test fixtures"""
-        self.agent = WYN360Agent(api_key="test_key", model="claude-sonnet-4-20250514")
+        self.agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
 
     def test_clear_command(self):
         """Test /clear command"""
@@ -299,10 +299,10 @@ class TestSlashCommands:
 
     def test_config_command_with_config(self):
         """Test /config command with config loaded"""
-        from wyn360_cli.config import WYN360Config
+        from clawdeck.config import ClawdeckConfig
 
         # Create a config
-        config = WYN360Config(
+        config = ClawdeckConfig(
             model="claude-sonnet-4-20250514",
             max_tokens=4096,
             custom_instructions="Use type hints"

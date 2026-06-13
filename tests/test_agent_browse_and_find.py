@@ -2,19 +2,19 @@
 
 import pytest
 from unittest.mock import Mock, AsyncMock, patch
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 class TestBrowseAndFindTool:
-    """Test browse_and_find tool integration with WYN360Agent."""
+    """Test browse_and_find tool integration with ClawdeckAgent."""
 
     @pytest.mark.asyncio
     async def test_browse_and_find_success(self):
         """Test successful browse_and_find execution."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock BrowserTaskExecutor
-        with patch('wyn360_cli.agent.BrowserTaskExecutor') as MockExecutor:
+        with patch('clawdeck.agent.BrowserTaskExecutor') as MockExecutor:
             mock_executor_instance = AsyncMock()
             MockExecutor.return_value = mock_executor_instance
 
@@ -54,9 +54,9 @@ class TestBrowseAndFindTool:
     @pytest.mark.asyncio
     async def test_browse_and_find_partial(self):
         """Test browse_and_find with partial completion."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
-        with patch('wyn360_cli.agent.BrowserTaskExecutor') as MockExecutor:
+        with patch('clawdeck.agent.BrowserTaskExecutor') as MockExecutor:
             mock_executor_instance = AsyncMock()
             MockExecutor.return_value = mock_executor_instance
 
@@ -87,9 +87,9 @@ class TestBrowseAndFindTool:
     @pytest.mark.asyncio
     async def test_browse_and_find_failed(self):
         """Test browse_and_find with failed execution."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
-        with patch('wyn360_cli.agent.BrowserTaskExecutor') as MockExecutor:
+        with patch('clawdeck.agent.BrowserTaskExecutor') as MockExecutor:
             mock_executor_instance = AsyncMock()
             MockExecutor.return_value = mock_executor_instance
 
@@ -122,9 +122,9 @@ class TestBrowseAndFindTool:
     async def test_browse_and_find_bedrock_mode(self):
         """Test that browse_and_find is disabled in Bedrock mode."""
         # Mock Bedrock mode
-        with patch('wyn360_cli.agent._validate_aws_credentials', return_value=(True, "")):
+        with patch('clawdeck.agent._validate_aws_credentials', return_value=(True, "")):
             # Create agent in Bedrock mode
-            agent = WYN360Agent(use_bedrock=True)
+            agent = ClawdeckAgent(use_bedrock=True)
 
             result = await agent.browse_and_find(
                 ctx=None,
@@ -141,9 +141,9 @@ class TestBrowseAndFindTool:
     @pytest.mark.asyncio
     async def test_browse_and_find_exception(self):
         """Test browse_and_find handles exceptions."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
-        with patch('wyn360_cli.agent.BrowserTaskExecutor') as MockExecutor:
+        with patch('clawdeck.agent.BrowserTaskExecutor') as MockExecutor:
             # Mock executor to raise exception
             MockExecutor.side_effect = Exception("Browser initialization failed")
 
@@ -164,7 +164,7 @@ class TestFormatHelpers:
 
     def test_format_extracted_data_simple(self):
         """Test formatting simple extracted data."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         data = {'price': '$99.99', 'title': 'Test Product'}
         result = agent._format_extracted_data(data)
@@ -176,7 +176,7 @@ class TestFormatHelpers:
 
     def test_format_extracted_data_nested(self):
         """Test formatting nested extracted data."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         data = {
             'product': {
@@ -197,7 +197,7 @@ class TestFormatHelpers:
 
     def test_format_extracted_data_empty(self):
         """Test formatting empty extracted data."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         data = {}
         result = agent._format_extracted_data(data)
@@ -206,7 +206,7 @@ class TestFormatHelpers:
 
     def test_format_action_history(self):
         """Test formatting action history."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         history = [
             {
@@ -246,7 +246,7 @@ class TestFormatHelpers:
 
     def test_format_action_history_empty(self):
         """Test formatting empty action history."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         history = []
         result = agent._format_action_history(history)
@@ -255,7 +255,7 @@ class TestFormatHelpers:
 
     def test_format_action_history_truncates(self):
         """Test that action history shows only last 5 actions."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Create 10 actions
         history = [
@@ -284,7 +284,7 @@ class TestSystemPromptIntegration:
 
     def test_system_prompt_has_phase_5(self):
         """Test that system prompt includes Phase 5 autonomous browsing."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         prompt = agent._get_system_prompt()
 
         assert 'Phase 5' in prompt
@@ -293,7 +293,7 @@ class TestSystemPromptIntegration:
 
     def test_system_prompt_has_vision_requirement(self):
         """Test that system prompt mentions vision requirement."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         prompt = agent._get_system_prompt()
 
         assert 'vision' in prompt.lower() or 'Vision' in prompt
@@ -301,7 +301,7 @@ class TestSystemPromptIntegration:
 
     def test_system_prompt_has_usage_examples(self):
         """Test that system prompt includes usage examples."""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         prompt = agent._get_system_prompt()
 
         # Check for at least one example use case

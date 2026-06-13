@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-WYN360 CLI Documentation - AI Search Index Builder
+Clawdeck CLI Documentation - AI Search Index Builder
 
 This script processes the documentation markdown files and creates an AI-optimized
 search index with semantic embeddings for intelligent document retrieval.
@@ -200,15 +200,15 @@ class MarkdownProcessor:
         # Handle index files
         if relative_path.name == 'index.md':
             if relative_path.parent == Path('.'):
-                # Root index.md becomes /wyn360-cli/docs/ (Docusaurus docs root)
-                url_path = "/wyn360-cli/docs/"
+                # Root index.md becomes /clawdeck/docs/ (Docusaurus docs root)
+                url_path = "/clawdeck/docs/"
             else:
-                # docs/section/index.md becomes /wyn360-cli/docs/section/
-                url_path = f"/wyn360-cli/docs/{relative_path.parent}/"
+                # docs/section/index.md becomes /clawdeck/docs/section/
+                url_path = f"/clawdeck/docs/{relative_path.parent}/"
         else:
-            # docs/file.md becomes /wyn360-cli/docs/file/
-            # docs/section/file.md becomes /wyn360-cli/docs/section/file/
-            url_path = f"/wyn360-cli/docs/{relative_path.with_suffix('')}/"
+            # docs/file.md becomes /clawdeck/docs/file/
+            # docs/section/file.md becomes /clawdeck/docs/section/file/
+            url_path = f"/clawdeck/docs/{relative_path.with_suffix('')}/"
 
         return url_path.replace('\\', '/').replace('//', '/')
 
@@ -537,7 +537,7 @@ class SearchIndexBuilder:
 
 def main():
     """Main function to build the AI search index."""
-    parser = argparse.ArgumentParser(description="Build AI search index for WYN360 CLI documentation")
+    parser = argparse.ArgumentParser(description="Build AI search index for Clawdeck CLI documentation")
     parser.add_argument("--docs-dir", default="docs", help="Documentation directory (default: docs)")
     parser.add_argument("--output-dir", default="site/assets", help="Output directory (default: site/assets)")
     parser.add_argument("--model", default="sentence-transformers/all-MiniLM-L6-v2",

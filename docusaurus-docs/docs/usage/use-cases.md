@@ -1,6 +1,6 @@
-# WYN360 CLI - Complete User Guide & Use Cases
+# Clawdeck CLI - Complete User Guide & Use Cases
 
-**A comprehensive guide to WYN360 CLI - from simple to complex workflows**
+**A comprehensive guide to Clawdeck CLI - from simple to complex workflows**
 
 **Version:** 0.3.23
 **Last Updated:** November 2025
@@ -10,15 +10,15 @@
 
 ## Part 1: Introduction & Getting Started
 
-### Welcome to WYN360 CLI
+### Welcome to Clawdeck CLI
 
-WYN360 CLI is an AI-powered command-line assistant that helps you build, analyze, and manage Python projects through natural language conversations. This guide will walk you through everything from simple file operations to complex multi-turn development workflows.
+Clawdeck CLI is an AI-powered command-line assistant that helps you build, analyze, and manage Python projects through natural language conversations. This guide will walk you through everything from simple file operations to complex multi-turn development workflows.
 
 #### Quick Start Guide
 
 **Installation:**
 ```bash
-pip install wyn360-cli
+pip install clawdeck
 ```
 
 **Set up your API key:**
@@ -26,18 +26,18 @@ pip install wyn360-cli
 export ANTHROPIC_API_KEY='your-key-here'
 ```
 
-**Launch WYN360:**
+**Launch Clawdeck:**
 ```bash
-wyn360
+clawdeck
 ```
 
 **Your first interaction:**
 ```bash
 You: What files do I have?
-WYN360: [Lists all files in your directory]
+Clawdeck: [Lists all files in your directory]
 
 You: Create a hello world Python script
-WYN360: [Generates and saves hello_world.py]
+Clawdeck: [Generates and saves hello_world.py]
 ```
 
 ### How to Read This Document
@@ -74,7 +74,7 @@ This guide is organized as a progressive learning path:
 **Type:** Single-turn
 **Best For:** Rapid prototyping, learning, quick demos
 
-When you're in an empty directory and want to build something from scratch, WYN360 becomes your coding partner.
+When you're in an empty directory and want to build something from scratch, Clawdeck becomes your coding partner.
 
 **How it works:**
 - User describes what they want to build in natural language
@@ -91,7 +91,7 @@ When you're in an empty directory and want to build something from scratch, WYN3
 ```bash
 You: Build a Streamlit chatbot that echoes user input
 
-WYN360:
+Clawdeck:
 ✓ Generates complete app.py with Streamlit code
 ✓ Creates requirements.txt with dependencies
 ✓ Provides setup and run instructions
@@ -113,7 +113,7 @@ WYN360:
 **Type:** Single-turn
 **Best For:** Understanding codebases, code review, onboarding
 
-WYN360 can understand your existing codebase before making suggestions or changes.
+Clawdeck can understand your existing codebase before making suggestions or changes.
 
 **Analysis Capabilities:**
 - Scans directory structure and categorizes files
@@ -134,7 +134,7 @@ WYN360 can understand your existing codebase before making suggestions or change
 ```bash
 You: What does my project do?
 
-WYN360:
+Clawdeck:
 - Scans all files in the directory
 - Identifies main entry points
 - Reads configuration files
@@ -183,7 +183,7 @@ Write high-quality Python code or improve existing code.
 ```bash
 You: Refactor my data processing script to use async
 
-WYN360:
+Clawdeck:
 - Analyzes current synchronous code
 - Identifies I/O-bound operations
 - Converts to async/await patterns
@@ -200,7 +200,7 @@ WYN360:
 **Best For:** Running scripts, package management, testing
 **Version:** NEW in v0.2.2
 
-Run any shell command, Python script, or CLI tool directly through WYN360 with built-in safety confirmations.
+Run any shell command, Python script, or CLI tool directly through Clawdeck with built-in safety confirmations.
 
 **Capabilities:**
 - Execute Python scripts
@@ -232,7 +232,7 @@ Run any shell command, Python script, or CLI tool directly through WYN360 with b
 ```bash
 You: Run the adult.py analysis script
 
-WYN360: [Prepares to execute]
+Clawdeck: [Prepares to execute]
 
 ======================================================================
 ⚠️  COMMAND EXECUTION CONFIRMATION
@@ -257,7 +257,7 @@ Results saved to results.csv
 ```
 
 **Bypass Confirmation (For Testing):**
-Set environment variable `WYN360_SKIP_CONFIRM=1` to skip confirmation prompts.
+Set environment variable `CLAWDECK_SKIP_CONFIRM=1` to skip confirmation prompts.
 
 ---
 
@@ -284,7 +284,7 @@ Create a Streamlit app that:
 4. Allows filtering by columns
 [Press Enter to submit]
 
-WYN360: [Generates complete multi-featured app]
+Clawdeck: [Generates complete multi-featured app]
 ```
 
 **Why it's useful:**
@@ -302,13 +302,13 @@ WYN360: [Generates complete multi-featured app]
 **Best For:** Version control, reviewing changes
 **Version:** NEW in v0.2.9
 
-WYN360 can now interact with git repositories to help you manage version control.
+Clawdeck can now interact with git repositories to help you manage version control.
 
 **Example Interaction:**
 ```bash
 You: What files have I changed?
 
-WYN360: [Calls git_status tool]
+Clawdeck: [Calls git_status tool]
 Git Status:
 
 On branch main
@@ -332,13 +332,13 @@ Untracked files:
 **Real-world scenarios:**
 ```bash
 You: Show me what changed in my last session
-WYN360: [Shows git diff output with line-by-line changes]
+Clawdeck: [Shows git diff output with line-by-line changes]
 
 You: Show the last 5 commits
-WYN360: [Displays commit history with messages and SHAs]
+Clawdeck: [Displays commit history with messages and SHAs]
 
 You: What branch am I working on?
-WYN360: [Shows current branch marked with *]
+Clawdeck: [Shows current branch marked with *]
 ```
 
 **Benefits:**
@@ -362,7 +362,7 @@ Find code patterns, definitions, and usage across your entire project.
 ```bash
 You: Where is the User class defined?
 
-WYN360: [Calls search_files("class User", "*.py")]
+Clawdeck: [Calls search_files("class User", "*.py")]
 Search Results for 'class User' in *.py:
 
 ./models/user.py:15:class User(BaseModel):
@@ -381,15 +381,15 @@ Search Results for 'class User' in *.py:
 **Advanced Search Examples:**
 ```bash
 You: Find all functions that use the requests library
-WYN360: [Searches for 'requests.' across Python files]
+Clawdeck: [Searches for 'requests.' across Python files]
 Found 12 matches across 4 files
 
 You: Show me all error logging statements
-WYN360: [Searches for 'logger.error' or 'logging.error']
+Clawdeck: [Searches for 'logger.error' or 'logging.error']
 Located error handling in 8 different locations
 
 You: Where are environment variables used?
-WYN360: [Searches for 'os.getenv' and 'os.environ']
+Clawdeck: [Searches for 'os.getenv' and 'os.environ']
 Environment variables accessed in config.py and utils.py
 ```
 
@@ -415,7 +415,7 @@ Complete file system operations for organizing your project.
 ```bash
 You: Delete the old_script.py file
 
-WYN360: [Calls delete_file("old_script.py")]
+Clawdeck: [Calls delete_file("old_script.py")]
 ✓ Successfully deleted file: old_script.py
 ```
 
@@ -423,12 +423,12 @@ WYN360: [Calls delete_file("old_script.py")]
 ```bash
 You: Rename utils.py to helpers.py
 
-WYN360: [Calls move_file("utils.py", "helpers.py")]
+Clawdeck: [Calls move_file("utils.py", "helpers.py")]
 ✓ Successfully moved 'utils.py' to 'helpers.py'
 
 You: Move config.py to the src directory
 
-WYN360: [Calls move_file("config.py", "src/config.py")]
+Clawdeck: [Calls move_file("config.py", "src/config.py")]
 ✓ Successfully moved 'config.py' to 'src/config.py'
 ```
 
@@ -436,12 +436,12 @@ WYN360: [Calls move_file("config.py", "src/config.py")]
 ```bash
 You: Create a tests directory
 
-WYN360: [Calls create_directory("tests")]
+Clawdeck: [Calls create_directory("tests")]
 ✓ Successfully created directory: tests
 
 You: Create nested directories src/utils/helpers
 
-WYN360: [Calls create_directory("src/utils/helpers")]
+Clawdeck: [Calls create_directory("src/utils/helpers")]
 ✓ Successfully created directory: src/utils/helpers
 ```
 
@@ -449,7 +449,7 @@ WYN360: [Calls create_directory("src/utils/helpers")]
 ```bash
 You: I want to reorganize my project. Create src, tests, and docs directories
 
-WYN360:
+Clawdeck:
 [Creates src directory]
 ✓ Successfully created directory: src
 
@@ -463,7 +463,7 @@ Your project structure is now organized with src/, tests/, and docs/ directories
 
 You: Move all .py files except tests to src
 
-WYN360:
+Clawdeck:
 [Moves files one by one, preserving structure]
 ✓ Successfully moved 'app.py' to 'src/app.py'
 ✓ Successfully moved 'utils.py' to 'src/utils.py'
@@ -516,13 +516,13 @@ You: /model haiku
 ✓ Switched to Haiku (claude-3-5-haiku-20241022)
 
 You: List all Python files in this directory
-WYN360: [Uses Haiku - fast and cheap for simple task]
+Clawdeck: [Uses Haiku - fast and cheap for simple task]
 
 You: /model opus
 ✓ Switched to Opus 4 (claude-opus-4-20250514)
 
 You: Refactor my entire application architecture
-WYN360: [Uses Opus - most capable for complex reasoning]
+Clawdeck: [Uses Opus - most capable for complex reasoning]
 ```
 
 **Cost Optimization Strategies:**
@@ -532,12 +532,12 @@ WYN360: [Uses Opus - most capable for complex reasoning]
 You: /model haiku
 
 You: Show me the files in this project
-WYN360: [Haiku handles this easily - saves money]
+Clawdeck: [Haiku handles this easily - saves money]
 
 You: Now help me redesign the database schema
 You: /model opus
 
-WYN360: [Switches to Opus for complex architectural decision]
+Clawdeck: [Switches to Opus for complex architectural decision]
 ```
 
 **Strategy 2: Use Sonnet for most work, Haiku for repetitive tasks**
@@ -545,14 +545,14 @@ WYN360: [Switches to Opus for complex architectural decision]
 You: /model sonnet
 
 You: Add error handling to api.py
-WYN360: [Sonnet provides good code quality]
+Clawdeck: [Sonnet provides good code quality]
 
 You: /model haiku
 
 You: Run git status
 You: List files in tests directory
 You: Show me config.json
-WYN360: [Haiku handles these simple operations cheaply]
+Clawdeck: [Haiku handles these simple operations cheaply]
 ```
 
 **Strategy 3: Model selection by session type**
@@ -604,16 +604,16 @@ Optimized (mixed):
 
 **Command-Line Model Selection:**
 
-You can also set the model when starting WYN360:
+You can also set the model when starting Clawdeck:
 ```bash
 # Start with Haiku for quick tasks
-wyn360 --model haiku
+clawdeck --model haiku
 
 # Start with Opus for complex work
-wyn360 --model opus
+clawdeck --model opus
 
 # Use full model ID
-wyn360 --model claude-sonnet-4-20250514
+clawdeck --model claude-sonnet-4-20250514
 ```
 
 **Pro Tips:**
@@ -640,13 +640,13 @@ wyn360 --model claude-sonnet-4-20250514
 
 **Problem:** Every developer has different preferences and every project has unique requirements. Repeating instructions manually is tedious.
 
-**Solution:** WYN360 supports two levels of configuration:
-1. **User Config** (`~/.wyn360/config.yaml`) - Your personal preferences across all projects
-2. **Project Config** (`.wyn360.yaml`) - Project-specific settings and context
+**Solution:** Clawdeck supports two levels of configuration:
+1. **User Config** (`~/.clawdeck/config.yaml`) - Your personal preferences across all projects
+2. **Project Config** (`.clawdeck.yaml`) - Project-specific settings and context
 
 #### Configuration Levels
 
-#### User Configuration (~/.wyn360/config.yaml)
+#### User Configuration (~/.clawdeck/config.yaml)
 
 ```yaml
 # Personal preferences that apply to all projects
@@ -673,7 +673,7 @@ workspaces:
   - ~/work
 ```
 
-#### Project Configuration (.wyn360.yaml)
+#### Project Configuration (.clawdeck.yaml)
 
 ```yaml
 # Project-specific context - helps AI understand your codebase
@@ -706,8 +706,8 @@ model: claude-3-5-haiku-20241022  # Use faster model for simple project
 #### Configuration Priority
 
 Configurations merge with this precedence (highest to lowest):
-1. **Project config** (`.wyn360.yaml` in current directory)
-2. **User config** (`~/.wyn360/config.yaml`)
+1. **Project config** (`.clawdeck.yaml` in current directory)
+2. **User config** (`~/.clawdeck/config.yaml`)
 3. **Default values**
 
 ##### Example Workflows
@@ -716,16 +716,16 @@ Configurations merge with this precedence (highest to lowest):
 
 ```bash
 # First time setup - create default user config
-$ wyn360
+$ clawdeck
 
-WYN360:
+Clawdeck:
 No user config found. Create one with:
-~/.wyn360/config.yaml
+~/.clawdeck/config.yaml
 
 # After creating config:
-$ wyn360
+$ clawdeck
 
-• Loaded user config from: /home/user/.wyn360/config.yaml
+• Loaded user config from: /home/user/.clawdeck/config.yaml
 • Custom instructions loaded
 ✓ Connected using model: claude-sonnet-4-20250514
 ```
@@ -733,7 +733,7 @@ $ wyn360
 ##### Workflow 2: Project-Specific Context
 
 ```yaml
-# Create .wyn360.yaml in your project root
+# Create .clawdeck.yaml in your project root
 context: |
   This is a machine learning project that:
   - Trains sentiment analysis models
@@ -752,19 +752,19 @@ commands:
   evaluate: "python evaluate.py --model checkpoints/best"
 ```
 
-**When you run wyn360 in this directory:**
+**When you run clawdeck in this directory:**
 ```bash
-$ wyn360
+$ clawdeck
 
-• Loaded user config from: ~/.wyn360/config.yaml
-• Loaded project config from: .wyn360.yaml
+• Loaded user config from: ~/.clawdeck/config.yaml
+• Loaded project config from: .clawdeck.yaml
 • Custom instructions loaded
 • Project context loaded
 ✓ Connected using model: claude-sonnet-4-20250514
 
 You: Help me implement a new transformer model
 
-WYN360: I see you're working on a sentiment analysis project with PyTorch
+Clawdeck: I see you're working on a sentiment analysis project with PyTorch
 and Transformers. Let me help you implement a new model that integrates with
 your existing training pipeline...
 [AI now understands your project context automatically!]
@@ -781,16 +781,16 @@ Model                   claude-sonnet-4-20250514
 Max Tokens              4096
 Temperature             0.7
 ─────────────────────────────────────────────
-User Config             ~/.wyn360/config.yaml
-Project Config          .wyn360.yaml
+User Config             ~/.clawdeck/config.yaml
+Project Config          .clawdeck.yaml
 ─────────────────────────────────────────────
 Custom Instructions     - Always use type hints...
 Project Context         This is a FastAPI project...
 Dependencies            fastapi, sqlalchemy, redis (+2 more)
 Aliases                 test, lint, format
 
-Tip: Create ~/.wyn360/config.yaml for user settings
-Tip: Create .wyn360.yaml in project root for project settings
+Tip: Create ~/.clawdeck/config.yaml for user settings
+Tip: Create .clawdeck.yaml in project root for project settings
 ```
 
 ##### Benefits
@@ -800,7 +800,7 @@ Tip: Create .wyn360.yaml in project root for project settings
 - No need to repeat preferences
 
 **2. Team Collaboration**
-- Share `.wyn360.yaml` in git repo
+- Share `.clawdeck.yaml` in git repo
 - Everyone gets same project context
 - New team members onboard faster
 
@@ -820,7 +820,7 @@ Tip: Create .wyn360.yaml in project root for project settings
 
 **Setup:**
 
-1. **User Config** (`~/.wyn360/config.yaml`):
+1. **User Config** (`~/.clawdeck/config.yaml`):
 ```yaml
 custom_instructions: |
   - Always use type hints
@@ -833,7 +833,7 @@ aliases:
   lint: "run ruff check ."
 ```
 
-2. **FastAPI Project** (`.wyn360.yaml`):
+2. **FastAPI Project** (`.clawdeck.yaml`):
 ```yaml
 context: |
   FastAPI REST API with PostgreSQL
@@ -842,7 +842,7 @@ commands:
   dev: "uvicorn app:app --reload"
 ```
 
-3. **ML Project** (`.wyn360.yaml`):
+3. **ML Project** (`.clawdeck.yaml`):
 ```yaml
 context: |
   PyTorch deep learning project
@@ -859,7 +859,7 @@ model: claude-sonnet-4-20250514  # Use more capable model
 **Best Practices:**
 1. ✅ Keep user config for personal preferences
 2. ✅ Keep project config for project-specific context
-3. ✅ Commit `.wyn360.yaml` to git (helps team)
+3. ✅ Commit `.clawdeck.yaml` to git (helps team)
 4. ✅ Use project config to specify tech stack
 5. ❌ Don't put API keys in config files
 6. ❌ Don't make configs too verbose
@@ -881,7 +881,7 @@ model: claude-sonnet-4-20250514  # Use more capable model
 
 **Problem:** Waiting for entire responses can feel slow, especially for long code generations or explanations. Users want immediate feedback.
 
-**Solution:** WYN360 now streams responses token-by-token as they're generated, providing instant visual feedback and a more responsive experience.
+**Solution:** Clawdeck now streams responses token-by-token as they're generated, providing instant visual feedback and a more responsive experience.
 
 #### Before Streaming (Old Behavior)
 
@@ -890,7 +890,7 @@ You: Generate a large Python script for data analysis
 
 [Spinner animation for 10-15 seconds]
 
-WYN360: [Entire response appears at once after waiting]
+Clawdeck: [Entire response appears at once after waiting]
 ```
 
 **User Experience:**
@@ -904,7 +904,7 @@ WYN360: [Entire response appears at once after waiting]
 ```bash
 You: Generate a large Python script for data analysis
 
-WYN360: I'll create a comprehensive data analysis script...
+Clawdeck: I'll create a comprehensive data analysis script...
 
 [Text appears word-by-word as it's generated]
 ```
@@ -948,7 +948,7 @@ import pandas as pd
 You: Create a FastAPI application with authentication, database models,
      and CRUD endpoints for a blog system
 
-WYN360: I'll create a complete FastAPI blog application...
+Clawdeck: I'll create a complete FastAPI blog application...
 
 Let me structure this into several files:
 
@@ -972,7 +972,7 @@ from fastapi.security import OAuth2PasswordBearer
 ```
 You: Explain how asyncio works in Python with examples
 
-WYN360: Asyncio is Python's library for writing concurrent code...
+Clawdeck: Asyncio is Python's library for writing concurrent code...
 
 [Explanation streams word-by-word]
 
@@ -993,7 +993,7 @@ You: Generate a comprehensive data pipeline script
 
 [Wait 15 seconds with spinner]
 
-WYN360: [500 lines of code appear instantly]
+Clawdeck: [500 lines of code appear instantly]
 [Overwhelming - hard to parse all at once]
 ```
 
@@ -1001,7 +1001,7 @@ WYN360: [500 lines of code appear instantly]
 ```bash
 You: Generate a comprehensive data pipeline script
 
-WYN360: I'll create a data pipeline with these components:
+Clawdeck: I'll create a data pipeline with these components:
 [Starts streaming immediately]
 
 # Step 1: Data ingestion
@@ -1045,7 +1045,7 @@ WYN360: I'll create a data pipeline with these components:
 ```bash
 You: Document this module with detailed docstrings
 
-WYN360: [Streams documentation as it writes]
+Clawdeck: [Streams documentation as it writes]
 # You can read early functions while later ones generate
 ```
 
@@ -1053,7 +1053,7 @@ WYN360: [Streams documentation as it writes]
 ```bash
 You: Refactor this 500-line script
 
-WYN360: [Shows refactored code streaming]
+Clawdeck: [Shows refactored code streaming]
 # Review changes as they happen, not all at once
 ```
 
@@ -1061,7 +1061,7 @@ WYN360: [Shows refactored code streaming]
 ```bash
 You: Explain design patterns with examples
 
-WYN360: [Explanation streams naturally]
+Clawdeck: [Explanation streams naturally]
 # Read and understand each pattern before next one generates
 ```
 
@@ -1069,7 +1069,7 @@ WYN360: [Explanation streams naturally]
 ```bash
 You: Create a complete API client with all endpoints
 
-WYN360: [Streams code file by file]
+Clawdeck: [Streams code file by file]
 # Start planning implementation while rest generates
 ```
 
@@ -1122,20 +1122,20 @@ Deploy Streamlit or Gradio applications to HuggingFace Spaces with automatic set
 # Step 1: Build your app
 You: Create a Streamlit chatbot app
 
-WYN360: [Generates app.py with chatbot code]
+Clawdeck: [Generates app.py with chatbot code]
 ✓ Created app.py
 
 # Step 2: Deploy to HuggingFace
 You: Deploy this to HuggingFace
 
-WYN360: I'll help you deploy to HuggingFace Spaces.
+Clawdeck: I'll help you deploy to HuggingFace Spaces.
 
 [Checks authentication]
 Not authenticated with HuggingFace. Please provide your token.
 
 You: [Provides HF token]
 
-WYN360:
+Clawdeck:
 ✓ Authenticated with HuggingFace as 'username'
 
 [Creates Space]
@@ -1160,10 +1160,10 @@ export HF_TOKEN="hf_your_token_here"
 # Or provide when prompted
 You: Authenticate with huggingface
 
-WYN360: Please provide your HuggingFace token...
+Clawdeck: Please provide your HuggingFace token...
 You: hf_abc123xyz...
 
-WYN360: ✓ Authenticated successfully
+Clawdeck: ✓ Authenticated successfully
 ```
 
 **Space Configuration (README.md):**
@@ -1216,7 +1216,7 @@ Automatically generate pytest test scaffolding for your Python code using AST pa
 ```
 You: Generate tests for calculator.py
 
-WYN360: [Analyzes calculator.py using AST]
+Clawdeck: [Analyzes calculator.py using AST]
 
 Found:
 - 4 functions: add(), subtract(), multiply(), divide()
@@ -1259,7 +1259,7 @@ Next steps: Complete the TODO sections with actual test logic.
 ```
 You: Generate comprehensive tests for api.py
 
-WYN360: [Analyzes api.py]
+Clawdeck: [Analyzes api.py]
 
 Found:
 - 8 API endpoints
@@ -1292,22 +1292,22 @@ Total: 18 test stubs generated
 # 1. Write your code
 You: Create a user authentication module
 
-WYN360: [Generates auth.py]
+Clawdeck: [Generates auth.py]
 
 # 2. Generate tests automatically
 You: Generate tests for auth.py
 
-WYN360: [Creates tests/test_auth.py with stubs]
+Clawdeck: [Creates tests/test_auth.py with stubs]
 
 # 3. Complete the tests
 You: Fill in the test logic
 
-WYN360: [Adds assertions and test data]
+Clawdeck: [Adds assertions and test data]
 
 # 4. Run tests
 You: Run pytest
 
-WYN360: [Executes tests]
+Clawdeck: [Executes tests]
 ```
 
 **Productivity Benefits:**
@@ -1328,7 +1328,7 @@ WYN360: [Executes tests]
 
 **Feature:** Complete GitHub integration with commit, PR creation, and branch management
 
-WYN360 provides seamless GitHub integration directly from the CLI! This feature enables complete git workflow management including committing changes, creating pull requests, managing branches, and merging code.
+Clawdeck provides seamless GitHub integration directly from the CLI! This feature enables complete git workflow management including committing changes, creating pull requests, managing branches, and merging code.
 
 #### Key Features
 
@@ -1349,7 +1349,7 @@ Commit your changes to the current repository and push to GitHub with a single c
 ```bash
 You: Commit these changes
 
-WYN360: [Checks GitHub authentication]
+Clawdeck: [Checks GitHub authentication]
 
 Let me check your GitHub authentication first...
 
@@ -1369,7 +1369,7 @@ Changes to be committed:
 ⚠️  COMMAND EXECUTION CONFIRMATION
 ======================================================================
 Command: git commit -m "Add GitHub integration tools"
-Directory: /home/workbench/wyn360-cli/wyn360-cli
+Directory: /home/workbench/clawdeck/clawdeck
 Permissions: Full user permissions
 ======================================================================
 
@@ -1389,7 +1389,7 @@ Now pushing to remote...
 ⚠️  COMMAND EXECUTION CONFIRMATION
 ======================================================================
 Command: git push origin main
-Directory: /home/workbench/wyn360-cli/wyn360-cli
+Directory: /home/workbench/clawdeck/clawdeck
 Permissions: Full user permissions
 ======================================================================
 
@@ -1406,7 +1406,7 @@ Execute this command? (y/N): y
 ```
 You: Commit to github
 
-WYN360: [Checks authentication]
+Clawdeck: [Checks authentication]
 
 Not authenticated with GitHub. To use GitHub features, I need your access token.
 
@@ -1419,7 +1419,7 @@ Please provide your GitHub token (it will be stored in GH_TOKEN environment vari
 
 You: ghp_abc123xyz789...
 
-WYN360: [Authenticates]
+Clawdeck: [Authenticates]
 
 ✓ Authenticated with GitHub (auto-authenticated using provided token)
 
@@ -1436,7 +1436,7 @@ Open a pull request from your current branch to the main branch.
 ```
 You: Create a pull request for my feature
 
-WYN360: [Checks authentication - already authenticated this session]
+Clawdeck: [Checks authentication - already authenticated this session]
 
 ✓ Authenticated with GitHub as 'yiqiao-yin'
 
@@ -1477,7 +1477,7 @@ This PR implements Phase 8.1 - GitHub Integration with 7 new tools:
 ======================================================================
 Command: gh pr create --title "Add GitHub Integration Tools (Phase 8.1)" \
          --base main --body "..."
-Directory: /home/workbench/wyn360-cli/wyn360-cli
+Directory: /home/workbench/clawdeck/clawdeck
 Permissions: Full user permissions
 ======================================================================
 
@@ -1489,12 +1489,12 @@ Execute this command? (y/N): y
 
 ✓ Successfully created pull request!
 
-PR URL: https://github.com/yiqiao-yin/wyn360-cli/pull/42
+PR URL: https://github.com/yiqiao-yin/clawdeck/pull/42
 Title: Add GitHub Integration Tools (Phase 8.1)
 Base: main ← feature/github-integration
 Status: Open
 
-View or merge at: https://github.com/yiqiao-yin/wyn360-cli/pull/42
+View or merge at: https://github.com/yiqiao-yin/clawdeck/pull/42
 ```
 
 #### Use Case 14.3: Branch Management
@@ -1505,13 +1505,13 @@ Create new branches and switch between them seamlessly.
 ```
 You: Create a new branch called feature/auth
 
-WYN360: I'll create a new branch 'feature/auth' and check it out.
+Clawdeck: I'll create a new branch 'feature/auth' and check it out.
 
 ======================================================================
 ⚠️  COMMAND EXECUTION CONFIRMATION
 ======================================================================
 Command: git checkout -b feature/auth
-Directory: /home/workbench/wyn360-cli/wyn360-cli
+Directory: /home/workbench/clawdeck/clawdeck
 Permissions: Full user permissions
 ======================================================================
 
@@ -1536,7 +1536,7 @@ You can now make changes on this branch. When ready:
 ```
 You: Switch to the develop branch
 
-WYN360: I'll check out the 'develop' branch.
+Clawdeck: I'll check out the 'develop' branch.
 
 [First checks if branch exists with git branch]
 Branch 'develop' exists.
@@ -1545,7 +1545,7 @@ Branch 'develop' exists.
 ⚠️  COMMAND EXECUTION CONFIRMATION
 ======================================================================
 Command: git checkout develop
-Directory: /home/workbench/wyn360-cli/wyn360-cli
+Directory: /home/workbench/clawdeck/clawdeck
 Permissions: Full user permissions
 ======================================================================
 
@@ -1570,7 +1570,7 @@ Merge feature branches into target branches with conflict detection.
 ```
 You: Merge feature/auth into main
 
-WYN360: I'll merge 'feature/auth' into 'main'.
+Clawdeck: I'll merge 'feature/auth' into 'main'.
 
 [Checks current branch]
 Current branch: main ✓
@@ -1585,7 +1585,7 @@ Working directory clean ✓
 ⚠️  COMMAND EXECUTION CONFIRMATION
 ======================================================================
 Command: git merge feature/auth
-Directory: /home/workbench/wyn360-cli/wyn360-cli
+Directory: /home/workbench/clawdeck/clawdeck
 Permissions: Full user permissions
 ======================================================================
 
@@ -1644,25 +1644,25 @@ GH_TOKEN=ghp_your_github_token
 # 1. Create feature branch
 You: Create a new branch called feature/auth
 
-WYN360: [Creates and checks out branch]
+Clawdeck: [Creates and checks out branch]
 ✓ Branch 'feature/auth' created and checked out
 
 # 2. Generate code
 You: Create an authentication module with JWT support
 
-WYN360: [Generates auth.py with JWT implementation]
+Clawdeck: [Generates auth.py with JWT implementation]
 ✓ Created auth.py
 
 # 3. Write tests
 You: Generate tests for the authentication module
 
-WYN360: [Generates tests/test_auth.py]
+Clawdeck: [Generates tests/test_auth.py]
 ✓ Created tests/test_auth.py
 
 # 4. Commit changes
 You: Commit these changes with message "Add JWT authentication"
 
-WYN360: [Authentication already verified]
+Clawdeck: [Authentication already verified]
 [Stages all changes]
 [Commits with message]
 [Pushes to origin]
@@ -1671,7 +1671,7 @@ WYN360: [Authentication already verified]
 # 5. Create PR
 You: Create a pull request titled "Add JWT Authentication Feature"
 
-WYN360: [Analyzes changes]
+Clawdeck: [Analyzes changes]
 [Generates PR description]
 [Creates PR on GitHub]
 ✓ PR created: https://github.com/username/repo/pull/42
@@ -1679,18 +1679,18 @@ WYN360: [Analyzes changes]
 # 6. After review, merge to main
 You: Checkout main
 
-WYN360: [Switches to main branch]
+Clawdeck: [Switches to main branch]
 ✓ Checked out main
 
 You: Merge feature/auth into main
 
-WYN360: [Merges branch]
+Clawdeck: [Merges branch]
 [No conflicts]
 ✓ Successfully merged feature/auth into main
 
 You: Push to github
 
-WYN360: [Pushes main branch]
+Clawdeck: [Pushes main branch]
 ✓ Pushed to origin/main
 
 ✅ Complete workflow: Branch → Code → Commit → PR → Merge → Deploy
@@ -1698,7 +1698,7 @@ WYN360: [Pushes main branch]
 
 **Time Saved:**
 - Manual workflow: 10-15 minutes
-- With WYN360: 2-3 minutes
+- With Clawdeck: 2-3 minutes
 - **Efficiency gain: 70-80%**
 
 ---
@@ -1718,7 +1718,7 @@ Monitor your CLI usage, response times, tool efficiency, and identify performanc
 
 #### What is Performance Monitoring?
 
-WYN360 automatically tracks and analyzes session performance, providing insights into:
+Clawdeck automatically tracks and analyzes session performance, providing insights into:
 - **Response Times**: How fast the AI responds to your requests
 - **Tool Usage**: Which tools you use most and their success rates
 - **Error Tracking**: What errors occur and how frequently
@@ -1770,13 +1770,13 @@ You: /stats
 ```bash
 You: /stats
 
-WYN360: [Shows metrics]
+Clawdeck: [Shows metrics]
 - Avg Response: 4.5s
 - Max Response: 15.2s  ← Outlier detected!
 
 You: What took 15 seconds?
 
-WYN360: Looking at your session history, the slowest
+Clawdeck: Looking at your session history, the slowest
 operation was "Generate comprehensive ML pipeline" which
 generated 800+ lines of code. Consider breaking large
 requests into smaller chunks for faster responses.
@@ -1791,7 +1791,7 @@ requests into smaller chunks for faster responses.
 ```bash
 You: /stats
 
-WYN360: [Shows tool usage]
+Clawdeck: [Shows tool usage]
 Tool Success Rates:
 - read_file: 100% (15/15)
 - write_file: 92.3% (12/13)  ← 1 failure
@@ -1800,7 +1800,7 @@ Tool Success Rates:
 
 You: Why did write_file fail once?
 
-WYN360: The write_file failure was due to attempting
+Clawdeck: The write_file failure was due to attempting
 to write without overwrite=True when the file already
 existed. This was corrected in the retry.
 ```
@@ -1816,7 +1816,7 @@ You: I've been working for 2 hours. How much have I spent?
 
 You: /stats
 
-WYN360: [Shows combined token + performance metrics]
+Clawdeck: [Shows combined token + performance metrics]
 Session Duration: 2h 15m
 Total Requests: 47
 Total Cost: $1.23
@@ -1870,7 +1870,7 @@ Most expensive operations:
 
 #### Overview
 
-WYN360 now has access to real-time web search capabilities! This feature enables the AI assistant to fetch current information from the internet, including weather data, website content, latest documentation, and **finding GitHub repositories and libraries** (enhanced in v0.3.23).
+Clawdeck now has access to real-time web search capabilities! This feature enables the AI assistant to fetch current information from the internet, including weather data, website content, latest documentation, and **finding GitHub repositories and libraries** (enhanced in v0.3.23).
 
 **v0.3.23 Enhancements:**
 - ⬆️ Upgraded from pydantic-ai 0.0.19 to 1.13.0 for improved stability
@@ -1896,7 +1896,7 @@ Get real-time weather information for any location.
 ```bash
 You: What's the weather in San Francisco?
 
-WYN360: [Searches web for current San Francisco weather]
+Clawdeck: [Searches web for current San Francisco weather]
 
 Current Weather in San Francisco, CA:
 - Temperature: 62°F (17°C)
@@ -1923,7 +1923,7 @@ Fetch and summarize content from any publicly accessible URL using web search.
 ```bash
 You: What's on the Python 3.13 release page?
 
-WYN360: [Searches for Python 3.13 release information]
+Clawdeck: [Searches for Python 3.13 release information]
 
 **Python 3.13.0 Release Summary:**
 
@@ -1962,7 +1962,7 @@ Access the latest documentation, package versions, news, and trends.
 ```bash
 You: What's new in React 19?
 
-WYN360: [Searches for React 19 release information]
+Clawdeck: [Searches for React 19 release information]
 
 **React 19 - Major Updates:**
 
@@ -2002,7 +2002,7 @@ Find popular GitHub repositories, libraries, tools, and learning resources based
 ```bash
 You: Find a popular GitHub repo for machine learning
 
-WYN360: [Searches web for popular ML repositories]
+Clawdeck: [Searches web for popular ML repositories]
 
 Here are some of the most popular GitHub repositories for machine learning:
 
@@ -2035,7 +2035,7 @@ Sources:
 ```bash
 You: What are good Python libraries for data visualization?
 
-WYN360: [Searches for Python data viz libraries]
+Clawdeck: [Searches for Python data viz libraries]
 
 Top Python libraries for data visualization:
 
@@ -2074,7 +2074,7 @@ Fetch full content from specific URLs directly using the `fetch_website` tool. U
 ```bash
 You: Read https://github.com/britbrat0/cs676
 
-WYN360: [Fetches the URL directly using fetch_website tool]
+Clawdeck: [Fetches the URL directly using fetch_website tool]
 
 📄 **Fetched:** https://github.com/britbrat0/cs676
 
@@ -2121,9 +2121,9 @@ Technologies: TensorFlow, Keras, Medical Imaging
 ```bash
 You: Show cache stats
 
-WYN360: 📊 **Website Cache Statistics**
+Clawdeck: 📊 **Website Cache Statistics**
 
-**Location:** `~/.wyn360/cache/fetched_sites`
+**Location:** `~/.clawdeck/cache/fetched_sites`
 
 **Total Entries:** 3
 **Total Size:** 2.4 MB
@@ -2141,12 +2141,12 @@ WYN360: 📊 **Website Cache Statistics**
 ```bash
 You: Clear cache for https://github.com/britbrat0/cs676
 
-WYN360: ✓ Cleared cache for: https://github.com/britbrat0/cs676
+Clawdeck: ✓ Cleared cache for: https://github.com/britbrat0/cs676
 ```
 
 **Configuration:**
 ```yaml
-# ~/.wyn360/config.yaml
+# ~/.clawdeck/config.yaml
 browser_use:
   max_tokens: 50000  # Max tokens per fetched site
   truncate_strategy: "smart"  # Options: smart, head, tail
@@ -2255,7 +2255,7 @@ Enhance your existing projects with new functionality while maintaining code qua
 ```bash
 You: Add authentication to my FastAPI app
 
-WYN360:
+Clawdeck:
 1. Reads your existing app structure
 2. Identifies route definitions
 3. Generates authentication middleware
@@ -2296,7 +2296,7 @@ Get help, guidance, and answers to your Python questions through ongoing convers
 ```bash
 You: My script has a connection timeout error
 
-WYN360:
+Clawdeck:
 1. Reads your code
 2. Identifies the issue
 3. Explains the root cause
@@ -2308,7 +2308,7 @@ WYN360:
 ```bash
 You: How do I implement async in Python?
 
-WYN360:
+Clawdeck:
 - Explains async/await concepts
 - Provides working examples
 - Shows best practices
@@ -2320,7 +2320,7 @@ WYN360:
 ```bash
 You: Review my API implementation
 
-WYN360:
+Clawdeck:
 - Analyzes code structure
 - Checks error handling
 - Reviews security considerations
@@ -2340,7 +2340,7 @@ WYN360:
 **Feature:** Intelligent document reading with chunking, summarization, and semantic search
 #### Overview
 
-WYN360 can read and analyze structured documents (Excel, Word, PDF) of any size using an intelligent chunking system. Documents are automatically split into manageable pieces, summarized, and cached for fast retrieval.
+Clawdeck can read and analyze structured documents (Excel, Word, PDF) of any size using an intelligent chunking system. Documents are automatically split into manageable pieces, summarized, and cached for fast retrieval.
 
 ##### Key Features
 
@@ -2360,7 +2360,7 @@ Analyze multi-sheet expense tracking spreadsheets.
 ```bash
 You: Read my expenses.xlsx file
 
-WYN360: [Processes Excel file]
+Clawdeck: [Processes Excel file]
 📊 Excel File: expenses.xlsx (3 sheets, 8,450 tokens)
 ✓ Cache generated with 9 chunks
 
@@ -2371,7 +2371,7 @@ Summary:
 
 You: What were my April gas expenses?
 
-WYN360: [Retrieves relevant chunk]
+Clawdeck: [Retrieves relevant chunk]
 April gas expenses: $590
 This represents a 15% increase from March ($512).
 Breakdown:
@@ -2388,7 +2388,7 @@ Analyze structured documents with sections, tables, and figures.
 ```bash
 You: Summarize methodology section from research_paper.docx
 
-WYN360: [Reads Word document, extracts methodology section]
+Clawdeck: [Reads Word document, extracts methodology section]
 📝 Word Document: research_paper.docx (45 pages, 12,300 tokens)
 
 Methodology Section Summary:
@@ -2409,7 +2409,7 @@ Navigate and query large PDF documents efficiently.
 ```bash
 You: What does Chapter 5 say about neural networks in textbook.pdf?
 
-WYN360: [Searches 120-page PDF, retrieves Chapter 5]
+Clawdeck: [Searches 120-page PDF, retrieves Chapter 5]
 📄 PDF Document: textbook.pdf (120 pages, 45,000 tokens)
 Found relevant content: Pages 67-82 (Chapter 5)
 
@@ -2448,7 +2448,7 @@ Would you like me to extract specific sections or code examples?
 
 #### Overview
 
-When documents contain important visual information (charts, diagrams, screenshots), WYN360 can use Claude's Vision API to describe and analyze these images.
+When documents contain important visual information (charts, diagrams, screenshots), Clawdeck can use Claude's Vision API to describe and analyze these images.
 
 ##### Key Features
 
@@ -2469,7 +2469,7 @@ Analyze Excel/PDF reports containing charts and graphs.
 ```bash
 You: Analyze the Q4 sales charts in report.pdf
 
-WYN360: [Using vision mode]
+Clawdeck: [Using vision mode]
 📊 Analyzing 3 charts from report.pdf...
 
 Chart 1 (Page 5): Revenue Trend Line Chart
@@ -2498,7 +2498,7 @@ Understand architecture diagrams and flowcharts in documentation.
 ```bash
 You: Explain the system architecture diagram on page 12
 
-WYN360: [Analyzes architectural diagram with vision]
+Clawdeck: [Analyzes architectural diagram with vision]
 🎨 System Architecture Diagram Analysis:
 
 Components Identified:
@@ -2549,7 +2549,7 @@ Key Connections:
 
 #### Overview
 
-Many PDFs are scanned images with no text layer. WYN360 automatically detects scanned pages and uses OCR to extract text, making these documents searchable and analyzable.
+Many PDFs are scanned images with no text layer. Clawdeck automatically detects scanned pages and uses OCR to extract text, making these documents searchable and analyzable.
 
 #### Key Features
 
@@ -2567,7 +2567,7 @@ Extract text from old scanned documents.
 ```bash
 You: Read the scanned contract from 1995_agreement.pdf
 
-WYN360: [Detecting scanned PDF, running OCR]
+Clawdeck: [Detecting scanned PDF, running OCR]
 📄 Scanned PDF detected: 1995_agreement.pdf (15 pages)
 🔍 Running Tesseract OCR...
 
@@ -2591,7 +2591,7 @@ Extract data from photographed receipts.
 ```bash
 You: Extract information from receipt_scan.pdf
 
-WYN360: [OCR + structured extraction]
+Clawdeck: [OCR + structured extraction]
 🧾 Receipt Analysis:
 
 Merchant: Tech Supply Co.
@@ -2632,7 +2632,7 @@ Payment: Visa ending in 4242
 
 #### Overview
 
-Instead of keyword matching, WYN360 uses AI embeddings to understand the *meaning* of your query and find semantically similar content, even if exact keywords don't match.
+Instead of keyword matching, Clawdeck uses AI embeddings to understand the *meaning* of your query and find semantically similar content, even if exact keywords don't match.
 
 #### Key Features
 
@@ -2728,7 +2728,7 @@ Compare budget projections with actual expenses.
 ```bash
 You: Compare budget_2024.xlsx and actual_expenses_2024.xlsx
 
-WYN360: [Analyzing both documents]
+Clawdeck: [Analyzing both documents]
 📊 Budget vs Actual Comparison (2024):
 
 Categories with Variance:
@@ -2759,7 +2759,7 @@ Find patterns across quarterly reports.
 ```bash
 You: Find all mentions of "supply chain issues" across my Q1-Q4 reports
 
-WYN360: [Searching 4 documents]
+Clawdeck: [Searching 4 documents]
 🔗 Cross-Document Search Results:
 
 Q1_Report.docx (3 mentions):
@@ -2788,7 +2788,7 @@ Track what changed between document versions.
 ```bash
 You: What changed between draft_v1.docx and draft_v2.docx?
 
-WYN360: [Comparing documents]
+Clawdeck: [Comparing documents]
 📝 Document Comparison:
 
 Sections Added in v2:
@@ -2837,7 +2837,7 @@ Process multiple large documents efficiently.
 ```bash
 You: Process all 10 quarterly reports
 
-WYN360: [Sequential processing]
+Clawdeck: [Sequential processing]
 Processing Q1_2024.pdf... (45 seconds)
 Processing Q2_2024.pdf... (52 seconds)
 Processing Q3_2024.pdf... (48 seconds)
@@ -2849,7 +2849,7 @@ Total time: 8 minutes 15 seconds
 ```bash
 You: Process all 10 quarterly reports
 
-WYN360: [Parallel processing with batch_size=10]
+Clawdeck: [Parallel processing with batch_size=10]
 Processing batch 1 (10 documents)...
 ✓ All documents processed
 
@@ -2908,7 +2908,7 @@ Cache Stats:
 
 #### Overview
 
-WYN360 now supports automated login to websites with secure credential storage and session management. After logging in once, all subsequent requests to that domain are automatically authenticated for 30 minutes.
+Clawdeck now supports automated login to websites with secure credential storage and session management. After logging in once, all subsequent requests to that domain are automatically authenticated for 30 minutes.
 
 **Key Features:**
 - 🤖 Automated browser login with form detection
@@ -2929,7 +2929,7 @@ WYN360 now supports automated login to websites with secure credential storage a
 ```bash
 You: Login to https://example-site.com with demo_user and SecurePass123!
 
-WYN360: [Launches headless Playwright browser]
+Clawdeck: [Launches headless Playwright browser]
         [Navigates to https://example-site.com]
         [Detects login form fields]
         [Fills username: demo_user]
@@ -2953,7 +2953,7 @@ WYN360: [Launches headless Playwright browser]
 
 You: Fetch my profile from https://example-site.com/profile
 
-WYN360: [Checks SessionManager for example-site.com]
+Clawdeck: [Checks SessionManager for example-site.com]
         [Found valid session with cookies]
         [Injects cookies into browser automatically]
         [Fetches authenticated content]
@@ -2964,7 +2964,7 @@ WYN360: [Checks SessionManager for example-site.com]
 
 You: Fetch https://example-site.com/dashboard
 
-WYN360: [Session still valid - auto-injecting cookies]
+Clawdeck: [Session still valid - auto-injecting cookies]
 
         📄 **Fetched 🔐 (authenticated):** https://example-site.com/dashboard
 
@@ -2990,14 +2990,14 @@ WYN360: [Session still valid - auto-injecting cookies]
 ```bash
 You: Login to https://example.com with myuser and mypass123
 
-WYN360: ✅ Login successful to example.com!
+Clawdeck: ✅ Login successful to example.com!
         Session saved: Yes (30 minutes TTL)
 
 [30 seconds later...]
 
 You: Fetch https://example.com/api/user/settings
 
-WYN360: [Automatically detects saved session for example.com]
+Clawdeck: [Automatically detects saved session for example.com]
         [Injects cookies without asking]
 
         📄 **Fetched 🔐 (authenticated):** https://example.com/api/user/settings
@@ -3008,7 +3008,7 @@ WYN360: [Automatically detects saved session for example.com]
 
 You: Get my notifications from https://example.com/notifications
 
-WYN360: [Session still valid - 25 minutes remaining]
+Clawdeck: [Session still valid - 25 minutes remaining]
 
         📄 **Fetched 🔐 (authenticated):** https://example.com/notifications
 
@@ -3018,7 +3018,7 @@ WYN360: [Session still valid - 25 minutes remaining]
 
 You: Fetch https://example.com/profile
 
-WYN360: [Session expired - no saved cookies found]
+Clawdeck: [Session expired - no saved cookies found]
 
         📄 **Fetched:** https://example.com/profile
 
@@ -3045,7 +3045,7 @@ WYN360: [Session expired - no saved cookies found]
 ```bash
 You: Login to https://example.com with user@email.com and password123
 
-WYN360: [Launches browser]
+Clawdeck: [Launches browser]
         [Navigates to URL]
         [Detects CAPTCHA iframe on page]
 
@@ -3081,7 +3081,7 @@ WYN360: [Launches browser]
 ```bash
 You: Login to https://github.com with myusername and mypassword
 
-WYN360: [Launches browser]
+Clawdeck: [Launches browser]
         [Fills credentials]
         [Submits login form]
         [Detects 2FA verification code input]
@@ -3117,32 +3117,32 @@ WYN360: [Launches browser]
 ```bash
 You: Login to https://siteA.com with userA and passA
 
-WYN360: ✅ Login successful to siteA.com!
+Clawdeck: ✅ Login successful to siteA.com!
         Session saved: Yes (30 minutes TTL)
 
 You: Login to https://siteB.com with userB and passB
 
-WYN360: ✅ Login successful to siteB.com!
+Clawdeck: ✅ Login successful to siteB.com!
         Session saved: Yes (30 minutes TTL)
 
 You: Login to https://siteC.com with userC and passC
 
-WYN360: ✅ Login successful to siteC.com!
+Clawdeck: ✅ Login successful to siteC.com!
         Session saved: Yes (30 minutes TTL)
 
 You: Fetch https://siteA.com/dashboard
 
-WYN360: 📄 **Fetched 🔐 (authenticated):** https://siteA.com/dashboard
+Clawdeck: 📄 **Fetched 🔐 (authenticated):** https://siteA.com/dashboard
         [SiteA dashboard content...]
 
 You: Fetch https://siteB.com/api/data
 
-WYN360: 📄 **Fetched 🔐 (authenticated):** https://siteB.com/api/data
+Clawdeck: 📄 **Fetched 🔐 (authenticated):** https://siteB.com/api/data
         [SiteB API data...]
 
 You: Fetch https://siteC.com/profile
 
-WYN360: 📄 **Fetched 🔐 (authenticated):** https://siteC.com/profile
+Clawdeck: 📄 **Fetched 🔐 (authenticated):** https://siteC.com/profile
         [SiteC profile content...]
 ```
 
@@ -3164,7 +3164,7 @@ WYN360: 📄 **Fetched 🔐 (authenticated):** https://siteC.com/profile
 ```bash
 You: Login to https://example.com with testuser and wrongpassword
 
-WYN360: [Launches browser]
+Clawdeck: [Launches browser]
         [Fills credentials]
         [Submits form]
         [Checks for error messages on page]
@@ -3182,17 +3182,17 @@ WYN360: [Launches browser]
 
 You: Login to https://example.com with testuser and correctpassword
 
-WYN360: ✅ Login successful to example.com!
+Clawdeck: ✅ Login successful to example.com!
 
 You: Fetch https://example.com/api/test
 
-WYN360: 📄 **Fetched 🔐 (authenticated):** https://example.com/api/test
+Clawdeck: 📄 **Fetched 🔐 (authenticated):** https://example.com/api/test
 
         {"authenticated": true, "user": "testuser", "token": "..."}
 
 You: Fetch https://differentsite.com/public
 
-WYN360: [No session for differentsite.com - fetching without auth]
+Clawdeck: [No session for differentsite.com - fetching without auth]
 
         📄 **Fetched:** https://differentsite.com/public
 
@@ -3212,7 +3212,7 @@ WYN360: [No session for differentsite.com - fetching without auth]
 
 **Where are credentials stored?**
 ```bash
-~/.wyn360/
+~/.clawdeck/
 ├── credentials/
 │   ├── .keyfile          # AES-256 encryption key (0600)
 │   └── vault.enc         # Encrypted credentials
@@ -3235,13 +3235,13 @@ WYN360: [No session for differentsite.com - fetching without auth]
 **Check what's saved:**
 ```bash
 # Credentials are encrypted in vault.enc (cannot be read directly)
-ls ~/.wyn360/credentials/
+ls ~/.clawdeck/credentials/
 
 # Sessions are JSON but contain cookies (should not be shared)
-ls ~/.wyn360/sessions/
+ls ~/.clawdeck/sessions/
 
 # Audit log shows access without sensitive data
-cat ~/.wyn360/logs/auth_audit.log
+cat ~/.clawdeck/logs/auth_audit.log
 ```
 
 ---
@@ -3355,7 +3355,7 @@ Solution:
 
 **5. Security:**
 ```
-✅ Never share ~/.wyn360/credentials/ or ~/.wyn360/sessions/ directories
+✅ Never share ~/.clawdeck/credentials/ or ~/.clawdeck/sessions/ directories
 ✅ Credentials are encrypted with AES-256-GCM
 ✅ File permissions are 0600 (user read/write only)
 ```
@@ -3407,20 +3407,20 @@ Phase 4.4 dramatically improves browser authentication success rates with enhanc
 
 Enable debug mode before logging in:
 ```bash
-export WYN360_BROWSER_DEBUG=true
-wyn360 "login to http://wyn360search.com with your_username/your_password"
+export CLAWDECK_BROWSER_DEBUG=true
+clawdeck "login to http://clawdecksearch.com with your_username/your_password"
 ```
 
 **What Happens:**
 
 ```bash
-You: login to http://wyn360search.com with your_username/your_password
+You: login to http://clawdecksearch.com with your_username/your_password
 
-WYN360: [DEBUG] Trying login URL discovery...
-        [DEBUG] Testing: http://wyn360search.com/login
-        [DEBUG] Testing: http://wyn360search.com/signin
-        [DEBUG] Testing: http://wyn360search.com/auth
-        [DEBUG] Found login page at: http://wyn360search.com/login
+Clawdeck: [DEBUG] Trying login URL discovery...
+        [DEBUG] Testing: http://clawdecksearch.com/login
+        [DEBUG] Testing: http://clawdecksearch.com/signin
+        [DEBUG] Testing: http://clawdecksearch.com/auth
+        [DEBUG] Found login page at: http://clawdecksearch.com/login
 
         [Launches Playwright browser]
         [Navigates to login page]
@@ -3449,10 +3449,10 @@ WYN360: [DEBUG] Trying login URL discovery...
         [Clicks submit button]
         [Saves screenshot: 5_form_submitted.png]
 
-        ✅ Login successful to wyn360search.com!
+        ✅ Login successful to clawdecksearch.com!
 
         Session Details:
-        - Domain: wyn360search.com
+        - Domain: clawdecksearch.com
         - Username: your_username
         - Session saved: Yes (30 minutes TTL)
         - Credentials saved: Yes (encrypted)
@@ -3460,7 +3460,7 @@ WYN360: [DEBUG] Trying login URL discovery...
 
 **Debug Files Created:**
 ```bash
-~/.wyn360/debug/browser_auth/
+~/.clawdeck/debug/browser_auth/
 ├── 1699900000_1_initial_page.png
 ├── 1699900000_2_after_wait.png
 ├── 1699900000_3_username_filled.png
@@ -3472,16 +3472,16 @@ WYN360: [DEBUG] Trying login URL discovery...
 
 **Check Debug Output:**
 ```bash
-ls -la ~/.wyn360/debug/browser_auth/
+ls -la ~/.clawdeck/debug/browser_auth/
 
 # View screenshots
-open ~/.wyn360/debug/browser_auth/1699900000_1_initial_page.png
+open ~/.clawdeck/debug/browser_auth/1699900000_1_initial_page.png
 
 # View HTML
-cat ~/.wyn360/debug/browser_auth/1699900000_page_content.html
+cat ~/.clawdeck/debug/browser_auth/1699900000_page_content.html
 
 # View form detection results
-cat ~/.wyn360/debug/browser_auth/1699900000_form_detection.json
+cat ~/.clawdeck/debug/browser_auth/1699900000_form_detection.json
 ```
 
 **form_detection.json Contents:**
@@ -3506,7 +3506,7 @@ cat ~/.wyn360/debug/browser_auth/1699900000_form_detection.json
 ```bash
 You: login to http://example.com with myuser/mypass
 
-WYN360: [Tries 12 common login URLs automatically]
+Clawdeck: [Tries 12 common login URLs automatically]
 
         🔍 Trying URL discovery:
         - http://example.com/login ❌ (404)
@@ -3591,7 +3591,7 @@ Button:
 ```bash
 You: login to http://non-standard-site.com with user/pass
 
-WYN360: [Enhanced form detection activated]
+Clawdeck: [Enhanced form detection activated]
         [Analyzing all 15 input elements...]
         [Found username field: #account_email (confidence: 3)]
         [Found password field: #account_pwd]
@@ -3625,7 +3625,7 @@ WYN360: [Enhanced form detection activated]
 ```bash
 You: login to http://difficult-site.com with admin/password123 using selectors #user_login, #user_pass, #wp-submit
 
-WYN360: [Bypassing automatic form detection]
+Clawdeck: [Bypassing automatic form detection]
         [Using manual selectors provided]
 
         Selectors:
@@ -3678,14 +3678,14 @@ WYN360: [Bypassing automatic form detection]
 **Enable debug mode and analyze:**
 
 ```bash
-export WYN360_BROWSER_DEBUG=true
-wyn360 "login to http://problematic-site.com with user/pass"
+export CLAWDECK_BROWSER_DEBUG=true
+clawdeck "login to http://problematic-site.com with user/pass"
 ```
 
 **Failure Output:**
 
 ```bash
-WYN360: [DEBUG] Testing login URLs...
+Clawdeck: [DEBUG] Testing login URLs...
         [DEBUG] No common login URL found
         [DEBUG] Searching homepage for login links...
         [DEBUG] Found link: /members/signin
@@ -3718,7 +3718,7 @@ WYN360: [DEBUG] Testing login URLs...
         3. Inspect the page and provide CSS selectors
 
         Debug files saved to:
-        ~/.wyn360/debug/browser_auth/
+        ~/.clawdeck/debug/browser_auth/
         - Screenshots: 1699900000_*.png
         - HTML: 1699900000_page_content.html
         - Form detection: 1699900000_form_detection.json
@@ -3728,13 +3728,13 @@ WYN360: [DEBUG] Testing login URLs...
 
 ```bash
 # Check what the page looked like
-open ~/.wyn360/debug/browser_auth/1699900000_1_initial_page.png
+open ~/.clawdeck/debug/browser_auth/1699900000_1_initial_page.png
 
 # Check HTML structure
-cat ~/.wyn360/debug/browser_auth/1699900000_page_content.html | grep -i "input"
+cat ~/.clawdeck/debug/browser_auth/1699900000_page_content.html | grep -i "input"
 
 # Check what was detected
-cat ~/.wyn360/debug/browser_auth/1699900000_form_detection.json
+cat ~/.clawdeck/debug/browser_auth/1699900000_form_detection.json
 ```
 
 **form_detection.json shows the problem:**
@@ -3761,7 +3761,7 @@ cat ~/.wyn360/debug/browser_auth/1699900000_form_detection.json
 ```bash
 # First, you'd need to manually open the modal, or
 # Use manual selectors once modal is visible
-wyn360 "login using selectors #username-field, #password-field"
+clawdeck "login using selectors #username-field, #password-field"
 ```
 
 ---
@@ -3783,26 +3783,26 @@ wyn360 "login using selectors #username-field, #password-field"
 
 **GitHub (Standard Form):**
 ```bash
-wyn360 "login to https://github.com/login with myuser/mypass"
+clawdeck "login to https://github.com/login with myuser/mypass"
 # ✅ Works perfectly (standard form)
 ```
 
 **React SPA:**
 ```bash
-wyn360 "login to https://example-react-app.com with user/pass"
+clawdeck "login to https://example-react-app.com with user/pass"
 # ✅ Now works with dynamic content waiting (Phase 4.4.2)
 ```
 
 **Custom WordPress:**
 ```bash
-wyn360 "login to https://myblog.wordpress.com/wp-login.php with admin/pass"
+clawdeck "login to https://myblog.wordpress.com/wp-login.php with admin/pass"
 # ✅ Detects WordPress form patterns
 ```
 
 **Complex Custom Site:**
 ```bash
-export WYN360_BROWSER_DEBUG=true
-wyn360 "login to https://custom-site.com with user/pass"
+export CLAWDECK_BROWSER_DEBUG=true
+clawdeck "login to https://custom-site.com with user/pass"
 # May need manual selectors, but debug mode shows you what to use
 ```
 
@@ -3816,20 +3816,20 @@ wyn360 "login to https://custom-site.com with user/pass"
 
 **Solution 1:** Enable debug mode and inspect screenshots
 ```bash
-export WYN360_BROWSER_DEBUG=true
-wyn360 "login to http://site.com with user/pass"
-ls ~/.wyn360/debug/browser_auth/
+export CLAWDECK_BROWSER_DEBUG=true
+clawdeck "login to http://site.com with user/pass"
+ls ~/.clawdeck/debug/browser_auth/
 ```
 
 **Solution 2:** Try specifying exact login URL
 ```bash
-wyn360 "login to http://site.com/signin with user/pass"
+clawdeck "login to http://site.com/signin with user/pass"
 ```
 
 **Solution 3:** Use manual selectors
 ```bash
 # Inspect page first, then:
-wyn360 "login using selectors #user, #pass, #submit"
+clawdeck "login using selectors #user, #pass, #submit"
 ```
 
 #### Problem 2: "Timeout loading page"
@@ -3854,12 +3854,12 @@ wyn360 "login using selectors #user, #pass, #submit"
 
 **Solution:** Clear debug directory periodically
 ```bash
-rm -rf ~/.wyn360/debug/browser_auth/*
+rm -rf ~/.clawdeck/debug/browser_auth/*
 ```
 
 Or disable debug mode:
 ```bash
-unset WYN360_BROWSER_DEBUG
+unset CLAWDECK_BROWSER_DEBUG
 ```
 
 ---
@@ -3870,13 +3870,13 @@ unset WYN360_BROWSER_DEBUG
 
 ```bash
 # 1. Enable debug mode
-export WYN360_BROWSER_DEBUG=true
+export CLAWDECK_BROWSER_DEBUG=true
 
 # 2. Attempt login
-wyn360 "login to http://site.com with user/pass"
+clawdeck "login to http://site.com with user/pass"
 
 # 3. Check what happened
-cd ~/.wyn360/debug/browser_auth/
+cd ~/.clawdeck/debug/browser_auth/
 
 # 4. View initial page
 open 1699900000_1_initial_page.png
@@ -3892,10 +3892,10 @@ grep -i "username\|email\|user" 1699900000_page_content.html
 grep -i "password\|pass" 1699900000_page_content.html
 
 # 8. Try again with manual selectors
-wyn360 "login using selectors #found-user-id, #found-pass-id"
+clawdeck "login using selectors #found-user-id, #found-pass-id"
 
 # 9. Disable debug mode when done
-unset WYN360_BROWSER_DEBUG
+unset CLAWDECK_BROWSER_DEBUG
 ```
 
 **Debug Output Interpretation:**
@@ -3975,8 +3975,8 @@ unset WYN360_BROWSER_DEBUG
 
 If you run into issues or have questions:
 
-1. **Ask the agent:** WYN360 can explain its own capabilities
-2. **Check GitHub:** https://github.com/yiqiao-yin/wyn360-cli
+1. **Ask the agent:** Clawdeck can explain its own capabilities
+2. **Check GitHub:** https://github.com/yiqiao-yin/clawdeck
 3. **Read the README:** Basic setup and usage
 4. **Report issues:** GitHub Issues page
 
@@ -3984,17 +3984,17 @@ If you run into issues or have questions:
 
 ### Use Case 27: AWS Bedrock Authentication - Using AWS Credentials (v0.3.45)
 
-**What's New:** WYN360 now supports AWS Bedrock as an alternative to direct Anthropic API authentication. This allows you to use AWS credentials and billing instead of Anthropic API keys.
+**What's New:** Clawdeck now supports AWS Bedrock as an alternative to direct Anthropic API authentication. This allows you to use AWS credentials and billing instead of Anthropic API keys.
 
 #### Authentication Methods
 
-WYN360 supports **two authentication methods** - you can choose whichever fits your needs:
+Clawdeck supports **two authentication methods** - you can choose whichever fits your needs:
 
 #### Method 1: Anthropic API (Default)
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-xxxxx"
-wyn360 "write a script to analyze data"
+clawdeck "write a script to analyze data"
 ```
 
 **When to use:**
@@ -4019,8 +4019,8 @@ export CLAUDE_CODE_USE_BEDROCK=1
 export AWS_REGION="us-west-2"  # Default: us-east-1
 export ANTHROPIC_MODEL="us.anthropic.claude-sonnet-4-20250514-v1:0"
 
-# Use WYN360
-wyn360 "write a script to analyze data"
+# Use Clawdeck
+clawdeck "write a script to analyze data"
 ```
 
 **Output:**
@@ -4029,7 +4029,7 @@ wyn360 "write a script to analyze data"
 📡 Region: us-west-2
 🤖 Model: us.anthropic.claude-sonnet-4-20250514-v1:0
 
-WYN360: I'll create a Python script to analyze data.csv...
+Clawdeck: I'll create a Python script to analyze data.csv...
 ```
 
 **When to use:**
@@ -4043,7 +4043,7 @@ WYN360: I'll create a Python script to analyze data.csv...
 
 #### Use Case 27.1: Basic AWS Bedrock Setup
 
-**Scenario:** You have an AWS account with Bedrock access and want to use WYN360 with AWS credentials.
+**Scenario:** You have an AWS account with Bedrock access and want to use Clawdeck with AWS credentials.
 
 **Step 1: Get AWS Credentials**
 
@@ -4064,19 +4064,19 @@ export AWS_SESSION_TOKEN="your_aws_session_token"
 export CLAUDE_CODE_USE_BEDROCK=1
 ```
 
-**Step 3: Use WYN360**
+**Step 3: Use Clawdeck**
 
 ```bash
-wyn360 "create a data processing pipeline"
+clawdeck "create a data processing pipeline"
 ```
 
-**Result:** WYN360 uses AWS Bedrock for all API calls, billed to your AWS account.
+**Result:** Clawdeck uses AWS Bedrock for all API calls, billed to your AWS account.
 
 ---
 
 #### Use Case 27.2: Using AWS IAM Roles (EC2/ECS/Lambda)
 
-**Scenario:** You're running WYN360 on AWS infrastructure with IAM roles.
+**Scenario:** You're running Clawdeck on AWS infrastructure with IAM roles.
 
 **Required IAM Policy:**
 ```json
@@ -4103,7 +4103,7 @@ wyn360 "create a data processing pipeline"
 # Just enable Bedrock mode
 export CLAUDE_CODE_USE_BEDROCK=1
 
-wyn360 "analyze system logs"
+clawdeck "analyze system logs"
 ```
 
 **Supported AWS Services:**
@@ -4135,7 +4135,7 @@ export AWS_SECRET_ACCESS_KEY="xxx"
 export CLAUDE_CODE_USE_BEDROCK=1
 export AWS_REGION="eu-central-1"  # Europe region
 
-wyn360 "process EU customer data"
+clawdeck "process EU customer data"
 ```
 
 **Output:**
@@ -4164,7 +4164,7 @@ export AWS_SECRET_ACCESS_KEY="xxx"
 export CLAUDE_CODE_USE_BEDROCK=1
 export ANTHROPIC_MODEL="anthropic.claude-3-opus-20240229-v1:0"
 
-wyn360 "write complex machine learning code"
+clawdeck "write complex machine learning code"
 ```
 
 **Output:**
@@ -4185,14 +4185,14 @@ wyn360 "write complex machine learning code"
 export CLAUDE_CODE_USE_BEDROCK=1
 export AWS_ACCESS_KEY_ID="xxx"
 export AWS_SECRET_ACCESS_KEY="xxx"
-wyn360 "task 1"  # Uses AWS Bedrock
+clawdeck "task 1"  # Uses AWS Bedrock
 ```
 
 **Option 2: Switch to Anthropic API**
 ```bash
 unset CLAUDE_CODE_USE_BEDROCK  # Or: export CLAUDE_CODE_USE_BEDROCK=0
 export ANTHROPIC_API_KEY="sk-ant-xxx"
-wyn360 "task 2"  # Uses Anthropic API
+clawdeck "task 2"  # Uses Anthropic API
 ```
 
 **Pro Tip:** Use shell aliases for quick switching:
@@ -4204,8 +4204,8 @@ alias wyn-anthropic='unset CLAUDE_CODE_USE_BEDROCK; export ANTHROPIC_API_KEY=sk-
 
 Usage:
 ```bash
-wyn-bedrock && wyn360 "task using AWS"
-wyn-anthropic && wyn360 "task using Anthropic"
+wyn-bedrock && clawdeck "task using AWS"
+wyn-anthropic && clawdeck "task using Anthropic"
 ```
 
 ---
@@ -4217,8 +4217,8 @@ wyn-anthropic && wyn360 "task using Anthropic"
 **Step 1: Get Temporary Credentials**
 ```bash
 aws sts assume-role \
-  --role-arn arn:aws:iam::123456789012:role/WYN360Role \
-  --role-session-name wyn360-session \
+  --role-arn arn:aws:iam::123456789012:role/ClawdeckRole \
+  --role-session-name clawdeck-session \
   --output json > /tmp/aws-creds.json
 ```
 
@@ -4232,7 +4232,7 @@ export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' /tmp/aws-creds.json
 **Step 3: Enable Bedrock**
 ```bash
 export CLAUDE_CODE_USE_BEDROCK=1
-wyn360 "analyze data with temporary permissions"
+clawdeck "analyze data with temporary permissions"
 ```
 
 **Security Note:** Temporary credentials expire after a set duration (typically 1-12 hours). You'll need to refresh them when they expire.
@@ -4354,7 +4354,7 @@ export AWS_SECRET_ACCESS_KEY="xxx..."  # Also set
 
 **Summary:**
 
-AWS Bedrock integration gives you flexibility in how you authenticate and bill WYN360 usage:
+AWS Bedrock integration gives you flexibility in how you authenticate and bill Clawdeck usage:
 
 - ✅ **Two authentication methods:** Anthropic API or AWS Bedrock
 - ✅ **Full AWS integration:** IAM roles, STS, regions
@@ -4370,7 +4370,7 @@ Choose the method that best fits your infrastructure and billing preferences!
 
 #### Appendix A: Available Tools
 
-WYN360 has access to these specialized tools for file and project operations:
+Clawdeck has access to these specialized tools for file and project operations:
 
 ##### `read_file(file_path: str)`
 **Purpose:** Read the contents of any file in your project
@@ -4460,7 +4460,7 @@ WYN360 has access to these specialized tools for file and project operations:
 
 ##### Automatic Code Saving
 
-When you're in a **blank project** (no Python or text files), WYN360 automatically saves generated code:
+When you're in a **blank project** (no Python or text files), Clawdeck automatically saves generated code:
 
 **Process:**
 1. Detects Python code blocks in responses (using ``` regex)
@@ -4485,7 +4485,7 @@ else:
 
 ##### File Type Recognition
 
-WYN360 categorizes files to understand your project:
+Clawdeck categorizes files to understand your project:
 
 | Category | Extensions | Purpose |
 |----------|-----------|----------|
@@ -4500,7 +4500,7 @@ WYN360 categorizes files to understand your project:
 
 **Version:** NEW in v0.2.1
 
-WYN360 includes advanced intelligence for understanding user intent when working with files, automatically determining whether to create new files or update existing ones.
+Clawdeck includes advanced intelligence for understanding user intent when working with files, automatically determining whether to create new files or update existing ones.
 
 ##### Intent Recognition
 
@@ -4543,7 +4543,7 @@ The agent analyzes your natural language to understand what you want:
 ```bash
 You: Add a feature to run hello_world.py when user asks
 
-WYN360:
+Clawdeck:
 1. Reading your current app.py...
 2. Creating hello_world.py...
 3. Updating app.py with new functionality...
@@ -4593,14 +4593,14 @@ If the agent makes a wrong choice, it can self-correct:
 Step 1: Navigate to empty directory
 $ cd my-new-project
 
-Step 2: Start WYN360
-$ wyn360
+Step 2: Start Clawdeck
+$ clawdeck
 
 Step 3: Describe what you want
 You: Build a CLI tool that converts CSV to JSON
 
 Step 4: Agent generates and saves code
-WYN360:
+Clawdeck:
 - Generates complete script with argparse
 - Includes CSV parsing logic
 - Adds JSON output formatting
@@ -4609,7 +4609,7 @@ WYN360:
 Step 5: Review and run
 You: How do I use it?
 
-WYN360:
+Clawdeck:
 - Provides usage instructions
 - Shows example commands
 - Explains options
@@ -4622,14 +4622,14 @@ WYN360:
 Step 1: Navigate to your project
 $ cd my-existing-project
 
-Step 2: Start WYN360
-$ wyn360
+Step 2: Start Clawdeck
+$ clawdeck
 
 Step 3: Request enhancement
 You: Add logging to my data pipeline
 
 Step 4: Agent analyzes and modifies
-WYN360:
+Clawdeck:
 - Reads existing pipeline.py
 - Understands current structure
 - Generates logging configuration
@@ -4639,7 +4639,7 @@ WYN360:
 Step 5: Review and accept
 You: Apply these changes
 
-WYN360:
+Clawdeck:
 - Updates the file
 - Confirms changes made
 - Provides testing guidance
@@ -4653,11 +4653,11 @@ Step 1: Encounter an error
 $ python script.py
 Error: Connection timeout
 
-Step 2: Ask WYN360 for help
+Step 2: Ask Clawdeck for help
 You: My script has a connection timeout error
 
 Step 3: Agent diagnoses
-WYN360:
+Clawdeck:
 - Reads your script
 - Identifies the problematic code
 - Explains the root cause
@@ -4666,7 +4666,7 @@ WYN360:
 Step 4: Get the fix
 You: How do I fix it?
 
-WYN360:
+Clawdeck:
 - Suggests retry logic
 - Provides complete code
 - Explains the solution
@@ -4675,7 +4675,7 @@ WYN360:
 Step 5: Apply fix
 You: Update my script
 
-WYN360:
+Clawdeck:
 - Modifies the file
 - Confirms the change
 - ✓ Code updated successfully
@@ -4687,7 +4687,7 @@ WYN360:
 ```bash
 You: How do I implement async in Python?
 
-WYN360:
+Clawdeck:
 📚 Explanation:
 - What async/await does
 - When to use it
@@ -4845,10 +4845,10 @@ WYN360:
 - Build incrementally
 
 ##### 4. Use in Combination with IDE
-- Generate code with WYN360
+- Generate code with Clawdeck
 - Refine in your IDE
 - Use IDE for complex refactoring
-- Use WYN360 for quick generation
+- Use Clawdeck for quick generation
 
 ##### 5. Review Generated Code
 - Always read generated code
@@ -4878,10 +4878,10 @@ WYN360:
 **Example Workflow:**
 ```bash
 You: Build a data analysis pipeline
-WYN360: [Creates initial pipeline]
+Clawdeck: [Creates initial pipeline]
 
 You: Add visualization features
-WYN360: [Enhances the pipeline]
+Clawdeck: [Enhances the pipeline]
 
 You: /tokens
 [Token Usage Statistics]
@@ -4895,7 +4895,7 @@ You: /load my_pipeline_session.json
 ✓ Session loaded (conversation history restored)
 
 You: Add export to Excel feature
-WYN360: [Continues from where you left off with full context]
+Clawdeck: [Continues from where you left off with full context]
 ```
 
 **Cost Management Tips:**
@@ -4937,7 +4937,7 @@ WYN360: [Continues from where you left off with full context]
 ```bash
 You: Create a web scraper that extracts article titles from a news site
 
-WYN360: [Generates complete script with requests, BeautifulSoup, error handling]
+Clawdeck: [Generates complete script with requests, BeautifulSoup, error handling]
 ✓ Code saved to: scraper.py
 ```
 
@@ -4945,7 +4945,7 @@ WYN360: [Generates complete script with requests, BeautifulSoup, error handling]
 ```bash
 You: Build a script that reads CSV, cleans data, and outputs to JSON
 
-WYN360: [Creates comprehensive data pipeline with pandas]
+Clawdeck: [Creates comprehensive data pipeline with pandas]
 ✓ Code saved to: process_data.py
 ```
 
@@ -4953,7 +4953,7 @@ WYN360: [Creates comprehensive data pipeline with pandas]
 ```bash
 You: Create an async HTTP client for a REST API
 
-WYN360: [Generates async client with aiohttp, retry logic, error handling]
+Clawdeck: [Generates async client with aiohttp, retry logic, error handling]
 ✓ Code saved to: api_client.py
 ```
 
@@ -4998,7 +4998,7 @@ WYN360: [Generates async client with aiohttp, retry logic, error handling]
 - 🎨 **UX IMPROVEMENT:** Enhanced CLI help output with comprehensive documentation
 - ✅ **NEW FLAG:** Added `-h` shorthand for `--help`
 - 📚 **DOCUMENTATION:** Help now shows all slash commands, available tools, examples
-- 💡 **QUICK REFERENCE:** Users can run `wyn360 -h` to see complete command reference
+- 💡 **QUICK REFERENCE:** Users can run `clawdeck -h` to see complete command reference
 - 🔧 **ORGANIZED:** Help structured into sections: Quick Start, Slash Commands, Available Tools, Examples, Documentation
 
 ### v0.3.19
@@ -5121,7 +5121,7 @@ WYN360: [Generates async client with aiohttp, retry logic, error handling]
 
 ### v0.3.5
 - ✨ **NEW:** Added back "thinking" spinner while agent processes
-- 🎨 Better UX - shows "WYN360 is thinking..." with animated dots
+- 🎨 Better UX - shows "Clawdeck is thinking..." with animated dots
 - ⏳ Spinner appears before first response chunk is ready
 - 🔧 Improved visual feedback during processing time
 
@@ -5149,8 +5149,8 @@ WYN360: [Generates async client with aiohttp, retry logic, error handling]
 
 ### v0.3.1
 - ✨ **NEW:** Configuration & Personalization - user and project-specific settings
-- ✨ **NEW:** User config file (`~/.wyn360/config.yaml`) for personal preferences
-- ✨ **NEW:** Project config file (`.wyn360.yaml`) for project-specific context
+- ✨ **NEW:** User config file (`~/.clawdeck/config.yaml`) for personal preferences
+- ✨ **NEW:** Project config file (`.clawdeck.yaml`) for project-specific context
 - ✨ **NEW:** `/config` slash command to view current configuration
 - 🔧 Custom instructions automatically added to system prompt
 - 🔧 Project context helps AI understand your codebase
@@ -5258,7 +5258,7 @@ WYN360: [Generates async client with aiohttp, retry logic, error handling]
 - 🔧 Support for both .data and .output attributes
 
 ### v0.1.2
-- 🎨 Fixed ASCII banner to correctly display "WYN360"
+- 🎨 Fixed ASCII banner to correctly display "Clawdeck"
 - 📧 Updated email to yiqiao.yin@wyn-associates.com
 
 ### v0.1.1
@@ -5270,6 +5270,6 @@ WYN360: [Generates async client with aiohttp, retry logic, error handling]
 
 ---
 
-**End of WYN360 CLI Complete User Guide**
+**End of Clawdeck CLI Complete User Guide**
 
 This comprehensive guide covered all 18 use cases from simple to complex, with detailed appendices for reference. For the latest updates and version history, see the Changelog section above.

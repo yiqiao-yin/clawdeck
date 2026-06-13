@@ -15,7 +15,7 @@ import pytest
 import tempfile
 from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch, call, AsyncMock
-from wyn360_cli.document_readers import PDFReader, count_tokens
+from clawdeck.document_readers import PDFReader, count_tokens
 
 
 class TestPDFReader:
@@ -51,7 +51,7 @@ class TestPDFReader:
         assert "Unknown PDF engine" in str(exc_info.value)
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', False)
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', False)
     async def test_read_without_pymupdf(self):
         """Test error when pymupdf not installed."""
         with tempfile.NamedTemporaryFile(suffix=".pdf") as tmpfile:
@@ -63,7 +63,7 @@ class TestPDFReader:
             assert "pymupdf not installed" in str(exc_info.value)
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PDFPLUMBER', False)
+    @patch('clawdeck.document_readers.HAS_PDFPLUMBER', False)
     async def test_read_without_pdfplumber(self):
         """Test error when pdfplumber not installed."""
         with tempfile.NamedTemporaryFile(suffix=".pdf") as tmpfile:
@@ -75,8 +75,8 @@ class TestPDFReader:
             assert "pdfplumber not installed" in str(exc_info.value)
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', True)
-    @patch('wyn360_cli.document_readers.pymupdf')
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', True)
+    @patch('clawdeck.document_readers.pymupdf')
     async def test_read_nonexistent_file(self, mock_pymupdf):
         """Test error when file doesn't exist."""
         reader = PDFReader(file_path="/nonexistent/file.pdf", engine="pymupdf")
@@ -85,7 +85,7 @@ class TestPDFReader:
             await reader.read()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', True)
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', True)
     async def test_read_simple_pdf_pymupdf(self):
         """Test reading a simple PDF with PyMuPDF."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
@@ -93,7 +93,7 @@ class TestPDFReader:
 
         try:
             # Mock pymupdf
-            with patch('wyn360_cli.document_readers.pymupdf') as mock_pymupdf:
+            with patch('clawdeck.document_readers.pymupdf') as mock_pymupdf:
                 # Mock document
                 mock_doc = MagicMock()
                 mock_doc.__len__.return_value = 3  # 3 pages
@@ -134,7 +134,7 @@ class TestPDFReader:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PDFPLUMBER', True)
+    @patch('clawdeck.document_readers.HAS_PDFPLUMBER', True)
     async def test_read_simple_pdf_pdfplumber(self):
         """Test reading a simple PDF with pdfplumber."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
@@ -142,7 +142,7 @@ class TestPDFReader:
 
         try:
             # Mock pdfplumber
-            with patch('wyn360_cli.document_readers.pdfplumber') as mock_pdfplumber:
+            with patch('clawdeck.document_readers.pdfplumber') as mock_pdfplumber:
                 # Mock pages
                 page1 = Mock()
                 page1.extract_text.return_value = "Page 1 content."
@@ -174,14 +174,14 @@ class TestPDFReader:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', True)
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', True)
     async def test_read_with_page_range(self):
         """Test reading specific page range."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
             tmpfile_path = tmpfile.name
 
         try:
-            with patch('wyn360_cli.document_readers.pymupdf') as mock_pymupdf:
+            with patch('clawdeck.document_readers.pymupdf') as mock_pymupdf:
                 # Mock document with 10 pages
                 mock_doc = MagicMock()
                 mock_doc.__len__.return_value = 10
@@ -213,14 +213,14 @@ class TestPDFReader:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYMUPDF', True)
+    @patch('clawdeck.document_readers.HAS_PYMUPDF', True)
     async def test_read_with_tables_pymupdf(self):
         """Test table extraction with PyMuPDF."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
             tmpfile_path = tmpfile.name
 
         try:
-            with patch('wyn360_cli.document_readers.pymupdf') as mock_pymupdf:
+            with patch('clawdeck.document_readers.pymupdf') as mock_pymupdf:
                 # Mock document
                 mock_doc = MagicMock()
                 mock_doc.__len__.return_value = 1
@@ -259,14 +259,14 @@ class TestPDFReader:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PDFPLUMBER', True)
+    @patch('clawdeck.document_readers.HAS_PDFPLUMBER', True)
     async def test_read_with_tables_pdfplumber(self):
         """Test table extraction with pdfplumber."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmpfile:
             tmpfile_path = tmpfile.name
 
         try:
-            with patch('wyn360_cli.document_readers.pdfplumber') as mock_pdfplumber:
+            with patch('clawdeck.document_readers.pdfplumber') as mock_pdfplumber:
                 # Mock page with table
                 page = Mock()
                 page.extract_text.return_value = "Page with table."

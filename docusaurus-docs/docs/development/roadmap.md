@@ -1,6 +1,6 @@
-# WYN360 CLI - Feature Roadmap & Expansion Ideas
+# Clawdeck CLI - Feature Roadmap & Expansion Ideas
 
-This document outlines potential features and enhancements to expand WYN360 CLI's capabilities.
+This document outlines potential features and enhancements to expand Clawdeck CLI's capabilities.
 
 ## 🎯 Current Capabilities (v0.3.23)
 
@@ -22,8 +22,8 @@ This document outlines potential features and enhancements to expand WYN360 CLI'
 - ✅ Dynamic model switching (haiku/sonnet/opus) (Phase 3)
 - ✅ Model information display with pricing (Phase 3)
 - ✅ /model command for mid-session model changes (Phase 3)
-- ✅ User configuration file (~/.wyn360/config.yaml) (Phase 4)
-- ✅ Project configuration file (.wyn360.yaml) (Phase 4)
+- ✅ User configuration file (~/.clawdeck/config.yaml) (Phase 4)
+- ✅ Project configuration file (.clawdeck.yaml) (Phase 4)
 - ✅ Custom instructions and project context (Phase 4)
 - ✅ /config command to view settings (Phase 4)
 - ✅ Streaming responses - token-by-token output (Phase 5)
@@ -180,9 +180,9 @@ async def create_directory(self, ctx: RunContext[None], dir_path: str) -> str:
 **Implementation:**
 ```python
 # In CLI
-wyn360 --model haiku      # Fast & cheap for simple tasks
-wyn360 --model sonnet     # Default - balanced
-wyn360 --model opus       # Most capable - expensive
+clawdeck --model haiku      # Fast & cheap for simple tasks
+clawdeck --model sonnet     # Default - balanced
+clawdeck --model opus       # Most capable - expensive
 
 # Or dynamic in-session
 "Use Haiku for this simple task"
@@ -223,7 +223,7 @@ def suggest_model(task_description: str) -> str:
 #### 4.1 Configuration File
 **Feature:** Persistent user preferences
 
-**File:** `~/.wyn360/config.yaml`
+**File:** `~/.clawdeck/config.yaml`
 ```yaml
 # Default settings
 model: claude-sonnet-4-20250514
@@ -254,7 +254,7 @@ workspaces:
 #### 4.2 Project-Specific Context
 **Feature:** Auto-load project context
 
-**File:** `.wyn360.yaml` in project root
+**File:** `.clawdeck.yaml` in project root
 ```yaml
 # Project-specific instructions
 context: |
@@ -288,13 +288,13 @@ commands:
 ```
 You: Generate a large script
 [Spinner for 10 seconds]
-WYN360: [Entire response appears at once]
+Clawdeck: [Entire response appears at once]
 ```
 
 **Proposed Experience:**
 ```
 You: Generate a large script
-WYN360: I'll create a comprehensive... [tokens appear as generated]
+Clawdeck: I'll create a comprehensive... [tokens appear as generated]
 ```
 
 **Implementation:**
@@ -345,9 +345,9 @@ async def create_hf_readme(
 ```
 
 **Workflow:**
-1. User creates an app (e.g., Streamlit chatbot) using WYN360-CLI
+1. User creates an app (e.g., Streamlit chatbot) using Clawdeck-CLI
 2. User says "push to huggingface"
-3. WYN360 checks for HF_TOKEN authentication
+3. Clawdeck checks for HF_TOKEN authentication
 4. If not authenticated, asks for token and authenticates
 5. Generates README.md with proper YAML frontmatter for Spaces
 
@@ -355,17 +355,17 @@ async def create_hf_readme(
 ```
 You: Create a simple Streamlit echo chatbot
 
-WYN360: [Creates app.py with Streamlit code]
+Clawdeck: [Creates app.py with Streamlit code]
 
 You: Push this to HuggingFace
 
-WYN360: Let me check your HuggingFace authentication...
+Clawdeck: Let me check your HuggingFace authentication...
 Not authenticated. Please provide your HuggingFace token.
 Get one from: https://huggingface.co/settings/tokens
 
 You: hf_xxxxxxxxxxxxx
 
-WYN360: ✓ Authenticated as 'username'
+Clawdeck: ✓ Authenticated as 'username'
 Creating README.md with Streamlit Space configuration...
 ✓ README.md created
 
@@ -422,7 +422,7 @@ hf upload {space_name} . --repo-type=space
 ```
 You: Create a Streamlit chatbot and deploy to HuggingFace
 
-WYN360:
+Clawdeck:
 1. Creating Streamlit app...
    ✓ app.py created
 
@@ -437,7 +437,7 @@ WYN360:
 
 You: username/echo-chatbot
 
-WYN360:
+Clawdeck:
    ✓ Space created: https://huggingface.co/spaces/username/echo-chatbot
 
 5. Uploading files to Space...
@@ -468,7 +468,7 @@ WYN360:
 ```
 You: Rename the User class to Account across all files
 
-WYN360:
+Clawdeck:
 Found User class in:
 - models/user.py
 - services/user_service.py
@@ -491,7 +491,7 @@ I'll refactor all 3 files:
 ```
 You: Generate tests for calculator.py
 
-WYN360:
+Clawdeck:
 Reading calculator.py...
 Found functions: add(), subtract(), multiply(), divide()
 
@@ -513,7 +513,7 @@ Creating test_calculator.py with:
 ```
 You: Generate API documentation for my FastAPI app
 
-WYN360:
+Clawdeck:
 Analyzing routes...
 Creating API_DOCS.md with:
 - Endpoints
@@ -579,14 +579,14 @@ async def gh_merge_branch(
 ```
 You: Create branch feature/auth
 
-WYN360: [Creates and checks out branch]
+Clawdeck: [Creates and checks out branch]
 ✓ Branch 'feature/auth' created
 
 You: [Generate code]
 
 You: Commit these changes
 
-WYN360: [Checks GitHub authentication]
+Clawdeck: [Checks GitHub authentication]
 ✓ Authenticated with GitHub as 'username'
 [Stages all changes]
 [Commits with message]
@@ -595,19 +595,19 @@ WYN360: [Checks GitHub authentication]
 
 You: Create pull request
 
-WYN360: [Analyzes changes]
+Clawdeck: [Analyzes changes]
 [Generates PR description]
 [Creates PR on GitHub]
 ✓ PR created: https://github.com/username/repo/pull/42
 
 You: Checkout main
 
-WYN360: [Switches to main branch]
+Clawdeck: [Switches to main branch]
 ✓ Checked out main
 
 You: Merge feature/auth into main
 
-WYN360: [Merges branch]
+Clawdeck: [Merges branch]
 ✓ Successfully merged feature/auth into main
 ```
 
@@ -669,7 +669,7 @@ async def describe_table(
 ```
 You: Run script.py
 
-WYN360:
+Clawdeck:
 ⚠️  WARNING: Security issues detected:
 - Line 15: eval() is potentially unsafe
 - Line 23: os.system() without sanitization
@@ -687,7 +687,7 @@ Continue anyway? (y/N):
 **Implementation:**
 ```python
 # Before write_file with overwrite=True
-backup_path = f".wyn360_backup/{file_path}.{timestamp}"
+backup_path = f".clawdeck_backup/{file_path}.{timestamp}"
 shutil.copy(file_path, backup_path)
 ```
 
@@ -791,15 +791,15 @@ git_status        5        1       6
 ### Phase 11: Collaboration Features (LOW PRIORITY)
 
 #### 11.1 Session Sharing
-**Feature:** Share WYN360 sessions with team
+**Feature:** Share Clawdeck sessions with team
 
 **Implementation:**
 ```bash
 # Export session
-wyn360 --export session.json
+clawdeck --export session.json
 
 # Import on another machine
-wyn360 --import session.json
+clawdeck --import session.json
 ```
 
 **Use Case:** Share coding session with colleague for review
@@ -829,7 +829,7 @@ prompts:
 ```
 You: @refactor_for_testing app.py
 
-WYN360: [Applies the refactor_for_testing prompt to app.py]
+Clawdeck: [Applies the refactor_for_testing prompt to app.py]
 ```
 
 **Priority:** LOW - Power user feature
@@ -926,19 +926,19 @@ WYN360: [Applies the refactor_for_testing prompt to app.py]
 
 ### 1. Add Version Command
 ```bash
-wyn360 --version  # Show current version
+clawdeck --version  # Show current version
 ```
 
 ### 2. Add Help in Session
 ```bash
 You: /help
-WYN360: [Shows available commands and tips]
+Clawdeck: [Shows available commands and tips]
 ```
 
 ### 3. Keyboard Shortcuts Documentation
 ```bash
 You: /shortcuts
-WYN360:
+Clawdeck:
 - Ctrl+C: Cancel current operation
 - Ctrl+D: Exit
 - Ctrl+Enter: New line
@@ -963,31 +963,31 @@ Show: "I tried 3 times but couldn't write the file. This usually means..."
 
 **Long-term possibilities:**
 
-### 1. **WYN360 as Code Review Assistant**
+### 1. **Clawdeck as Code Review Assistant**
 - Automated PR reviews
 - Security vulnerability detection
 - Best practices suggestions
 - Performance optimization recommendations
 
-### 2. **WYN360 as CI/CD Integration**
+### 2. **Clawdeck as CI/CD Integration**
 - Automatic test generation in CI pipeline
 - Documentation generation on commit
 - Code quality checks
 - Deployment assistance
 
-### 3. **WYN360 as Teaching Tool**
+### 3. **Clawdeck as Teaching Tool**
 - Explain code line-by-line
 - Generate learning examples
 - Create coding challenges
 - Interactive tutorials
 
-### 4. **WYN360 as Architecture Advisor**
+### 4. **Clawdeck as Architecture Advisor**
 - System design suggestions
 - Refactoring recommendations
 - Technology selection
 - Performance optimization
 
-### 5. **WYN360 IDE Plugin**
+### 5. **Clawdeck IDE Plugin**
 - VSCode extension
 - JetBrains plugin
 - Vim integration
@@ -1026,7 +1026,7 @@ Show: "I tried 3 times but couldn't write the file. This usually means..."
 
 Want to help implement these features?
 
-1. Check the [GitHub Issues](https://github.com/yiqiao-yin/wyn360-cli/issues) for open feature requests
+1. Check the [GitHub Issues](https://github.com/yiqiao-yin/clawdeck/issues) for open feature requests
 2. Comment on the feature you want to work on
 3. Fork the repository
 4. Implement the feature with tests
@@ -1034,10 +1034,10 @@ Want to help implement these features?
 
 **Development Setup:**
 ```bash
-git clone https://github.com/yiqiao-yin/wyn360-cli.git
-cd wyn360-cli
+git clone https://github.com/yiqiao-yin/clawdeck.git
+cd clawdeck
 poetry install
-WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
+CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v
 ```
 
 ---
@@ -1047,8 +1047,8 @@ WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
 **Have suggestions not listed here?**
 
 - 📧 Email: yiqiao.yin@wyn-associates.com
-- 🐛 Issues: https://github.com/yiqiao-yin/wyn360-cli/issues
-- 💬 Discussions: https://github.com/yiqiao-yin/wyn360-cli/discussions
+- 🐛 Issues: https://github.com/yiqiao-yin/clawdeck/issues
+- 💬 Discussions: https://github.com/yiqiao-yin/clawdeck/discussions
 
 ---
 

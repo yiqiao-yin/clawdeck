@@ -9,7 +9,7 @@ import asyncio
 import time
 from unittest.mock import Mock, AsyncMock, patch
 
-from wyn360_cli.tools.browser.secure_python_sandbox import (
+from clawdeck.tools.browser.secure_python_sandbox import (
     SecurePythonSandbox,
     SandboxConfig,
     SecurityChecker,

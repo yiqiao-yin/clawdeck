@@ -1,6 +1,6 @@
 # Commands Reference
 
-Complete reference for WYN360 CLI commands and slash commands.
+Complete reference for Clawdeck CLI commands and slash commands.
 
 ## Chat Commands
 
@@ -77,10 +77,10 @@ Use these names with the `/model` command:
 
 ## CLI Arguments
 
-When starting WYN360:
+When starting Clawdeck:
 
 ```bash
-wyn360 [OPTIONS]
+clawdeck [OPTIONS]
 
 Options:
   --max-token INTEGER             Maximum tokens for model output
@@ -93,19 +93,19 @@ Options:
 ### Basic Usage
 ```bash
 # Start with default settings
-wyn360
+clawdeck
 
 # Start with custom token limit
-wyn360 --max-token 8192
+clawdeck --max-token 8192
 
 # Start with more search quota
-wyn360 --max-internet-search-limit 10
+clawdeck --max-internet-search-limit 10
 ```
 
 ### Session Management
 ```
 You: Write a data analysis script
-WYN360: [Creates analysis.py]
+Clawdeck: [Creates analysis.py]
 
 You: /save data_analysis_session.json
 ✓ Session saved to: data_analysis_session.json

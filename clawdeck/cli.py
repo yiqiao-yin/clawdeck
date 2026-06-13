@@ -1,0 +1,1285 @@
+"""Clawdeck CLI - Command-line interface for the coding assistant"""
+
+import click
+import os
+import asyncio
+from pathlib import Path
+from dotenv import load_dotenv
+from rich.console import Console
+from rich.markdown import Markdown
+from prompt_toolkit import PromptSession
+from prompt_toolkit.key_binding import KeyBindings
+from .agent import ClawdeckAgent
+from .config import load_config, get_user_config_path, get_project_config_path
+from .planner import PlanStep
+from .subagent import TaskType
+from .cron_agent import parse_interval
+import shutil
+
+# Get terminal width, with fallback to 120 if detection fails
+terminal_width = shutil.get_terminal_size(fallback=(120, 24)).columns
+# Ensure minimum width of 80, maximum of 200 for readability
+console_width = max(80, min(200, terminal_width))
+console = Console(width=console_width, force_terminal=True)
+
+
+@click.command(context_settings=dict(help_option_names=['-h', '--help']))
+@click.option(
+    '--api-key',
+    default=None,
+    help='Anthropic API key. If not provided, uses ANTHROPIC_API_KEY env var.'
+)
+@click.option(
+    '--model',
+    default='claude-sonnet-4-20250514',
+    help='Claude model to use (default: claude-sonnet-4-20250514)'
+)
+@click.option(
+    '--max-internet-search-limit',
+    default=None,
+    type=int,
+    help='Maximum number of web searches per session (default: 5). Use MAX_INTERNET_SEARCH_LIMIT env var or this flag.'
+)
+@click.option(
+    '--max-token',
+    default=None,
+    type=int,
+    help='Maximum tokens for model output (default: 4096). Use MAX_TOKEN env var or this flag.'
+)
+@click.option(
+    '--show-browser',
+    is_flag=True,
+    default=False,
+    help='Show browser window during automation (default: headless mode)'
+)
+def main(api_key, model, max_internet_search_limit, max_token, show_browser):
+    """
+    Clawdeck - An intelligent AI coding assistant CLI tool.
+
+    Interact with Claude to build projects, generate code, and improve your codebase.
+
+    \b
+    QUICK START:
+      $ export ANTHROPIC_API_KEY=your_api_key
+      $ clawdeck
+      You: Create a Streamlit chatbot
+      Clawdeck: [Generates complete app.py with code]
+
+    \b
+    SLASH COMMANDS (use inside session):
+      /clear          Clear conversation history and reset metrics
+      /history        Show conversation history
+      /save <file>    Save session to JSON file
+      /load <file>    Load previous session
+      /tokens         Show token usage and costs
+      /stats          Show performance metrics (NEW in v0.3.19!)
+      /model [name]   Show/switch AI model (haiku/sonnet/opus)
+      /config         Show current configuration
+      /help           Show detailed help inside session
+
+    \b
+    AVAILABLE TOOLS (AI can use automatically):
+      File Operations:
+        - read_file, write_file, list_files, delete_file, move_file
+        - create_directory, get_project_info
+
+      Code Operations:
+        - execute_command (run scripts, install packages)
+        - search_files (grep code patterns)
+        - generate_tests (auto-generate pytest tests)
+
+      Git Operations:
+        - git_status, git_diff, git_log, git_branch
+
+      HuggingFace Integration:
+        - check_hf_authentication, authenticate_hf
+        - create_hf_readme, create_hf_space, push_to_hf_space
+
+      GitHub Integration (NEW in v0.3.23):
+        - check_gh_authentication, authenticate_gh
+        - gh_commit_changes (commit and push to GitHub)
+        - gh_create_pr (create pull requests)
+        - gh_create_branch, gh_checkout_branch (branch management)
+        - gh_merge_branch (merge branches)
+
+      Web Search (NEW in v0.3.21):
+        - web_search (weather, URLs, current info)
+        - Real-time internet access with proper citations
+        - Limited to 5 searches per session ($0.01 per search)
+
+      Browser Automation (NEW in v0.3.60):
+        - Intelligent DOM-first automation with vision fallback
+        - Smart routing between approaches for optimal performance
+        - Use --show-browser flag to display browser during automation
+        - Set CLAWDECK_BROWSER_SHOW=true to enable browser display by default
+
+    \b
+    EXAMPLES:
+      # Start with different models
+      $ clawdeck --model haiku              # Fast & cheap
+      $ clawdeck --model sonnet             # Balanced (default)
+      $ clawdeck --model opus               # Most capable
+
+      # Quick commands
+      $ clawdeck --api-key sk-ant-...       # Provide API key directly
+      $ clawdeck --show-browser             # Show browser during automation
+
+    \b
+    DOCUMENTATION:
+      PyPI:        https://pypi.org/project/clawdeck-cli/
+      GitHub:      https://github.com/yiqiao-yin/clawdeck-cli
+      Use Cases:   See USE_CASES.md for detailed examples
+      Get API Key: https://console.anthropic.com/
+
+    Version: 0.3.23
+    """
+    # Load environment variables from .env file if it exists
+    load_dotenv()
+
+    # Determine which client to use based on CHOOSE_CLIENT env var
+    # 0 = auto-detect, 1 = Anthropic API, 2 = AWS Bedrock, 3 = Google Gemini
+    try:
+        client_choice = int(os.getenv('CHOOSE_CLIENT', '0'))
+    except ValueError:
+        client_choice = 0
+
+    # Get API keys from parameter or environment
+    api_key = api_key or os.getenv('ANTHROPIC_API_KEY')
+    gemini_key = os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY')
+
+    # Get max internet search limit from parameter or environment (default: 5)
+    # Priority: 1. CLI argument, 2. Environment variable, 3. Default (5)
+    if max_internet_search_limit is None:
+        max_internet_search_limit = int(os.getenv('MAX_INTERNET_SEARCH_LIMIT', '5'))
+    # Ensure it's a positive integer
+    if max_internet_search_limit < 1:
+        max_internet_search_limit = 5
+
+    # Get max token from parameter or environment (default: 4096)
+    # Priority: 1. CLI argument, 2. Environment variable, 3. Default (4096)
+    if max_token is None:
+        max_token = int(os.getenv('MAX_TOKEN', '4096'))
+    # Ensure it's a positive integer
+    if max_token < 1:
+        max_token = 4096
+
+    # Get show_browser setting from environment if not set by CLI flag
+    # Priority: 1. CLI argument, 2. Environment variable, 3. Default (False - headless)
+    if not show_browser:
+        # Check CLAWDECK_BROWSER_SHOW environment variable
+        browser_show_env = os.getenv('CLAWDECK_BROWSER_SHOW', 'false').lower()
+        if browser_show_env in ('true', '1', 'yes', 'on'):
+            show_browser = True
+
+    # Validate credentials based on client choice
+    # For auto-detect (0), we let the agent figure it out
+    # For explicit choices, validate the required credentials
+    if client_choice == 1 and not api_key:
+        raise click.UsageError(
+            "Anthropic API key required (CHOOSE_CLIENT=1).\n\n"
+            "Set: export ANTHROPIC_API_KEY=sk-ant-xxx\n"
+            "Get API key from: https://console.anthropic.com/"
+        )
+    elif client_choice == 3 and not gemini_key:
+        raise click.UsageError(
+            "Google Gemini API key required (CHOOSE_CLIENT=3).\n\n"
+            "Set: export GEMINI_API_KEY=your_key\n"
+            "Get API key from: https://aistudio.google.com/apikey"
+        )
+    elif client_choice == 0:
+        # Auto-detect: Check if any credentials are available
+        has_anthropic = bool(api_key)
+        has_gemini = bool(gemini_key)
+        has_aws = bool(os.getenv('AWS_ACCESS_KEY_ID') and os.getenv('AWS_SECRET_ACCESS_KEY'))
+
+        if not (has_anthropic or has_gemini or has_aws):
+            raise click.UsageError(
+                "No AI provider credentials found.\n\n"
+                "Choose one of:\n"
+                "  1. Anthropic: export ANTHROPIC_API_KEY=sk-ant-xxx\n"
+                "     Get from: https://console.anthropic.com/\n\n"
+                "  2. Google Gemini: export GEMINI_API_KEY=your_key\n"
+                "     Get from: https://aistudio.google.com/apikey\n\n"
+                "  3. AWS Bedrock: export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY\n\n"
+                "Or set CHOOSE_CLIENT=1/2/3 to force a specific provider."
+            )
+
+    # Print banner
+    print("""
+ ██████╗██╗      █████╗ ██╗    ██╗██████╗ ███████╗ ██████╗██╗  ██╗
+██╔════╝██║     ██╔══██╗██║    ██║██╔══██╗██╔════╝██╔════╝██║ ██╔╝
+██║     ██║     ███████║██║ █╗ ██║██║  ██║█████╗  ██║     █████╔╝
+██║     ██║     ██╔══██║██║███╗██║██║  ██║██╔══╝  ██║     ██╔═██╗
+╚██████╗███████╗██║  ██║╚███╔███╔╝██████╔╝███████╗╚██████╗██║  ██╗
+ ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═════╝ ╚══════╝ ╚═════╝╚═╝  ╚═╝
+    """)
+
+    # Determine which provider will be used for the subtitle
+    if client_choice == 1:
+        provider_text = "Powered by Anthropic Claude"
+    elif client_choice == 2:
+        provider_text = "Powered by Anthropic Claude (AWS Bedrock)"
+    elif client_choice == 3:
+        provider_text = "Powered by Google Gemini"
+    else:
+        # Auto-detect - show what's available
+        if api_key:
+            provider_text = "Powered by Anthropic Claude"
+        elif gemini_key:
+            provider_text = "Powered by Google Gemini"
+        else:
+            provider_text = "Powered by AWS Bedrock"
+
+    console.print(
+        f"[bold cyan]Your AI Coding Assistant[/bold cyan] - {provider_text}",
+        justify="center"
+    )
+    console.print()
+    console.print("[yellow]Commands:[/yellow]")
+    console.print("  • Type your request to chat with the assistant")
+    console.print("  • Press [bold]Enter[/bold] to submit, [bold]Ctrl+Enter[/bold] for new line")
+    console.print("  • Type [bold]'exit'[/bold] or [bold]'quit'[/bold] to end the session")
+    console.print()
+    console.print("[yellow]Note:[/yellow] You'll be asked to confirm before executing any commands")
+    console.print()
+
+    # Load configuration
+    config = load_config()
+
+    # Override max_tokens from CLI or environment variable
+    # Priority: CLI arg > env var > config file > default (4096)
+    config.max_tokens = max_token
+
+    # Show config status
+    user_config_path = get_user_config_path()
+    project_config_path = get_project_config_path()
+
+    if user_config_path.exists():
+        console.print(f"[dim]• Loaded user config from: {user_config_path}[/dim]")
+    if project_config_path:
+        console.print(f"[dim]• Loaded project config from: {project_config_path}[/dim]")
+
+    # Initialize agent with config
+    try:
+        # Use model from CLI arg if provided, otherwise use config model
+        if model != 'claude-sonnet-4-20250514':  # If user specified a different model
+            agent = ClawdeckAgent(api_key=api_key, model=model, config=config, max_search_limit=max_internet_search_limit, show_browser=show_browser)
+        else:
+            agent = ClawdeckAgent(api_key=api_key, config=config, max_search_limit=max_internet_search_limit, show_browser=show_browser)
+
+        actual_model = agent.model_name
+
+        # Show connection status
+        # Gemini and Bedrock modes print status in agent.__init__
+        # Only print for Anthropic API mode
+        if not agent.use_bedrock and not agent.use_gemini:
+            console.print(f"[green]✓[/green] Connected using model: [cyan]{actual_model}[/cyan]")
+
+        # Show custom instructions indicator
+        if config.custom_instructions:
+            console.print("[dim]• Custom instructions loaded[/dim]")
+        if config.project_context:
+            console.print("[dim]• Project context loaded[/dim]")
+
+        console.print()
+    except Exception as e:
+        console.print(f"[red]Error initializing agent:[/red] {str(e)}")
+        return
+
+    # Main chat loop
+    asyncio.run(chat_loop(agent))
+
+
+def handle_slash_command(command: str, agent: ClawdeckAgent) -> tuple[bool, str]:
+    """
+    Handle slash commands.
+
+    Args:
+        command: The slash command (without the /)
+        agent: The ClawdeckAgent instance
+
+    Returns:
+        Tuple of (handled: bool, message: str)
+    """
+    parts = command.split(maxsplit=1)
+    cmd = parts[0].lower()
+    arg = parts[1] if len(parts) > 1 else None
+
+    if cmd == "clear":
+        agent.clear_history()
+        return True, "✓ Conversation history cleared. Token counters reset."
+
+    elif cmd == "history":
+        history = agent.get_history()
+        if not history:
+            return True, "No conversation history yet."
+
+        from rich.table import Table
+        table = Table(title="Conversation History", show_lines=True)
+        table.add_column("#", style="cyan", width=4)
+        table.add_column("Role", style="magenta", width=10)
+        table.add_column("Content", style="white")
+
+        for idx, msg in enumerate(history, 1):
+            role = msg.get("role", "unknown")
+            content = msg.get("content", "")
+            # Truncate long messages
+            if len(content) > 200:
+                content = content[:200] + "..."
+            table.add_row(str(idx), role, content)
+
+        console.print(table)
+        return True, ""
+
+    elif cmd == "save":
+        if not arg:
+            return True, "❌ Usage: /save <filename>\nExample: /save my_session.json"
+
+        success = agent.save_session(arg)
+        if success:
+            return True, f"✓ Session saved to: {arg}"
+        else:
+            return True, f"❌ Failed to save session to: {arg}"
+
+    elif cmd == "load":
+        if not arg:
+            return True, "❌ Usage: /load <filename>\nExample: /load my_session.json"
+
+        success = agent.load_session(arg)
+        if success:
+            return True, f"✓ Session loaded from: {arg}"
+        else:
+            return True, f"❌ Failed to load session from: {arg}"
+
+    elif cmd == "tokens":
+        stats = agent.get_token_stats()
+
+        from rich.table import Table
+        from rich.panel import Panel
+
+        table = Table(title="Token Usage Statistics", show_header=False)
+        table.add_column("Metric", style="cyan", width=30)
+        table.add_column("Value", style="yellow")
+
+        table.add_row("Total Requests", str(stats["total_requests"]))
+        table.add_row("─" * 30, "─" * 20)
+        table.add_row("Input Tokens", f"{stats['total_input_tokens']:,}")
+        table.add_row("Output Tokens", f"{stats['total_output_tokens']:,}")
+        table.add_row("Total Tokens", f"{stats['total_tokens']:,}")
+        table.add_row("─" * 30, "─" * 20)
+        table.add_row("Input Cost", f"${stats['input_cost']:.4f}")
+        table.add_row("Output Cost", f"${stats['output_cost']:.4f}")
+        table.add_row("Subtotal (Conversation)", f"${stats['input_cost'] + stats['output_cost']:.4f}")
+
+        # Add document processing stats if any
+        if stats["doc_processing_count"] > 0:
+            table.add_row("─" * 30, "─" * 20)
+            table.add_row("[bold]Document Processing[/bold]", "")
+            table.add_row("  Chunks Processed", str(stats["doc_processing_count"]))
+            table.add_row("  Input Tokens", f"{stats['doc_processing_input_tokens']:,}")
+            table.add_row("  Output Tokens", f"{stats['doc_processing_output_tokens']:,}")
+            table.add_row("  Total Tokens", f"{stats['doc_processing_total_tokens']:,}")
+            table.add_row("  Input Cost (Haiku)", f"${stats['doc_processing_input_cost']:.4f}")
+            table.add_row("  Output Cost (Haiku)", f"${stats['doc_processing_output_cost']:.4f}")
+            table.add_row("  Subtotal (Documents)", f"${stats['doc_processing_cost']:.4f}")
+
+        # Add vision API stats if any
+        if stats["vision_image_count"] > 0:
+            table.add_row("─" * 30, "─" * 20)
+            table.add_row("[bold]Vision API[/bold]", "")
+            table.add_row("  Images Processed", str(stats["vision_image_count"]))
+            table.add_row("  Input Tokens", f"{stats['vision_input_tokens']:,}")
+            table.add_row("  Output Tokens", f"{stats['vision_output_tokens']:,}")
+            table.add_row("  Total Tokens", f"{stats['vision_total_tokens']:,}")
+            table.add_row("  Input Cost (Sonnet)", f"${stats['vision_input_cost']:.4f}")
+            table.add_row("  Output Cost (Sonnet)", f"${stats['vision_output_cost']:.4f}")
+            table.add_row("  Subtotal (Vision)", f"${stats['vision_cost']:.4f}")
+
+        # Add DOM automation stats if any
+        if stats["dom_automation_total_operations"] > 0:
+            table.add_row("─" * 30, "─" * 20)
+            table.add_row("[bold]DOM Automation[/bold]", "")
+            table.add_row("  Total Operations", str(stats["dom_automation_total_operations"]))
+            table.add_row("  • DOM Analysis", f"{stats['dom_analysis_count']} operations")
+            table.add_row("  • DOM Actions", f"{stats['dom_action_count']} operations")
+            table.add_row("  • Intelligent Browse", f"{stats['intelligent_browse_count']} operations")
+            table.add_row("  Input Tokens", f"{stats['dom_automation_total_input_tokens']:,}")
+            table.add_row("  Output Tokens", f"{stats['dom_automation_total_output_tokens']:,}")
+            table.add_row("  Total Tokens", f"{stats['dom_automation_total_tokens']:,}")
+            table.add_row("  Input Cost (Sonnet)", f"${stats['dom_automation_input_cost']:.4f}")
+            table.add_row("  Output Cost (Sonnet)", f"${stats['dom_automation_output_cost']:.4f}")
+            table.add_row("  Subtotal (DOM Auto)", f"${stats['dom_automation_cost']:.4f}")
+
+        # Add Stagehand automation stats if any
+        if stats["stagehand_automation_total_operations"] > 0:
+            table.add_row("─" * 30, "─" * 20)
+            table.add_row("[bold]Stagehand Automation[/bold]", "")
+            table.add_row("  Total Operations", str(stats["stagehand_automation_total_operations"]))
+            table.add_row("  • Code Generation", f"{stats['stagehand_generation_count']} operations")
+            table.add_row("  • Code Execution", f"{stats['stagehand_execution_count']} operations")
+            table.add_row("  • Enhanced Browse", f"{stats['enhanced_browse_count']} operations")
+            table.add_row("  Input Tokens", f"{stats['stagehand_automation_total_input_tokens']:,}")
+            table.add_row("  Output Tokens", f"{stats['stagehand_automation_total_output_tokens']:,}")
+            table.add_row("  Total Tokens", f"{stats['stagehand_automation_total_tokens']:,}")
+            table.add_row("  Input Cost (Sonnet)", f"${stats['stagehand_automation_input_cost']:.4f}")
+            table.add_row("  Output Cost (Sonnet)", f"${stats['stagehand_automation_output_cost']:.4f}")
+            table.add_row("  Subtotal (Stagehand)", f"${stats['stagehand_automation_cost']:.4f}")
+
+        table.add_row("─" * 30, "─" * 20)
+        table.add_row("[bold]Total Cost[/bold]", f"[bold]${stats['total_cost']:.4f}[/bold]")
+        table.add_row("─" * 30, "─" * 20)
+        table.add_row("Avg Cost/Request", f"${stats['avg_cost_per_request']:.4f}")
+
+        console.print(table)
+        return True, ""
+
+    elif cmd == "stats":
+        # Get both token stats and performance stats
+        token_stats = agent.get_token_stats()
+        perf_stats = agent.get_performance_stats()
+
+        from rich.table import Table
+        from rich.panel import Panel
+        from rich.columns import Columns
+
+        # Token Usage Table
+        token_table = Table(title="Token Usage", show_header=False)
+        token_table.add_column("Metric", style="cyan")
+        token_table.add_column("Value", style="yellow")
+
+        token_table.add_row("Total Requests", str(token_stats["total_requests"]))
+        token_table.add_row("Input Tokens", f"{token_stats['total_input_tokens']:,}")
+        token_table.add_row("Output Tokens", f"{token_stats['total_output_tokens']:,}")
+        token_table.add_row("Total Cost", f"${token_stats['total_cost']:.4f}")
+
+        # Performance Table
+        perf_table = Table(title="Performance Metrics", show_header=False)
+        perf_table.add_column("Metric", style="cyan")
+        perf_table.add_column("Value", style="yellow")
+
+        # Session duration
+        duration = perf_stats["session_duration_seconds"]
+        hours = int(duration // 3600)
+        minutes = int((duration % 3600) // 60)
+        seconds = int(duration % 60)
+        if hours > 0:
+            duration_str = f"{hours}h {minutes}m {seconds}s"
+        elif minutes > 0:
+            duration_str = f"{minutes}m {seconds}s"
+        else:
+            duration_str = f"{seconds}s"
+
+        perf_table.add_row("Session Duration", duration_str)
+        perf_table.add_row("Avg Response Time", f"{perf_stats['avg_response_time']:.2f}s")
+        perf_table.add_row("Min Response Time", f"{perf_stats['min_response_time']:.2f}s")
+        perf_table.add_row("Max Response Time", f"{perf_stats['max_response_time']:.2f}s")
+        perf_table.add_row("Error Count", str(perf_stats['error_count']))
+
+        # Tool Usage Table
+        tool_table = Table(title="Tool Usage", show_header=False)
+        tool_table.add_column("Metric", style="cyan")
+        tool_table.add_column("Value", style="yellow")
+
+        tool_table.add_row("Total Tool Calls", str(perf_stats['total_tool_calls']))
+        tool_table.add_row("Successful Calls", str(perf_stats['successful_tool_calls']))
+        tool_table.add_row("Failed Calls", str(perf_stats['failed_tool_calls']))
+        tool_table.add_row("Success Rate", f"{perf_stats['tool_success_rate']:.1f}%")
+
+        # Print all tables
+        console.print()
+        console.print(Columns([token_table, perf_table]))
+        console.print()
+        console.print(tool_table)
+
+        # Show most used tools if any
+        if perf_stats['most_used_tools']:
+            console.print()
+            tools_list = Table(title="Most Used Tools", show_header=True)
+            tools_list.add_column("Tool", style="cyan")
+            tools_list.add_column("Success", style="green")
+            tools_list.add_column("Failed", style="red")
+            tools_list.add_column("Total", style="yellow")
+
+            for tool_name, stats in perf_stats['most_used_tools']:
+                total = stats['success'] + stats['failed']
+                tools_list.add_row(
+                    tool_name,
+                    str(stats['success']),
+                    str(stats['failed']),
+                    str(total)
+                )
+
+            console.print(tools_list)
+
+        # Show error summary if any
+        if perf_stats['error_types']:
+            console.print()
+            error_table = Table(title="Error Summary", show_header=True)
+            error_table.add_column("Error Type", style="red")
+            error_table.add_column("Count", style="yellow")
+
+            for error_type, count in perf_stats['error_types'].items():
+                error_table.add_row(error_type, str(count))
+
+            console.print(error_table)
+
+        return True, ""
+
+    elif cmd == "model":
+        if not arg:
+            # Show current model info
+            model_info = agent.get_model_info()
+
+            from rich.table import Table
+            from rich.panel import Panel
+
+            table = Table(title="Current Model Information", show_header=False)
+            table.add_column("Property", style="cyan", width=25)
+            table.add_column("Value", style="yellow")
+
+            table.add_row("Model", model_info["display_name"])
+            table.add_row("Full ID", model_info["current_model"])
+            table.add_row("Description", model_info["description"])
+            table.add_row("─" * 25, "─" * 50)
+            table.add_row("Input Cost", f"${model_info['input_cost_per_million']}/M tokens")
+            table.add_row("Output Cost", f"${model_info['output_cost_per_million']}/M tokens")
+
+            console.print(table)
+            console.print("\n[yellow]Available models:[/yellow] haiku, sonnet, opus")
+            console.print("[yellow]Usage:[/yellow] /model <name>  (e.g., /model haiku)")
+            return True, ""
+        else:
+            # Switch to specified model
+            model_name = arg.strip()
+            success = agent.switch_model(model_name)
+
+            if success:
+                model_info = agent.get_model_info()
+                return True, f"✓ Switched to {model_info['display_name']} ({model_info['current_model']})"
+            else:
+                return True, f"❌ Failed to switch to model: {model_name}"
+
+    elif cmd == "config":
+        # Show current configuration
+        if not agent.config:
+            return True, "No configuration loaded. Create ~/.clawdeck/config.yaml or .clawdeck.yaml"
+
+        from rich.table import Table
+
+        table = Table(title="Current Configuration", show_header=False)
+        table.add_column("Setting", style="cyan", width=25)
+        table.add_column("Value", style="yellow")
+
+        # Model settings
+        table.add_row("Model", agent.config.model)
+        table.add_row("Max Tokens", str(agent.config.max_tokens))
+        table.add_row("Temperature", str(agent.config.temperature))
+
+        # Web search settings (available for Anthropic API and Gemini, not Bedrock)
+        if not agent.use_bedrock:
+            table.add_row("Max Internet Search", str(agent.max_search_limit))
+
+        table.add_row("─" * 25, "─" * 50)
+
+        # Config files
+        if agent.config.user_config_path:
+            table.add_row("User Config", agent.config.user_config_path)
+        else:
+            table.add_row("User Config", "[dim]Not found[/dim]")
+
+        if agent.config.project_config_path:
+            table.add_row("Project Config", agent.config.project_config_path)
+        else:
+            table.add_row("Project Config", "[dim]Not found[/dim]")
+
+        table.add_row("─" * 25, "─" * 50)
+
+        # Custom instructions
+        if agent.config.custom_instructions:
+            instructions_preview = agent.config.custom_instructions[:100] + "..." if len(agent.config.custom_instructions) > 100 else agent.config.custom_instructions
+            table.add_row("Custom Instructions", instructions_preview)
+
+        # Project context
+        if agent.config.project_context:
+            context_preview = agent.config.project_context[:100] + "..." if len(agent.config.project_context) > 100 else agent.config.project_context
+            table.add_row("Project Context", context_preview)
+
+        # Dependencies
+        if agent.config.project_dependencies:
+            deps = ", ".join(agent.config.project_dependencies[:5])
+            if len(agent.config.project_dependencies) > 5:
+                deps += f" (+{len(agent.config.project_dependencies) - 5} more)"
+            table.add_row("Dependencies", deps)
+
+        # Aliases
+        if agent.config.aliases:
+            aliases = ", ".join(list(agent.config.aliases.keys())[:3])
+            if len(agent.config.aliases) > 3:
+                aliases += f" (+{len(agent.config.aliases) - 3} more)"
+            table.add_row("Aliases", aliases)
+
+        console.print(table)
+        console.print("\n[dim]Tip: Create ~/.clawdeck/config.yaml for user settings[/dim]")
+        console.print("[dim]Tip: Create .clawdeck.yaml in project root for project settings[/dim]")
+        return True, ""
+
+    elif cmd == "help":
+        help_text = """
+[bold cyan]Clawdeck CLI - Available Commands[/bold cyan]
+
+[bold yellow]Chat Commands:[/bold yellow]
+  • Type your request to chat with the assistant
+  • Press [bold]Enter[/bold] to submit, [bold]Ctrl+Enter[/bold] for new line
+  • Type [bold]exit[/bold] or [bold]quit[/bold] to end the session
+
+[bold yellow]Slash Commands:[/bold yellow]
+  [bold green]/clear[/bold green]            Clear conversation history and reset counters
+  [bold green]/history[/bold green]          Show conversation history
+  [bold green]/save <file>[/bold green]     Save session to JSON file
+  [bold green]/load <file>[/bold green]     Load session from JSON file
+  [bold green]/tokens[/bold green]           Show token usage statistics
+  [bold green]/stats[/bold green]            Show comprehensive performance metrics
+  [bold green]/model [name][/bold green]    Show/switch AI model (haiku/sonnet/opus)
+  [bold green]/config[/bold green]           Show current configuration
+  [bold green]/help[/bold green]             Show this help message
+
+[bold yellow]Document Commands:[/bold yellow]
+  [bold green]/set_doc_tokens <type> <n>[/bold green]  Set token limits (excel/word/pdf)
+  [bold green]/clear_doc_cache [file][/bold green]     Clear document cache (all or specific)
+  [bold green]/doc_cache_stats[/bold green]            Show document cache statistics
+  [bold green]/set_image_mode <mode>[/bold green]      Image handling (skip/describe/vision)
+  [bold green]/set_pdf_engine <engine>[/bold green]    PDF engine (pymupdf/pdfplumber)
+
+[bold yellow]Examples:[/bold yellow]
+  /save my_session.json       Save current conversation
+  /load my_session.json       Continue previous conversation
+  /tokens                     Check how much you've spent
+  /stats                      View performance metrics and tool usage
+  /model                      Show current model info
+  /model haiku                Switch to Haiku (fast & cheap)
+  /model opus                 Switch to Opus (most capable)
+  /set_doc_tokens excel 15000 Set Excel token limit
+  /doc_cache_stats            View cached documents
+  /clear_doc_cache            Clear all document caches
+
+[bold yellow]Tips:[/bold yellow]
+  • Conversation history helps maintain context across turns
+  • Use /clear if costs are getting high
+  • Save important sessions for later reference
+  • Token estimates are approximate (±10%)
+  • Use /stats to monitor response times and tool performance
+"""
+        console.print(help_text)
+        return True, ""
+
+    elif cmd == "set_doc_tokens":
+        # /set_doc_tokens <excel|word|pdf> <tokens>
+        if not arg:
+            return True, "❌ Usage: /set_doc_tokens <excel|word|pdf> <tokens>\nExample: /set_doc_tokens excel 15000"
+
+        parts = arg.split()
+        if len(parts) != 2:
+            return True, "❌ Usage: /set_doc_tokens <excel|word|pdf> <tokens>\nExample: /set_doc_tokens excel 15000"
+
+        doc_type = parts[0].lower()
+        try:
+            tokens = int(parts[1])
+        except ValueError:
+            return True, f"❌ Invalid token count: {parts[1]}. Must be a number."
+
+        if doc_type not in ["excel", "word", "pdf"]:
+            return True, f"❌ Invalid document type: {doc_type}. Use: excel, word, or pdf"
+
+        if tokens < 1000 or tokens > 100000:
+            return True, f"❌ Token count must be between 1,000 and 100,000"
+
+        # Store in agent's config (we'll add this to agent later)
+        if not hasattr(agent, 'doc_token_limits'):
+            agent.doc_token_limits = {}
+        agent.doc_token_limits[doc_type] = tokens
+
+        return True, f"✓ {doc_type.title()} document token limit set to {tokens:,}"
+
+    elif cmd == "clear_doc_cache":
+        # /clear_doc_cache [file_path]
+        from .document_readers import ChunkCache
+
+        cache = ChunkCache()
+
+        if arg:
+            # Clear specific file
+            file_path = arg.strip()
+            count = cache.clear_cache(file_path)
+            if count > 0:
+                return True, f"✓ Cleared cache for: {file_path}"
+            else:
+                return True, f"❌ No cache found for: {file_path}"
+        else:
+            # Clear all
+            count = cache.clear_cache()
+            return True, f"✓ Cleared all document caches ({count} files deleted)"
+
+    elif cmd == "doc_cache_stats":
+        # /doc_cache_stats
+        from .document_readers import ChunkCache
+        from rich.table import Table
+
+        cache = ChunkCache()
+        stats = cache.get_stats()
+
+        # Main stats table
+        table = Table(title="📊 Document Cache Statistics", show_header=False)
+        table.add_column("Metric", style="cyan", width=25)
+        table.add_column("Value", style="yellow")
+
+        table.add_row("Total Files Cached", str(stats["total_files"]))
+        table.add_row("Total Chunks", str(stats["total_chunks"]))
+        table.add_row("Total Cache Size", f"{stats['total_size_mb']} MB")
+        table.add_row("Oldest Cache", stats["oldest_cache"])
+        table.add_row("Newest Cache", stats["newest_cache"])
+
+        console.print(table)
+
+        # Cached files list
+        if stats["cache_entries"]:
+            console.print("\n[bold cyan]Cached Files:[/bold cyan]")
+            files_table = Table(show_header=True)
+            files_table.add_column("#", style="dim", width=4)
+            files_table.add_column("File", style="white")
+            files_table.add_column("Chunks", style="yellow", width=8)
+            files_table.add_column("Age", style="green", width=15)
+
+            for idx, entry in enumerate(stats["cache_entries"][:10], 1):  # Show top 10
+                file_path = entry["file_path"]
+                # Shorten path if too long
+                if len(file_path) > 50:
+                    file_path = "..." + file_path[-47:]
+
+                files_table.add_row(
+                    str(idx),
+                    file_path,
+                    str(entry["chunks"]),
+                    entry["age_display"]
+                )
+
+            console.print(files_table)
+
+            if len(stats["cache_entries"]) > 10:
+                console.print(f"\n[dim]...and {len(stats['cache_entries']) - 10} more files[/dim]")
+
+        return True, ""
+
+    elif cmd == "set_image_mode":
+        # /set_image_mode <skip|describe|vision>
+        if not arg:
+            # Show current mode
+            current_mode = getattr(agent, 'image_handling_mode', 'describe')
+            return True, f"Current image mode: {current_mode}\n\nAvailable modes:\n  skip     - Ignore images\n  describe - Extract alt text/captions (default)\n  vision   - Use Claude vision API (⚠️  increases costs)\n\nUsage: /set_image_mode <skip|describe|vision>"
+
+        mode = arg.strip().lower()
+        if mode not in ["skip", "describe", "vision"]:
+            return True, f"❌ Invalid mode: {mode}. Use: skip, describe, or vision"
+
+        agent.image_handling_mode = mode
+
+        message = f"✓ Image handling mode set to: {mode}"
+        if mode == "vision":
+            message += "\n⚠️  Note: Vision mode will significantly increase API costs"
+
+        return True, message
+
+    elif cmd == "set_pdf_engine":
+        # /set_pdf_engine <pymupdf|pdfplumber>
+        if not arg:
+            # Show current engine
+            current_engine = getattr(agent, 'pdf_engine', 'pymupdf')
+            return True, f"Current PDF engine: {current_engine}\n\nAvailable engines:\n  pymupdf     - Fast, general-purpose (default)\n  pdfplumber  - Better for complex tables\n\nUsage: /set_pdf_engine <pymupdf|pdfplumber>"
+
+        engine = arg.strip().lower()
+        if engine not in ["pymupdf", "pdfplumber"]:
+            return True, f"❌ Invalid engine: {engine}. Use: pymupdf or pdfplumber"
+
+        agent.pdf_engine = engine
+        return True, f"✓ PDF engine set to: {engine}"
+
+    # ── Memory commands ──
+
+    elif cmd == "memory":
+        # /memory [save|list|delete|search] [args]
+        if not arg:
+            return True, (
+                "Memory commands:\n"
+                "  /memory list              - List all memories\n"
+                "  /memory save <type> <name> <content> - Save a memory (types: user, feedback, project, reference)\n"
+                "  /memory delete <filename>  - Delete a memory\n"
+                "  /memory search <query>     - Search memories by keyword"
+            )
+
+        mem_parts = arg.split(maxsplit=1)
+        mem_cmd = mem_parts[0].lower()
+        mem_arg = mem_parts[1] if len(mem_parts) > 1 else ""
+
+        mm = agent.memory_manager
+
+        if mem_cmd == "list":
+            memories = mm.list_memories()
+            if not memories:
+                return True, "No memories stored yet."
+            from rich.table import Table
+            table = Table(title="Stored Memories", show_lines=True)
+            table.add_column("File", style="cyan", width=30)
+            table.add_column("Type", style="magenta", width=10)
+            table.add_column("Name", style="white", width=25)
+            table.add_column("Description", style="dim")
+            for m in memories:
+                table.add_row(m.filename, m.type, m.name, m.description[:60])
+            console.print(table)
+            return True, ""
+
+        elif mem_cmd == "save":
+            # /memory save <type> <name> | <content>
+            try:
+                save_parts = mem_arg.split("|", 1)
+                header = save_parts[0].strip().split(maxsplit=1)
+                content = save_parts[1].strip() if len(save_parts) > 1 else ""
+                mem_type = header[0]
+                mem_name = header[1] if len(header) > 1 else "unnamed"
+                filename = mm.save_memory(mem_name, mem_name, mem_type, content)
+                return True, f"Memory saved: {filename}"
+            except (ValueError, IndexError) as e:
+                return True, f"Usage: /memory save <type> <name> | <content>\nError: {e}"
+
+        elif mem_cmd == "delete":
+            if mm.delete_memory(mem_arg.strip()):
+                return True, f"Deleted memory: {mem_arg.strip()}"
+            return True, f"Memory not found: {mem_arg.strip()}"
+
+        elif mem_cmd == "search":
+            results = mm.find_relevant_memories(mem_arg)
+            if not results:
+                return True, "No relevant memories found."
+            lines = [f"Found {len(results)} relevant memories:"]
+            for m in results:
+                lines.append(f"  [{m.type}] {m.name}: {m.description[:80]}")
+            return True, "\n".join(lines)
+
+        else:
+            return True, f"Unknown memory command: {mem_cmd}"
+
+    # ── Plan commands ──
+
+    elif cmd == "plan":
+        # /plan [approve|reject|skip|status]
+        planner = agent.planner
+
+        if not arg:
+            # Show plan status
+            if planner.current_plan:
+                console.print(Markdown(planner.current_plan.to_markdown()))
+                return True, ""
+            return True, "No active plan. The AI will create a plan when given a complex task."
+
+        plan_cmd = arg.strip().lower()
+
+        if plan_cmd == "approve":
+            if planner.approve_plan():
+                return True, "Plan approved. Execution will begin."
+            return True, "No plan to approve."
+
+        elif plan_cmd == "reject":
+            if planner.reject_plan():
+                return True, "Plan rejected and discarded."
+            return True, "No plan to reject."
+
+        elif plan_cmd == "skip":
+            step = planner.skip_step()
+            if step:
+                return True, f"Skipped to: Step {step.index} - {step.description}"
+            return True, "No step to skip."
+
+        elif plan_cmd == "status":
+            if planner.current_plan:
+                return True, planner.current_plan.progress
+            return True, "No active plan."
+
+        else:
+            return True, "Plan commands: /plan [approve|reject|skip|status]"
+
+    # ── Skills commands ──
+
+    elif cmd == "skills":
+        # /skills - list available skills
+        skills = agent.skill_registry.list_skills()
+        if not skills:
+            return True, "No custom skills loaded.\nCreate skills in ~/.clawdeck/skills/ or .clawdeck/skills/"
+        lines = ["Available custom skills:"]
+        for s in skills:
+            aliases = f" (aliases: {', '.join(s.aliases)})" if s.aliases else ""
+            src = f" [{s.source}]" if s.source != "user" else ""
+            lines.append(f"  /{s.name}{aliases}{src} - {s.description}")
+        return True, "\n".join(lines)
+
+    # ── Hooks commands ──
+
+    elif cmd == "hooks":
+        # /hooks - list registered hooks
+        hooks = agent.hook_manager.list_hooks()
+        if not hooks:
+            return True, "No hooks registered."
+        stats = agent.hook_manager.get_stats()
+        lines = [f"Registered hooks ({stats['total_registered']} total):"]
+        for h in hooks:
+            status = "enabled" if h.enabled else "disabled"
+            count = stats['execution_counts'].get(h.name, 0)
+            lines.append(f"  {h.name} [{h.hook_point.value}] ({status}, ran {count}x)")
+        lines.append(f"\nTotal execution time: {stats['total_execution_time_ms']:.1f}ms")
+        return True, "\n".join(lines)
+
+    # ── Workers commands ──
+
+    elif cmd == "workers":
+        # /workers - show sub-agent task status
+        tasks = agent.subagent_manager.list_tasks()
+        if not tasks:
+            return True, "No sub-agent tasks have been created this session."
+        from rich.table import Table
+        table = Table(title="Sub-Agent Workers", show_lines=True)
+        table.add_column("ID", style="cyan", width=14)
+        table.add_column("Status", style="magenta", width=10)
+        table.add_column("Type", style="dim", width=10)
+        table.add_column("Description", style="white")
+        table.add_column("Duration", style="yellow", width=10)
+        for t in tasks:
+            dur = f"{t.duration_ms:.0f}ms" if t.duration_ms else "-"
+            table.add_row(t.id, t.status.value, t.task_type.value, t.description[:50], dur)
+        console.print(table)
+        return True, ""
+
+    # ── Budget command ──
+
+    elif cmd == "budget":
+        # /budget - show token budget stats
+        stats = agent.token_budget.get_stats()
+        lines = [
+            "Token Budget Status:",
+            f"  Budget: {stats['budget']} tokens",
+            f"  Used: {stats['total_output_tokens']} tokens ({stats['pct_used']}%)",
+            f"  Continuations this turn: {stats['continuation_count']}",
+            f"  Total auto-continues (session): {stats['total_auto_continues']}",
+            f"  Diminishing returns stops: {stats['total_diminishing_stops']}",
+        ]
+        return True, "\n".join(lines)
+
+    # ── Dream commands ──
+
+    elif cmd == "dream":
+        status = agent.dream_manager.get_status()
+        if arg and arg.strip() == "now":
+            return True, "Dream consolidation will run in the background after this response."
+        lines = [
+            "Dream (Memory Consolidation) Status:",
+            f"  Enabled: {status['enabled']}",
+            f"  Total dreams: {status['total_dreams']}",
+            f"  Sessions reviewed: {status['sessions_reviewed']}",
+            f"  Hours since last: {status['hours_since_last']}",
+            f"  Min hours between: {status['min_hours']}",
+            f"  Min sessions needed: {status['min_sessions']}",
+        ]
+        return True, "\n".join(lines)
+
+    # ── Compact commands ──
+
+    elif cmd == "compact":
+        stats = agent.compaction_manager.get_stats()
+        lines = [
+            "Context Compaction Status:",
+            f"  Enabled: {stats['enabled']}",
+            f"  Total compactions: {stats['total_compactions']}",
+            f"  Messages compacted: {stats['messages_compacted']}",
+            f"  Tokens saved (est): {stats['tokens_saved_estimate']:,}",
+            f"  Max messages: {stats['max_messages']}",
+            f"  Preserve recent: {stats['preserve_recent']}",
+        ]
+        return True, "\n".join(lines)
+
+    # ── Vim mode ──
+
+    elif cmd == "vim":
+        enabled = agent.vim_mode.toggle()
+        return True, f"Vim mode {'enabled' if enabled else 'disabled'}. Restart prompt for full effect."
+
+    # ── Voice commands ──
+
+    elif cmd == "voice":
+        if not agent.voice_input.is_available:
+            return True, "Voice input unavailable. Install: pip install SpeechRecognition pyaudio"
+        if arg and arg.strip() == "status":
+            status = agent.voice_input.get_status()
+            lines = [f"  {k}: {v}" for k, v in status.items()]
+            return True, "Voice Status:\n" + "\n".join(lines)
+        enabled = agent.voice_input.toggle()
+        return True, f"Voice input {'enabled' if enabled else 'disabled'}."
+
+    # ── Buddy commands ──
+
+    elif cmd == "buddy":
+        if arg and arg.strip() == "status":
+            status = agent.buddy_manager.get_status()
+            if status.get("companion"):
+                c = status["companion"]
+                return True, (
+                    f"Your companion: {status['display_name']}\n"
+                    f"  Rarity: {c['rarity']}\n"
+                    f"  Personality: {c['personality']}"
+                )
+            return True, "Buddy is disabled. Use /buddy to enable."
+        enabled = agent.buddy_manager.toggle()
+        if enabled:
+            greeting = agent.buddy_manager.get_greeting()
+            return True, f"Buddy enabled!\n{greeting}"
+        return True, "Buddy disabled."
+
+    # ── Cron commands ──
+
+    elif cmd == "cron":
+        if not arg:
+            jobs = agent.cron_manager.list_jobs()
+            if not jobs:
+                return True, "No cron jobs. Use: /cron add <interval> <name> | <prompt>"
+            from rich.table import Table
+            table = Table(title="Scheduled Jobs", show_lines=True)
+            table.add_column("ID", style="cyan", width=14)
+            table.add_column("Name", style="white", width=20)
+            table.add_column("Interval", style="yellow", width=8)
+            table.add_column("Runs", style="magenta", width=6)
+            table.add_column("Status", style="green", width=8)
+            for j in jobs:
+                table.add_row(j.id, j.name, j.interval_display, str(j.run_count),
+                              "active" if j.enabled else "paused")
+            console.print(table)
+            return True, ""
+
+        cron_parts = arg.split(maxsplit=1)
+        cron_cmd = cron_parts[0].lower()
+        cron_arg = cron_parts[1] if len(cron_parts) > 1 else ""
+
+        if cron_cmd == "add":
+            try:
+                parts = cron_arg.split("|", 1)
+                header = parts[0].strip().split(maxsplit=1)
+                interval = header[0]
+                name = header[1] if len(header) > 1 else "unnamed"
+                prompt = parts[1].strip() if len(parts) > 1 else name
+                job = agent.cron_manager.create_job(name, prompt, interval)
+                return True, f"Created cron job '{name}' (every {job.interval_display}): {job.id}"
+            except (ValueError, IndexError) as e:
+                return True, f"Usage: /cron add <interval> <name> | <prompt>\nError: {e}"
+
+        elif cron_cmd == "delete":
+            if agent.cron_manager.delete_job(cron_arg.strip()):
+                return True, f"Deleted cron job: {cron_arg.strip()}"
+            return True, f"Job not found: {cron_arg.strip()}"
+
+        elif cron_cmd == "pause":
+            agent.cron_manager.pause_job(cron_arg.strip())
+            return True, f"Paused: {cron_arg.strip()}"
+
+        elif cron_cmd == "resume":
+            agent.cron_manager.resume_job(cron_arg.strip())
+            return True, f"Resumed: {cron_arg.strip()}"
+
+        return True, "Cron commands: /cron [add|delete|pause|resume]"
+
+    # ── Plugin commands ──
+
+    elif cmd == "plugins":
+        if not arg:
+            plugins = agent.plugin_manager.list_plugins()
+            if not plugins:
+                return True, "No plugins installed. Create one: /plugins create <name>"
+            lines = ["Installed plugins:"]
+            for p in plugins:
+                status = "loaded" if p.loaded else f"error: {p.error}"
+                lines.append(f"  {p.manifest.name} v{p.manifest.version} [{p.manifest.plugin_type}] ({status})")
+            return True, "\n".join(lines)
+
+        plug_parts = arg.split(maxsplit=1)
+        plug_cmd = plug_parts[0].lower()
+        plug_arg = plug_parts[1] if len(plug_parts) > 1 else ""
+
+        if plug_cmd == "create":
+            path = agent.plugin_manager.create_plugin(plug_arg.strip() or "my-plugin")
+            return True, f"Created plugin scaffold at: {path}"
+        elif plug_cmd == "install":
+            if agent.plugin_manager.install_from_directory(plug_arg.strip()):
+                agent.plugin_manager.load_all()
+                return True, f"Installed plugin from: {plug_arg.strip()}"
+            return True, f"Failed to install from: {plug_arg.strip()}"
+        elif plug_cmd == "uninstall":
+            if agent.plugin_manager.uninstall(plug_arg.strip()):
+                return True, f"Uninstalled: {plug_arg.strip()}"
+            return True, f"Plugin not found: {plug_arg.strip()}"
+        elif plug_cmd == "reload":
+            agent.plugin_manager.load_all()
+            return True, "Plugins reloaded."
+        return True, "Plugin commands: /plugins [create|install|uninstall|reload]"
+
+    # ── LSP/Diagnostics commands ──
+
+    elif cmd == "diagnostics" or cmd == "lint":
+        import asyncio
+        directory = arg.strip() if arg else "."
+        console.print("[dim]Running diagnostics...[/dim]")
+        loop = asyncio.get_event_loop()
+        diags = loop.run_until_complete(agent.lsp_client.check_project(directory))
+        if not diags:
+            return True, "No diagnostics found. (Is pyright/ruff installed?)"
+        formatted = agent.lsp_client.format_diagnostics(diags)
+        return True, formatted
+
+    # ── Rewind commands ──
+
+    elif cmd == "rewind":
+        if not arg:
+            snapshots = agent.rewind_manager.list_snapshots(limit=10)
+            if not snapshots:
+                return True, "No snapshots yet. Snapshots are taken after each turn."
+            from rich.table import Table
+            table = Table(title="Conversation Snapshots", show_lines=True)
+            table.add_column("ID", style="cyan", width=4)
+            table.add_column("Label", style="white", width=40)
+            table.add_column("Messages", style="yellow", width=8)
+            table.add_column("Age", style="green", width=10)
+            for s in snapshots:
+                table.add_row(str(s.id), s.label, str(s.message_count), s.age_display)
+            console.print(table)
+            return True, ""
+
+        if arg.strip() == "undo":
+            messages = agent.rewind_manager.rewind_last()
+            if messages:
+                agent.conversation_history = messages
+                return True, "Rewound to previous state."
+            return True, "Nothing to undo."
+
+        try:
+            snap_id = int(arg.strip())
+            messages = agent.rewind_manager.rewind_to(snap_id)
+            if messages:
+                agent.conversation_history = messages
+                return True, f"Rewound to snapshot {snap_id}."
+            return True, f"Snapshot {snap_id} not found."
+        except ValueError:
+            return True, "Usage: /rewind [undo | <snapshot_id>]"
+
+    # ── Check for custom skill invocation ──
+
+    elif agent.skill_registry.has_skill(cmd):
+        skill = agent.skill_registry.get_skill(cmd)
+        if skill:
+            rendered = skill.render_prompt(arg or "")
+            return False, rendered  # Return as user message to send to agent
+
+    else:
+        return False, f"Unknown command: /{cmd}. Type /help for available commands."
+
+
+async def chat_loop(agent: ClawdeckAgent):
+    """
+    Main interactive chat loop.
+
+    Args:
+        agent: The ClawdeckAgent instance
+    """
+    # Create key bindings for multi-line input
+    # Ctrl+Enter = newline, Enter = submit
+    kb = KeyBindings()
+
+    @kb.add('c-j')  # Ctrl+Enter (Ctrl+J is the terminal code for Ctrl+Enter)
+    def _(event):
+        event.current_buffer.insert_text('\n')
+
+    # Create prompt session with optional vim mode
+    editing_mode = agent.vim_mode.get_editing_mode()
+    session = PromptSession(
+        multiline=False,
+        key_bindings=kb,
+        prompt_continuation=lambda width, line_number, is_soft_wrap: '... ',
+        editing_mode=editing_mode,
+    )
+
+    # Show buddy greeting if enabled
+    if agent.buddy_manager.enabled:
+        greeting = agent.buddy_manager.get_greeting()
+        if greeting:
+            console.print(f"[dim]{greeting}[/dim]")
+            console.print()
+
+    while True:
+        try:
+            # Get user input
+            console.print("[bold green]You:[/bold green]")
+            user_input = await session.prompt_async("")
+
+            # Check for exit commands
+            if user_input.lower().strip() in ['exit', 'quit', 'q']:
+                console.print("\n[cyan]Goodbye! Happy coding! 👋[/cyan]")
+                break
+
+            # Skip empty input
+            if not user_input.strip():
+                continue
+
+            # Check for slash commands
+            if user_input.startswith('/'):
+                command = user_input[1:]  # Remove the leading /
+                handled, message = handle_slash_command(command, agent)
+                if handled:
+                    if message:
+                        console.print(f"[cyan]{message}[/cyan]")
+                    console.print()
+                    continue
+                elif message:
+                    # Not handled but has message = skill prompt to send to agent
+                    user_input = message
+
+            # Get complete response from agent
+            console.print()
+
+            # Show thinking status while agent processes
+            with console.status("[bold blue]Clawdeck is thinking...", spinner="dots"):
+                # Get complete response (not streaming)
+                response_text = await agent.chat_stream(user_input)
+
+            # Now display the response word-by-word to simulate streaming
+            console.print("[bold blue]Clawdeck:[/bold blue]")
+            console.print()
+
+            # Split response by spaces and print word-by-word
+            import time
+            words = response_text.split(' ')
+            for i, word in enumerate(words):
+                # Print word with space (except last word)
+                if i < len(words) - 1:
+                    console.print(word + ' ', end='', style="white")
+                else:
+                    console.print(word, end='', style="white")
+                # Small delay to simulate streaming
+                time.sleep(0.01)
+
+            console.print()  # Add newline after printing
+            console.print()
+
+        except KeyboardInterrupt:
+            console.print("\n\n[cyan]Session interrupted. Goodbye! 👋[/cyan]")
+            break
+        except EOFError:
+            console.print("\n\n[cyan]Goodbye! Happy coding! 👋[/cyan]")
+            break
+        except Exception as e:
+            console.print(f"\n[red]Error:[/red] {str(e)}\n")
+            continue
+
+
+if __name__ == '__main__':
+    main()

@@ -6,11 +6,11 @@ Tests DOM-first automation approach and pydantic-ai integration.
 
 import pytest
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from src.wyn360.tools.browser.browser_automation_tools import (
+from clawdeck.tools.browser.browser_automation_tools import (
     BrowserAutomationTools,
     browser_tools
 )
-from src.wyn360.tools.browser.dom_analyzer import DOMAnalysis, DOMElement
+from clawdeck.tools.browser.dom_analyzer import DOMAnalysis, DOMElement
 
 
 class TestBrowserAutomationTools:
@@ -174,7 +174,7 @@ class TestBrowserAutomationTools:
     @pytest.mark.asyncio
     async def test_analyze_page_dom_success(self):
         """Test successful DOM analysis"""
-        with patch('src.wyn360.tools.browser.browser_automation_tools.browser_manager') as mock_manager:
+        with patch('clawdeck.tools.browser.browser_automation_tools.browser_manager') as mock_manager:
             with patch.object(self.tools.dom_extractor, 'extract_dom') as mock_extract:
                 # Mock unified browser manager
                 mock_page = AsyncMock()
@@ -216,7 +216,7 @@ class TestBrowserAutomationTools:
     @pytest.mark.asyncio
     async def test_analyze_page_dom_failure(self):
         """Test DOM analysis failure"""
-        with patch('src.wyn360.tools.browser.browser_automation_tools.browser_manager') as mock_manager:
+        with patch('clawdeck.tools.browser.browser_automation_tools.browser_manager') as mock_manager:
             mock_manager.initialize.side_effect = Exception("Browser error")
             result = await self.tools.analyze_page_dom(
                 self.mock_ctx,
@@ -318,7 +318,7 @@ class TestBrowserAutomationTools:
     @pytest.mark.asyncio
     async def test_close_browser(self):
         """Test browser cleanup"""
-        with patch('src.wyn360.tools.browser.browser_automation_tools.browser_manager') as mock_manager:
+        with patch('clawdeck.tools.browser.browser_automation_tools.browser_manager') as mock_manager:
             mock_page = AsyncMock()
             mock_manager.close_page = AsyncMock()
             self.tools.page = mock_page

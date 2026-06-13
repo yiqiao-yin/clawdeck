@@ -8,9 +8,9 @@
 
 ### Current Package Structure ✅ PROTECTED
 ```
-wyn360-cli/
+clawdeck/
 ├── pyproject.toml          # ✅ Package metadata - UNTOUCHED
-├── wyn360_cli/             # ✅ Source code - UNTOUCHED
+├── clawdeck/             # ✅ Source code - UNTOUCHED
 │   ├── __init__.py
 │   ├── cli.py
 │   ├── agent.py
@@ -35,7 +35,7 @@ wyn360-cli/
 
 ### What NEVER Changes
 - `pyproject.toml` package configuration
-- `wyn360_cli/` source code structure
+- `clawdeck/` source code structure
 - Package build/publish process (`poetry build && poetry publish`)
 - PyPI package functionality
 - Existing development workflow
@@ -128,7 +128,7 @@ poetry build
 
 # Deploy docs (creates gh-pages branch)
 poetry run mkdocs gh-deploy
-# ✅ Documentation live at: https://yiqiao-yin.github.io/wyn360-cli/
+# ✅ Documentation live at: https://yiqiao-yin.github.io/clawdeck/
 ```
 
 ## Dual Workflow Independence
@@ -137,14 +137,14 @@ poetry run mkdocs gh-deploy
 ```bash
 # 1. Develop new features
 git checkout -b feature/new-awesome-feature
-# Edit wyn360_cli/ source code
+# Edit clawdeck/ source code
 
 # 2. Test package
 poetry run pytest tests/ -v
 
 # 3. Update version
 # Edit pyproject.toml: version = "0.3.61"
-# Edit wyn360_cli/__init__.py: __version__ = "0.3.61"
+# Edit clawdeck/__init__.py: __version__ = "0.3.61"
 
 # 4. Build and publish to PyPI (UNCHANGED)
 poetry build
@@ -164,19 +164,19 @@ poetry run mkdocs serve
 
 # 3. Deploy docs (automatic via GitHub Actions)
 git push origin main
-# ✅ Docs auto-deploy to https://yiqiao-yin.github.io/wyn360-cli/
+# ✅ Docs auto-deploy to https://yiqiao-yin.github.io/clawdeck/
 ```
 
 ## Technical Implementation Details
 
 ### MkDocs Configuration (`mkdocs.yml`)
 ```yaml
-site_name: WYN360 CLI Documentation
+site_name: Clawdeck CLI Documentation
 site_description: An intelligent AI coding assistant CLI tool powered by Anthropic Claude
 site_author: Yiqiao Yin
-repo_url: https://github.com/yiqiao-yin/wyn360-cli
-repo_name: yiqiao-yin/wyn360-cli
-site_url: https://yiqiao-yin.github.io/wyn360-cli/
+repo_url: https://github.com/yiqiao-yin/clawdeck
+repo_name: yiqiao-yin/clawdeck
+site_url: https://yiqiao-yin.github.io/clawdeck/
 
 theme:
   name: material
@@ -206,7 +206,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: [wyn360_cli]
+          paths: [clawdeck]
 
 nav:
   - Home: index.md
@@ -257,11 +257,11 @@ markdown_extensions:
 
 **From README.md to docs/index.md:**
 ```markdown
-# WYN360 CLI
+# Clawdeck CLI
 
 An intelligent AI coding assistant that helps you build projects, generate code, and improve your codebase through natural language conversations.
 
-## Why Choose WYN360 CLI?
+## Why Choose Clawdeck CLI?
 
 - 🤖 **Interactive AI Assistant** - Natural language conversations with Claude
 - 📝 **Code Generation** - Generate production-ready Python code
@@ -271,13 +271,13 @@ An intelligent AI coding assistant that helps you build projects, generate code,
 ## Quick Start
 
 ```bash
-pip install wyn360-cli
+pip install clawdeck
 export ANTHROPIC_API_KEY=your_key_here
-wyn360
+clawdeck
 ```
 
 [Get Started →](getting-started/installation.md){ .md-button .md-button--primary }
-[View on GitHub →](https://github.com/yiqiao-yin/wyn360-cli){ .md-button }
+[View on GitHub →](https://github.com/yiqiao-yin/clawdeck){ .md-button }
 ```
 
 **Content Distribution:**
@@ -292,7 +292,7 @@ wyn360
 1. **Package Structure**: Completely untouched
 2. **Build Process**: Uses same `poetry build` command
 3. **PyPI Publishing**: Uses same `poetry publish` command
-4. **Source Code**: No changes to `wyn360_cli/` directory
+4. **Source Code**: No changes to `clawdeck/` directory
 5. **Dependencies**: MkDocs added to dev group only
 6. **Git Branches**: `gh-pages` is separate and isolated
 
@@ -386,7 +386,7 @@ wyn360
 - **Status:** Complete
 - ✅ MkDocs build successful: `poetry run mkdocs build --clean`
 - ✅ Package build verified: `poetry build` works correctly
-- ✅ CLI functionality confirmed: `poetry run wyn360 --help` works
+- ✅ CLI functionality confirmed: `poetry run clawdeck --help` works
 - ✅ PyPI package structure unchanged
 - ✅ Development workflow unaffected
 
@@ -395,18 +395,18 @@ wyn360
 **PyPI Package Integrity:** ✅ CONFIRMED
 ```bash
 $ poetry build
-Building wyn360-cli (0.3.60)
+Building clawdeck (0.3.60)
 Building sdist
-  - Built wyn360_cli-0.3.60.tar.gz
+  - Built clawdeck-0.3.60.tar.gz
 Building wheel
-  - Built wyn360_cli-0.3.60-py3-none-any.whl
+  - Built clawdeck-0.3.60-py3-none-any.whl
 ```
 
 **CLI Functionality:** ✅ CONFIRMED
 ```bash
-$ poetry run wyn360 --help
-Usage: wyn360 [OPTIONS]
-WYN360 - An intelligent AI coding assistant CLI tool.
+$ poetry run clawdeck --help
+Usage: clawdeck [OPTIONS]
+Clawdeck - An intelligent AI coding assistant CLI tool.
 [Full help output working correctly]
 ```
 
@@ -428,7 +428,7 @@ INFO - Documentation built in 1.97 seconds
 1. Push changes to main branch
 2. Go to repository Settings → Pages
 3. Set source to "GitHub Actions"
-4. Documentation will be live at: `https://yiqiao-yin.github.io/wyn360-cli/`
+4. Documentation will be live at: `https://yiqiao-yin.github.io/clawdeck/`
 
 **To test locally:**
 ```bash
@@ -465,7 +465,7 @@ poetry run mkdocs gh-deploy
 - `poetry.lock` - Updated with new dependencies
 
 **Zero Risk Confirmed:**
-- No changes to `wyn360_cli/` source code
+- No changes to `clawdeck/` source code
 - No changes to package build process
 - No changes to PyPI publishing workflow
 - All MkDocs additions are development-only
@@ -474,7 +474,7 @@ poetry run mkdocs gh-deploy
 ## Expected Outcomes
 
 ### Documentation Site
-- **URL**: `https://yiqiao-yin.github.io/wyn360-cli/`
+- **URL**: `https://yiqiao-yin.github.io/clawdeck/`
 - **Features**: Professional, searchable documentation
 - **Content**: All existing docs + new organized structure
 - **Maintenance**: Automatic updates via GitHub Actions

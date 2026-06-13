@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, AsyncMock, patch
 
 class TestCompactionManager:
     def setup_method(self):
-        from wyn360_cli.compaction import CompactionManager, CompactionConfig
+        from clawdeck.compaction import CompactionManager, CompactionConfig
         self.mgr = CompactionManager(CompactionConfig(max_messages=10, preserve_recent=3))
 
     def test_should_not_compact_small(self):
@@ -47,7 +47,7 @@ class TestCompactionManager:
 
 class TestVimMode:
     def setup_method(self):
-        from wyn360_cli.vim_mode import VimModeManager, VimConfig
+        from clawdeck.vim_mode import VimModeManager, VimConfig
         self.vm = VimModeManager(VimConfig(enabled=False))
 
     def test_initial_state(self):
@@ -79,7 +79,7 @@ class TestVimMode:
 
 class TestVoiceInput:
     def test_not_available_without_package(self):
-        from wyn360_cli.voice import VoiceInputManager
+        from clawdeck.voice import VoiceInputManager
         vm = VoiceInputManager()
         # May or may not be available depending on environment
         status = vm.get_status()
@@ -87,7 +87,7 @@ class TestVoiceInput:
         assert "backend" in status
 
     def test_toggle(self):
-        from wyn360_cli.voice import VoiceInputManager
+        from clawdeck.voice import VoiceInputManager
         vm = VoiceInputManager()
         assert vm.toggle() == True
         assert vm.config.enabled
@@ -98,28 +98,28 @@ class TestVoiceInput:
 
 class TestBuddy:
     def test_generate_companion(self):
-        from wyn360_cli.buddy import generate_companion
+        from clawdeck.buddy import generate_companion
         c = generate_companion("test_user")
         assert c.name
         assert c.species
         assert c.rarity in ["common", "uncommon", "rare", "epic", "legendary"]
 
     def test_deterministic(self):
-        from wyn360_cli.buddy import generate_companion
+        from clawdeck.buddy import generate_companion
         c1 = generate_companion("same_seed")
         c2 = generate_companion("same_seed")
         assert c1.name == c2.name
         assert c1.species == c2.species
 
     def test_different_seeds(self):
-        from wyn360_cli.buddy import generate_companion
+        from clawdeck.buddy import generate_companion
         c1 = generate_companion("user_a")
         c2 = generate_companion("user_b")
         # Very unlikely to be identical
         assert c1.seed != c2.seed
 
     def test_companion_methods(self):
-        from wyn360_cli.buddy import generate_companion
+        from clawdeck.buddy import generate_companion
         c = generate_companion("test")
         assert c.emoji
         assert c.display_name
@@ -129,21 +129,21 @@ class TestBuddy:
         assert c.to_dict()
 
     def test_buddy_manager(self):
-        from wyn360_cli.buddy import BuddyManager
+        from clawdeck.buddy import BuddyManager
         bm = BuddyManager(enabled=True, seed="test")
         assert bm.companion is not None
         assert bm.get_greeting()
         assert bm.get_reaction("error")
 
     def test_buddy_toggle(self):
-        from wyn360_cli.buddy import BuddyManager
+        from clawdeck.buddy import BuddyManager
         bm = BuddyManager(enabled=False)
         assert bm.toggle() == True
         assert bm.companion is not None
         assert bm.toggle() == False
 
     def test_buddy_disabled_returns_empty(self):
-        from wyn360_cli.buddy import BuddyManager
+        from clawdeck.buddy import BuddyManager
         bm = BuddyManager(enabled=False)
         assert bm.get_greeting() == ""
         assert bm.get_reaction("success") == ""
@@ -153,7 +153,7 @@ class TestBuddy:
 
 class TestCronAgent:
     def setup_method(self):
-        from wyn360_cli.cron_agent import CronManager
+        from clawdeck.cron_agent import CronManager
         self.mgr = CronManager()
 
     def test_create_job(self):
@@ -163,7 +163,7 @@ class TestCronAgent:
         assert job.interval_display == "5m"
 
     def test_parse_interval(self):
-        from wyn360_cli.cron_agent import parse_interval
+        from clawdeck.cron_agent import parse_interval
         assert parse_interval("30s") == 30
         assert parse_interval("5m") == 300
         assert parse_interval("1h") == 3600
@@ -171,7 +171,7 @@ class TestCronAgent:
         assert parse_interval("10") == 600  # default to minutes
 
     def test_parse_interval_invalid(self):
-        from wyn360_cli.cron_agent import parse_interval
+        from clawdeck.cron_agent import parse_interval
         with pytest.raises(ValueError):
             parse_interval("abc")
 
@@ -210,7 +210,7 @@ class TestCronAgent:
 class TestPluginSystem:
     def setup_method(self):
         self.test_dir = Path(tempfile.mkdtemp()) / "plugins"
-        from wyn360_cli.plugin_system import PluginManager
+        from clawdeck.plugin_system import PluginManager
         self.pm = PluginManager(plugins_dir=self.test_dir)
 
     def teardown_method(self):
@@ -258,30 +258,30 @@ class TestPluginSystem:
 
 class TestLSPClient:
     def test_diagnostic_dataclass(self):
-        from wyn360_cli.lsp_client import Diagnostic
+        from clawdeck.lsp_client import Diagnostic
         d = Diagnostic(file="test.py", line=10, column=5, severity="error",
                        message="Undefined variable", source="pyright", code="reportUndefined")
         assert d.location == "test.py:10:5"
         assert d.to_dict()["severity"] == "error"
 
     def test_lsp_client_init(self):
-        from wyn360_cli.lsp_client import LSPClient
+        from clawdeck.lsp_client import LSPClient
         client = LSPClient()
         assert isinstance(client.available_servers, list)
 
     def test_get_summary_empty(self):
-        from wyn360_cli.lsp_client import LSPClient
+        from clawdeck.lsp_client import LSPClient
         client = LSPClient()
         summary = client.get_summary()
         assert summary["total"] == 0
 
     def test_format_diagnostics_empty(self):
-        from wyn360_cli.lsp_client import LSPClient
+        from clawdeck.lsp_client import LSPClient
         client = LSPClient()
         assert "No diagnostics" in client.format_diagnostics()
 
     def test_format_diagnostics_with_items(self):
-        from wyn360_cli.lsp_client import LSPClient, Diagnostic
+        from clawdeck.lsp_client import LSPClient, Diagnostic
         client = LSPClient()
         diags = [
             Diagnostic("a.py", 1, 0, "error", "Bad", "ruff", "E001"),
@@ -298,7 +298,7 @@ class TestLSPClient:
 
 class TestRewind:
     def setup_method(self):
-        from wyn360_cli.rewind import RewindManager
+        from clawdeck.rewind import RewindManager
         self.rm = RewindManager(max_snapshots=5)
 
     def test_take_snapshot(self):

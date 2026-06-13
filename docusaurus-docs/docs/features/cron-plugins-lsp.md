@@ -46,11 +46,11 @@ Created cron job 'Monitor Deploy' (every 10m): cron-a1b2c3
 
 ## Plugin System
 
-Install and manage plugins that extend WYN360 with new tools, hooks, or skills.
+Install and manage plugins that extend Clawdeck with new tools, hooks, or skills.
 
 ### Plugin Directory
 
-Plugins live in `~/.wyn360/plugins/`. Each plugin is a subdirectory with a `plugin.yaml` manifest and a Python entry point.
+Plugins live in `~/.clawdeck/plugins/`. Each plugin is a subdirectory with a `plugin.yaml` manifest and a Python entry point.
 
 ### Commands
 
@@ -70,7 +70,7 @@ Plugins live in `~/.wyn360/plugins/`. Each plugin is a subdirectory with a `plug
 
 This creates:
 ```
-~/.wyn360/plugins/my-analyzer/
+~/.clawdeck/plugins/my-analyzer/
   plugin.yaml    # Plugin metadata
   main.py        # Entry point
 ```
@@ -112,7 +112,7 @@ def get_tools():
 
 ## LSP Integration (Diagnostics)
 
-Run language server diagnostics (type checking, linting) directly from WYN360.
+Run language server diagnostics (type checking, linting) directly from Clawdeck.
 
 ### Commands
 
@@ -153,7 +153,7 @@ Undo mistakes by reverting to previous conversation states.
 
 ### How It Works
 
-After each turn, WYN360 automatically takes a snapshot of the conversation. You can rewind to any previous snapshot.
+After each turn, Clawdeck automatically takes a snapshot of the conversation. You can rewind to any previous snapshot.
 
 ### Commands
 

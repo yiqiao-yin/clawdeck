@@ -8,16 +8,16 @@ for all browser automation approaches with intelligent routing and fallbacks.
 import pytest
 import time
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from src.wyn360.tools.browser.unified_automation_interface import (
+from clawdeck.tools.browser.unified_automation_interface import (
     UnifiedAutomationInterface,
     UnifiedAutomationConfig
 )
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationApproach,
     ActionResult
 )
-from src.wyn360.tools.browser.stagehand_integration import StagehandExecutionPipeline
-from src.wyn360.tools.browser.vision_fallback_integration import VisionFallbackConfig
+from clawdeck.tools.browser.stagehand_integration import StagehandExecutionPipeline
+from clawdeck.tools.browser.vision_fallback_integration import VisionFallbackConfig
 
 
 class TestUnifiedAutomationConfig:
@@ -97,7 +97,7 @@ class TestUnifiedAutomationInterface:
 
     def test_initialization_default(self):
         """Test default initialization"""
-        with patch('src.wyn360.tools.browser.unified_automation_interface.enhanced_automation_orchestrator'):
+        with patch('clawdeck.tools.browser.unified_automation_interface.enhanced_automation_orchestrator'):
             interface = UnifiedAutomationInterface()
             assert interface.orchestrator is not None
             assert interface.execution_history == []

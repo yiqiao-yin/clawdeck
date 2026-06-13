@@ -1,14 +1,14 @@
-# WYN360 CLI
+# Clawdeck CLI
 
 An intelligent AI coding assistant CLI tool powered by Anthropic Claude.
 
-[![PyPI version](https://badge.fury.io/py/wyn360-cli.svg)](https://pypi.org/project/wyn360-cli/)
+[![PyPI version](https://badge.fury.io/py/clawdeck.svg)](https://pypi.org/project/clawdeck/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-📚 **Documentation:** https://yiqiao-yin.github.io/wyn360-cli/
+📚 **Documentation:** https://yiqiao-yin.github.io/clawdeck/
 
-🔗 **GitHub Repository:** https://github.com/yiqiao-yin/wyn360-cli
+🔗 **GitHub Repository:** https://github.com/yiqiao-yin/clawdeck
 
 ## 📑 Table of Contents
 
@@ -45,7 +45,7 @@ An intelligent AI coding assistant CLI tool powered by Anthropic Claude.
 
 ## 🎯 Overview
 
-WYN360 CLI is an AI-powered coding assistant that helps you build projects, generate code, and improve your codebase through natural language conversations. Built with pydantic-ai and Anthropic Claude, it provides intelligent file operations, command execution, and context-aware assistance.
+Clawdeck CLI is an AI-powered coding assistant that helps you build projects, generate code, and improve your codebase through natural language conversations. Built with pydantic-ai and Anthropic Claude, it provides intelligent file operations, command execution, and context-aware assistance.
 
 ## 🏗️ System Architecture
 
@@ -55,7 +55,7 @@ For a detailed architecture overview including all components, layers, and data 
 
 ### Basic Installation
 ```bash
-pip install wyn360-cli
+pip install clawdeck
 ```
 
 ### Optional: Enable Browser Use (Direct Website Fetching)
@@ -73,7 +73,7 @@ playwright install chromium
 
 ### 1. Choose your AI provider and set up credentials:
 
-WYN360 CLI supports four AI providers. Choose one:
+Clawdeck CLI supports four AI providers. Choose one:
 
 ---
 
@@ -202,14 +202,14 @@ export GEMINI_API_KEY=your_key_here
 
 ### 2. Run the CLI:
 ```bash
-wyn360
+clawdeck
 ```
 
 ### 3. Start chatting:
 ```
 You: Build a Streamlit app for data visualization
 
-WYN360: I'll create a Streamlit app for you...
+Clawdeck: I'll create a Streamlit app for you...
 [Generates complete code and saves to app.py]
 ```
 
@@ -244,8 +244,8 @@ WYN360: I'll create a Streamlit app for you...
 - ⚡ **Flexible Performance** - Balance between speed, capability, and cost
 
 ### Configuration & Personalization (v0.3.1)
-- ⚙️ **User Configuration** - Personal preferences via `~/.wyn360/config.yaml`
-- 📁 **Project Configuration** - Project-specific settings via `.wyn360.yaml`
+- ⚙️ **User Configuration** - Personal preferences via `~/.clawdeck/config.yaml`
+- 📁 **Project Configuration** - Project-specific settings via `.clawdeck.yaml`
 - 🎯 **Custom Instructions** - Add your coding standards to every conversation
 - 🏗️ **Project Context** - Help AI understand your tech stack automatically
 
@@ -291,7 +291,7 @@ WYN360: I'll create a Streamlit app for you...
 - 📏 **Smart Truncation** - Preserves document structure while staying under token limits
 - 🎯 **Configurable** - Adjust max tokens, cache settings, truncation strategy
 - 💾 **Cache Management** - View stats, clear cache, manage storage
-- 🖥️ **Browser Debugging** - Use `--show-browser` flag or `WYN360_BROWSER_SHOW=1` to see automation in action
+- 🖥️ **Browser Debugging** - Use `--show-browser` flag or `CLAWDECK_BROWSER_SHOW=1` to see automation in action
 - 🔄 **Interactive Error Recovery** - LLM-assisted error analysis with intelligent recovery options when automation fails
 
 ### Vision Mode for Document Images (v0.3.30)
@@ -311,23 +311,23 @@ WYN360: I'll create a Streamlit app for you...
 - 🔒 **Authenticated Browsing** - Works with saved login sessions
 
 ### Agentic Features (v0.4.0) 🆕
-- 🧠 **[Persistent Memory](https://yiqiao-yin.github.io/wyn360-cli/docs/features/agentic-memory)** - Cross-session memory with YAML frontmatter files and keyword relevance selection
-- 🤖 **[Sub-Agent Workers](https://yiqiao-yin.github.io/wyn360-cli/docs/features/planning-and-agents)** - Spawn parallel pydantic-ai agents for concurrent research and verification
-- 📋 **[Plan Mode](https://yiqiao-yin.github.io/wyn360-cli/docs/features/planning-and-agents)** - AI proactively enters plan mode for complex tasks, presents step-by-step plans for approval
-- 🔄 **[Token Budget Auto-Continue](https://yiqiao-yin.github.io/wyn360-cli/docs/features/hooks-and-budget)** - Automatically continues responses cut off by max_tokens
-- ⚡ **[Extensible Skills](https://yiqiao-yin.github.io/wyn360-cli/docs/features/agentic-memory)** - User-defined slash commands via YAML files in `~/.wyn360/skills/`
-- 🔧 **[Hook System](https://yiqiao-yin.github.io/wyn360-cli/docs/features/hooks-and-budget)** - Pre/post response hooks with built-in safety checks (runs automatically)
+- 🧠 **[Persistent Memory](https://yiqiao-yin.github.io/clawdeck/docs/features/agentic-memory)** - Cross-session memory with YAML frontmatter files and keyword relevance selection
+- 🤖 **[Sub-Agent Workers](https://yiqiao-yin.github.io/clawdeck/docs/features/planning-and-agents)** - Spawn parallel pydantic-ai agents for concurrent research and verification
+- 📋 **[Plan Mode](https://yiqiao-yin.github.io/clawdeck/docs/features/planning-and-agents)** - AI proactively enters plan mode for complex tasks, presents step-by-step plans for approval
+- 🔄 **[Token Budget Auto-Continue](https://yiqiao-yin.github.io/clawdeck/docs/features/hooks-and-budget)** - Automatically continues responses cut off by max_tokens
+- ⚡ **[Extensible Skills](https://yiqiao-yin.github.io/clawdeck/docs/features/agentic-memory)** - User-defined slash commands via YAML files in `~/.clawdeck/skills/`
+- 🔧 **[Hook System](https://yiqiao-yin.github.io/clawdeck/docs/features/hooks-and-budget)** - Pre/post response hooks with built-in safety checks (runs automatically)
 
 ### Advanced Agentic Features (v0.5.0) 🆕
-- 💤 **[Dream System](https://yiqiao-yin.github.io/wyn360-cli/docs/features/dream-and-compaction)** - Background memory consolidation reviews recent sessions automatically
-- 📦 **[Context Compaction](https://yiqiao-yin.github.io/wyn360-cli/docs/features/dream-and-compaction)** - Auto-drops old messages when conversation exceeds 50 messages
-- ⌨️ **[Vim Mode](https://yiqiao-yin.github.io/wyn360-cli/docs/features/vim-voice-buddy)** - Vi-style editing in the terminal (toggle with `/vim`)
-- 🎙️ **[Voice Input](https://yiqiao-yin.github.io/wyn360-cli/docs/features/vim-voice-buddy)** - Speech-to-text via Google (free) or OpenAI Whisper
-- 🐱 **[Buddy Companion](https://yiqiao-yin.github.io/wyn360-cli/docs/features/vim-voice-buddy)** - Virtual pet with species, rarity, personality, and event reactions
-- ⏰ **[Cron Agents](https://yiqiao-yin.github.io/wyn360-cli/docs/features/cron-plugins-lsp)** - Schedule recurring background tasks (e.g., monitor CI every 5 minutes)
-- 🔌 **[Plugin System](https://yiqiao-yin.github.io/wyn360-cli/docs/features/cron-plugins-lsp)** - Install/create plugins in `~/.wyn360/plugins/` with YAML manifests
-- 🔍 **[LSP Diagnostics](https://yiqiao-yin.github.io/wyn360-cli/docs/features/cron-plugins-lsp)** - Run pyright/ruff diagnostics with `/diagnostics`
-- ⏪ **[Rewind](https://yiqiao-yin.github.io/wyn360-cli/docs/features/cron-plugins-lsp)** - Undo mistakes by reverting to previous conversation states
+- 💤 **[Dream System](https://yiqiao-yin.github.io/clawdeck/docs/features/dream-and-compaction)** - Background memory consolidation reviews recent sessions automatically
+- 📦 **[Context Compaction](https://yiqiao-yin.github.io/clawdeck/docs/features/dream-and-compaction)** - Auto-drops old messages when conversation exceeds 50 messages
+- ⌨️ **[Vim Mode](https://yiqiao-yin.github.io/clawdeck/docs/features/vim-voice-buddy)** - Vi-style editing in the terminal (toggle with `/vim`)
+- 🎙️ **[Voice Input](https://yiqiao-yin.github.io/clawdeck/docs/features/vim-voice-buddy)** - Speech-to-text via Google (free) or OpenAI Whisper
+- 🐱 **[Buddy Companion](https://yiqiao-yin.github.io/clawdeck/docs/features/vim-voice-buddy)** - Virtual pet with species, rarity, personality, and event reactions
+- ⏰ **[Cron Agents](https://yiqiao-yin.github.io/clawdeck/docs/features/cron-plugins-lsp)** - Schedule recurring background tasks (e.g., monitor CI every 5 minutes)
+- 🔌 **[Plugin System](https://yiqiao-yin.github.io/clawdeck/docs/features/cron-plugins-lsp)** - Install/create plugins in `~/.clawdeck/plugins/` with YAML manifests
+- 🔍 **[LSP Diagnostics](https://yiqiao-yin.github.io/clawdeck/docs/features/cron-plugins-lsp)** - Run pyright/ruff diagnostics with `/diagnostics`
+- ⏪ **[Rewind](https://yiqiao-yin.github.io/clawdeck/docs/features/cron-plugins-lsp)** - Undo mistakes by reverting to previous conversation states
 
 ## 🎮 Usage Examples
 
@@ -335,7 +335,7 @@ WYN360: I'll create a Streamlit app for you...
 ```
 You: Create a FastAPI app with authentication
 
-WYN360:
+Clawdeck:
 - Generates main.py with FastAPI setup
 - Creates auth middleware
 - Adds example routes
@@ -346,7 +346,7 @@ WYN360:
 ```
 You: Add logging to my script.py
 
-WYN360:
+Clawdeck:
 - Reads current script.py
 - Adds logging configuration
 - Updates functions with log statements
@@ -357,7 +357,7 @@ WYN360:
 ```
 You: Run the analysis script
 
-WYN360: [Generates the command to run]
+Clawdeck: [Generates the command to run]
 
 ======================================================================
 ⚠️  COMMAND EXECUTION CONFIRMATION
@@ -381,7 +381,7 @@ Execute this command? (y/N): y
 ```
 You: Find a popular GitHub repo for machine learning
 
-WYN360: [Searches the web]
+Clawdeck: [Searches the web]
 
 Here are some popular GitHub repositories for machine learning:
 
@@ -406,7 +406,7 @@ Here are some popular GitHub repositories for machine learning:
 ```
 You: What's the weather in San Francisco?
 
-WYN360: [Searches for current weather]
+Clawdeck: [Searches for current weather]
 
 Current weather in San Francisco:
 🌤️ 62°F (17°C), Partly cloudy
@@ -421,7 +421,7 @@ Source: [Weather service URL]
 ```
 You: Read https://github.com/yiqiao-yin/deepspeed-course
 
-WYN360: [Fetches the specific URL directly]
+Clawdeck: [Fetches the specific URL directly]
 
 📄 **Fetched:** https://github.com/yiqiao-yin/deepspeed-course
 
@@ -446,9 +446,9 @@ This repository contains comprehensive course materials for DeepSpeed training..
 ```
 You: Show cache stats
 
-WYN360: 📊 **Website Cache Statistics**
+Clawdeck: 📊 **Website Cache Statistics**
 
-**Location:** `~/.wyn360/cache/fetched_sites`
+**Location:** `~/.clawdeck/cache/fetched_sites`
 
 **Total Entries:** 3
 **Total Size:** 2.4 MB
@@ -464,7 +464,7 @@ WYN360: 📊 **Website Cache Statistics**
 ```
 You: Read quarterly_report.docx with vision mode
 
-WYN360: [Extracts and processes document with image descriptions]
+Clawdeck: [Extracts and processes document with image descriptions]
 
 # Quarterly Report Summary
 
@@ -536,7 +536,7 @@ to the backend services.
 **Example Usage:**
 ```
 You: Write a data analysis script
-WYN360: [Creates analysis.py]
+Clawdeck: [Creates analysis.py]
 
 You: /tokens
 [Shows token usage: 1,500 input tokens, 800 output tokens, $0.02 cost]
@@ -559,18 +559,18 @@ You: /load my_analysis_session.json
 
 ## 📚 Documentation
 
-**Full documentation:** https://yiqiao-yin.github.io/wyn360-cli/docs/
+**Full documentation:** https://yiqiao-yin.github.io/clawdeck/docs/
 
 Key pages:
-- **[Features Overview](https://yiqiao-yin.github.io/wyn360-cli/docs/features/overview)** - All features with comparisons
-- **[Memory & Skills](https://yiqiao-yin.github.io/wyn360-cli/docs/features/agentic-memory)** - Persistent memory and custom commands
-- **[Planning & Sub-Agents](https://yiqiao-yin.github.io/wyn360-cli/docs/features/planning-and-agents)** - Plan mode and parallel workers
-- **[Hooks & Token Budget](https://yiqiao-yin.github.io/wyn360-cli/docs/features/hooks-and-budget)** - Pipeline hooks and auto-continue
-- **[Dream & Compaction](https://yiqiao-yin.github.io/wyn360-cli/docs/features/dream-and-compaction)** - Background memory consolidation
-- **[Vim, Voice & Buddy](https://yiqiao-yin.github.io/wyn360-cli/docs/features/vim-voice-buddy)** - Input modes and companion
-- **[Cron, Plugins & LSP](https://yiqiao-yin.github.io/wyn360-cli/docs/features/cron-plugins-lsp)** - Scheduled agents, plugins, diagnostics, rewind
-- **[System Architecture](https://yiqiao-yin.github.io/wyn360-cli/docs/architecture/system)** - Architecture overview with diagrams
-- **[Commands Reference](https://yiqiao-yin.github.io/wyn360-cli/docs/usage/commands)** - All slash commands
+- **[Features Overview](https://yiqiao-yin.github.io/clawdeck/docs/features/overview)** - All features with comparisons
+- **[Memory & Skills](https://yiqiao-yin.github.io/clawdeck/docs/features/agentic-memory)** - Persistent memory and custom commands
+- **[Planning & Sub-Agents](https://yiqiao-yin.github.io/clawdeck/docs/features/planning-and-agents)** - Plan mode and parallel workers
+- **[Hooks & Token Budget](https://yiqiao-yin.github.io/clawdeck/docs/features/hooks-and-budget)** - Pipeline hooks and auto-continue
+- **[Dream & Compaction](https://yiqiao-yin.github.io/clawdeck/docs/features/dream-and-compaction)** - Background memory consolidation
+- **[Vim, Voice & Buddy](https://yiqiao-yin.github.io/clawdeck/docs/features/vim-voice-buddy)** - Input modes and companion
+- **[Cron, Plugins & LSP](https://yiqiao-yin.github.io/clawdeck/docs/features/cron-plugins-lsp)** - Scheduled agents, plugins, diagnostics, rewind
+- **[System Architecture](https://yiqiao-yin.github.io/clawdeck/docs/architecture/system)** - Architecture overview with diagrams
+- **[Commands Reference](https://yiqiao-yin.github.io/clawdeck/docs/usage/commands)** - All slash commands
 
 ## 🛠️ Development & Testing
 
@@ -584,8 +584,8 @@ Key pages:
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yiqiao-yin/wyn360-cli.git
-cd wyn360-cli
+git clone https://github.com/yiqiao-yin/clawdeck.git
+cd clawdeck
 ```
 
 2. **Install Poetry** (if not already installed):
@@ -609,12 +609,12 @@ This will:
 **Run all tests with verbose output:**
 ```bash
 # Skip command confirmation prompts in tests
-WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
+CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v
 ```
 
 **Run tests with short traceback:**
 ```bash
-WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v --tb=short
+CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v --tb=short
 ```
 
 **Run specific test file:**
@@ -629,7 +629,7 @@ poetry run pytest tests/test_utils.py::TestExecuteCommandSafe -v
 
 **Run with coverage report:**
 ```bash
-poetry run pytest tests/ --cov=wyn360_cli --cov-report=html
+poetry run pytest tests/ --cov=clawdeck --cov-report=html
 ```
 
 ### Test Structure
@@ -660,16 +660,16 @@ When all tests pass, you should see:
 ============================= test session starts ==============================
 platform linux -- Python 3.10.12, pytest-8.4.2, pluggy-1.6.0
 cachedir: .pytest_cache
-rootdir: /home/workbench/wyn360-cli/wyn360-cli
+rootdir: /home/workbench/clawdeck/clawdeck
 configfile: pyproject.toml
 plugins: asyncio-1.2.0, mock-3.15.1
 collected 133 items
 
-tests/test_agent.py::TestWYN360Agent::test_agent_initialization PASSED   [  1%]
+tests/test_agent.py::TestClawdeckAgent::test_agent_initialization PASSED   [  1%]
 tests/test_agent.py::TestHistoryManagement::test_clear_history PASSED    [ 18%]
 tests/test_agent.py::TestStreaming::test_chat_stream_method_exists PASSED [ 40%]
 tests/test_cli.py::TestSlashCommands::test_clear_command PASSED          [ 42%]
-tests/test_config.py::TestWYN360Config::test_default_values PASSED       [ 60%]
+tests/test_config.py::TestClawdeckConfig::test_default_values PASSED       [ 60%]
 ...
 tests/test_utils.py::TestExecuteCommandSafe::test_execute_python_script PASSED [100%]
 
@@ -684,8 +684,8 @@ poetry build
 ```
 
 This creates:
-- `dist/wyn360_cli-X.Y.Z.tar.gz` (source distribution)
-- `dist/wyn360_cli-X.Y.Z-py3-none-any.whl` (wheel)
+- `dist/clawdeck-X.Y.Z.tar.gz` (source distribution)
+- `dist/clawdeck-X.Y.Z-py3-none-any.whl` (wheel)
 
 **Publish to PyPI:**
 ```bash
@@ -701,7 +701,7 @@ poetry build && poetry publish
 
 Update version in these files:
 - `pyproject.toml` - `version = "X.Y.Z"`
-- `wyn360_cli/__init__.py` - `__version__ = "X.Y.Z"`
+- `clawdeck/__init__.py` - `__version__ = "X.Y.Z"`
 - `USE_CASES.md` - Update changelog and version number
 
 ### Development Workflow
@@ -714,7 +714,7 @@ git checkout -b feature/your-feature-name
 2. **Make changes and test:**
 ```bash
 # Make your changes
-WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
+CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v
 ```
 
 3. **Update version and documentation:**
@@ -744,8 +744,8 @@ git push origin main
 | `CHOOSE_CLIENT` | AI provider selection: `1`=Anthropic, `2`=Bedrock, `3`=Gemini, `0`=Auto-detect | `0` (auto) |
 | `MAX_TOKEN` | Maximum tokens for model output (can also use `--max-token` CLI arg) | `4096` |
 | `MAX_INTERNET_SEARCH_LIMIT` | Maximum web searches per session (can also use `--max-internet-search-limit` CLI arg) | `5` |
-| `WYN360_SKIP_CONFIRM` | Skip command execution confirmations | `0` (disabled) |
-| `WYN360_BROWSER_SHOW` | Show browser window during automation (can also use `--show-browser` CLI arg) | `0` (headless) |
+| `CLAWDECK_SKIP_CONFIRM` | Skip command execution confirmations | `0` (disabled) |
+| `CLAWDECK_BROWSER_SHOW` | Show browser window during automation (can also use `--show-browser` CLI arg) | `0` (headless) |
 
 ### Anthropic Claude (CHOOSE_CLIENT=1)
 
@@ -787,8 +787,8 @@ MAX_TOKEN=4096
 MAX_INTERNET_SEARCH_LIMIT=5
 GH_TOKEN=ghp_your_github_token
 HF_TOKEN=hf_your_huggingface_token
-WYN360_SKIP_CONFIRM=0
-WYN360_BROWSER_SHOW=0
+CLAWDECK_SKIP_CONFIRM=0
+CLAWDECK_BROWSER_SHOW=0
 ```
 
 **Setup Example (Google Gemini):** 🆕
@@ -800,8 +800,8 @@ GEMINI_MODEL=gemini-2.5-flash
 MAX_TOKEN=4096
 GH_TOKEN=ghp_your_github_token
 HF_TOKEN=hf_your_huggingface_token
-WYN360_SKIP_CONFIRM=0
-WYN360_BROWSER_SHOW=0
+CLAWDECK_SKIP_CONFIRM=0
+CLAWDECK_BROWSER_SHOW=0
 ```
 
 **Setup Example (AWS Bedrock):**
@@ -816,14 +816,14 @@ ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0
 MAX_TOKEN=4096
 GH_TOKEN=ghp_your_github_token
 HF_TOKEN=hf_your_huggingface_token
-WYN360_SKIP_CONFIRM=0
-WYN360_BROWSER_SHOW=0
+CLAWDECK_SKIP_CONFIRM=0
+CLAWDECK_BROWSER_SHOW=0
 ```
 
 **Notes:**
 - Set `CHOOSE_CLIENT=0` (or omit it) for auto-detection based on available API keys
-- Set `WYN360_SKIP_CONFIRM=1` to skip confirmation prompts (useful for testing or automation)
-- Set `WYN360_BROWSER_SHOW=1` to show browser window during automation (useful for debugging)
+- Set `CLAWDECK_SKIP_CONFIRM=1` to skip confirmation prompts (useful for testing or automation)
+- Set `CLAWDECK_BROWSER_SHOW=1` to show browser window during automation (useful for debugging)
 - Gemini is ~40x cheaper than Claude and has 2M context window!
 
 ## 📋 Requirements
@@ -847,11 +847,11 @@ playwright install chromium
 
 ## Web Terminal
 
-WYN360 is also available as a browser-based terminal at:
+Clawdeck is also available as a browser-based terminal at:
 
-**https://wyn360terminal-app.azurewebsites.net**
+**https://clawdeckterminal-app.azurewebsites.net**
 
-This is a real Linux terminal running in your browser with `wyn360` pre-installed. No account or login required -- just open the URL and start using it.
+This is a real Linux terminal running in your browser with `clawdeck` pre-installed. No account or login required -- just open the URL and start using it.
 
 ### Usage
 
@@ -862,7 +862,7 @@ This is a real Linux terminal running in your browser with `wyn360` pre-installe
    ```
 3. Launch the assistant:
    ```bash
-   wyn360
+   clawdeck
    ```
 
 All four AI providers are supported (Anthropic, AWS Bedrock, Google Gemini, OpenAI). Your API keys are never stored on the server -- they only exist in your browser terminal session and are discarded when you close the tab.
@@ -876,20 +876,20 @@ az login
 bash deploy-azure.sh
 ```
 
-This creates four Azure resources (all prefixed `wyn360terminal`):
+This creates four Azure resources (all prefixed `clawdeckterminal`):
 
 | Resource | Name | Purpose |
 |----------|------|---------|
-| Resource Group | `wyn360terminal-rg` | Container for all resources |
-| Container Registry | `wyn360terminalacr` | Stores the Docker image |
-| App Service Plan | `wyn360terminal-plan` (B1) | Compute for the web app |
-| Web App | `wyn360terminal-app` | Serves the terminal UI |
+| Resource Group | `clawdeckterminal-rg` | Container for all resources |
+| Container Registry | `clawdeckterminalacr` | Stores the Docker image |
+| App Service Plan | `clawdeckterminal-plan` (B1) | Compute for the web app |
+| Web App | `clawdeckterminal-app` | Serves the terminal UI |
 
-The container uses [ttyd](https://github.com/tsl0922/ttyd) to expose a bash shell over WebSocket, with `wyn360` pre-installed. No secrets are baked into the image.
+The container uses [ttyd](https://github.com/tsl0922/ttyd) to expose a bash shell over WebSocket, with `clawdeck` pre-installed. No secrets are baked into the image.
 
 To tear down:
 ```bash
-az group delete --name wyn360terminal-rg --yes
+az group delete --name clawdeckterminal-rg --yes
 ```
 
 ### Related Files
@@ -905,7 +905,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Run tests (`WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v`)
+3. Run tests (`CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v`)
 4. Commit your changes (`git commit -m 'feat: add amazing feature'`)
 5. Push to the branch (`git push origin feature/amazing-feature`)
 6. Open a Pull Request
@@ -929,8 +929,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🔗 Links
 
-- **PyPI:** https://pypi.org/project/wyn360-cli/
-- **GitHub:** https://github.com/yiqiao-yin/wyn360-cli
+- **PyPI:** https://pypi.org/project/clawdeck/
+- **GitHub:** https://github.com/yiqiao-yin/clawdeck
 - **Documentation:**
   - [USE_CASES.md](docs/USE_CASES.md) - Usage examples and workflows
   - [COST.md](docs/COST.md) - Pricing and token configuration

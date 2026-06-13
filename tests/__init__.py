@@ -1,1 +1,1 @@
-"""Tests for WYN360 CLI package"""
+"""Tests for Clawdeck CLI package"""

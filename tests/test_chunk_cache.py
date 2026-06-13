@@ -15,7 +15,7 @@ import pytest
 import tempfile
 import time
 from pathlib import Path
-from wyn360_cli.document_readers import ChunkCache, ChunkMetadata, DocumentMetadata
+from clawdeck.document_readers import ChunkCache, ChunkMetadata, DocumentMetadata
 
 
 class TestChunkCache:
@@ -36,7 +36,7 @@ class TestChunkCache:
         """Test cache uses default directory if not specified."""
         cache = ChunkCache()
 
-        expected_dir = Path.home() / ".wyn360" / "cache" / "documents"
+        expected_dir = Path.home() / ".clawdeck" / "cache" / "documents"
         assert cache.cache_dir == expected_dir
         assert cache.cache_dir.exists()
 

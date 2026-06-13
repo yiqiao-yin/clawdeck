@@ -5,8 +5,8 @@ import tempfile
 import yaml
 from pathlib import Path
 from unittest.mock import patch, MagicMock
-from wyn360_cli.config import (
-    WYN360Config,
+from clawdeck.config import (
+    ClawdeckConfig,
     get_user_config_path,
     get_project_config_path,
     load_yaml_file,
@@ -19,12 +19,12 @@ from wyn360_cli.config import (
 )
 
 
-class TestWYN360Config:
-    """Tests for WYN360Config dataclass"""
+class TestClawdeckConfig:
+    """Tests for ClawdeckConfig dataclass"""
 
     def test_default_values(self):
         """Test that default values are set correctly"""
-        config = WYN360Config()
+        config = ClawdeckConfig()
 
         assert config.model == "claude-sonnet-4-20250514"
         assert config.max_tokens == 4096
@@ -44,16 +44,16 @@ class TestConfigPaths:
         """Test user config path is in home directory"""
         path = get_user_config_path()
 
-        assert path == Path.home() / ".wyn360" / "config.yaml"
+        assert path == Path.home() / ".clawdeck" / "config.yaml"
         assert isinstance(path, Path)
 
     def test_get_project_config_path_exists(self):
         """Test project config path when file exists"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config_file = Path(tmpdir) / ".wyn360.yaml"
+            config_file = Path(tmpdir) / ".clawdeck.yaml"
             config_file.touch()
 
-            with patch('wyn360_cli.config.Path.cwd', return_value=Path(tmpdir)):
+            with patch('clawdeck.config.Path.cwd', return_value=Path(tmpdir)):
                 path = get_project_config_path()
 
                 assert path == config_file
@@ -62,7 +62,7 @@ class TestConfigPaths:
     def test_get_project_config_path_not_exists(self):
         """Test project config path when file doesn't exist"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            with patch('wyn360_cli.config.Path.cwd', return_value=Path(tmpdir)):
+            with patch('clawdeck.config.Path.cwd', return_value=Path(tmpdir)):
                 path = get_project_config_path()
 
                 assert path is None
@@ -123,7 +123,7 @@ class TestLoadUserConfig:
     def test_load_user_config_exists(self):
         """Test loading user config when it exists"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config_path = Path(tmpdir) / ".wyn360" / "config.yaml"
+            config_path = Path(tmpdir) / ".clawdeck" / "config.yaml"
             config_path.parent.mkdir(parents=True, exist_ok=True)
 
             config_data = {
@@ -135,14 +135,14 @@ class TestLoadUserConfig:
             with open(config_path, 'w') as f:
                 yaml.dump(config_data, f)
 
-            with patch('wyn360_cli.config.get_user_config_path', return_value=config_path):
+            with patch('clawdeck.config.get_user_config_path', return_value=config_path):
                 data = load_user_config()
 
                 assert data == config_data
 
     def test_load_user_config_not_exists(self):
         """Test loading user config when it doesn't exist"""
-        with patch('wyn360_cli.config.get_user_config_path', return_value=Path("/nonexistent/config.yaml")):
+        with patch('clawdeck.config.get_user_config_path', return_value=Path("/nonexistent/config.yaml")):
             data = load_user_config()
 
             assert data == {}
@@ -154,7 +154,7 @@ class TestLoadProjectConfig:
     def test_load_project_config_exists(self):
         """Test loading project config when it exists"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config_path = Path(tmpdir) / ".wyn360.yaml"
+            config_path = Path(tmpdir) / ".clawdeck.yaml"
 
             config_data = {
                 "context": "This is a FastAPI project",
@@ -165,14 +165,14 @@ class TestLoadProjectConfig:
             with open(config_path, 'w') as f:
                 yaml.dump(config_data, f)
 
-            with patch('wyn360_cli.config.get_project_config_path', return_value=config_path):
+            with patch('clawdeck.config.get_project_config_path', return_value=config_path):
                 data = load_project_config()
 
                 assert data == config_data
 
     def test_load_project_config_not_exists(self):
         """Test loading project config when it doesn't exist"""
-        with patch('wyn360_cli.config.get_project_config_path', return_value=None):
+        with patch('clawdeck.config.get_project_config_path', return_value=None):
             data = load_project_config()
 
             assert data == {}
@@ -260,7 +260,7 @@ class TestLoadConfig:
         """Test full config loading integration"""
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create user config
-            user_config_path = Path(tmpdir) / ".wyn360" / "config.yaml"
+            user_config_path = Path(tmpdir) / ".clawdeck" / "config.yaml"
             user_config_path.parent.mkdir(parents=True, exist_ok=True)
 
             user_data = {"model": "claude-sonnet-4-20250514", "max_tokens": 4096}
@@ -269,14 +269,14 @@ class TestLoadConfig:
                 yaml.dump(user_data, f)
 
             # Create project config
-            project_config_path = Path(tmpdir) / ".wyn360.yaml"
+            project_config_path = Path(tmpdir) / ".clawdeck.yaml"
             project_data = {"context": "Test project"}
 
             with open(project_config_path, 'w') as f:
                 yaml.dump(project_data, f)
 
-            with patch('wyn360_cli.config.get_user_config_path', return_value=user_config_path):
-                with patch('wyn360_cli.config.get_project_config_path', return_value=project_config_path):
+            with patch('clawdeck.config.get_user_config_path', return_value=user_config_path):
+                with patch('clawdeck.config.get_project_config_path', return_value=project_config_path):
                     config = load_config()
 
                     assert config.model == "claude-sonnet-4-20250514"
@@ -290,9 +290,9 @@ class TestCreateDefaultConfigs:
     def test_create_default_user_config(self):
         """Test creating default user config"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config_path = Path(tmpdir) / ".wyn360" / "config.yaml"
+            config_path = Path(tmpdir) / ".clawdeck" / "config.yaml"
 
-            with patch('wyn360_cli.config.get_user_config_path', return_value=config_path):
+            with patch('clawdeck.config.get_user_config_path', return_value=config_path):
                 success = create_default_user_config()
 
                 assert success is True
@@ -307,11 +307,11 @@ class TestCreateDefaultConfigs:
     def test_create_default_user_config_already_exists(self):
         """Test creating default user config when it already exists"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config_path = Path(tmpdir) / ".wyn360" / "config.yaml"
+            config_path = Path(tmpdir) / ".clawdeck" / "config.yaml"
             config_path.parent.mkdir(parents=True, exist_ok=True)
             config_path.touch()
 
-            with patch('wyn360_cli.config.get_user_config_path', return_value=config_path):
+            with patch('clawdeck.config.get_user_config_path', return_value=config_path):
                 success = create_default_user_config()
 
                 assert success is False  # Should not overwrite
@@ -319,9 +319,9 @@ class TestCreateDefaultConfigs:
     def test_create_default_project_config(self):
         """Test creating default project config"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config_path = Path(tmpdir) / ".wyn360.yaml"
+            config_path = Path(tmpdir) / ".clawdeck.yaml"
 
-            with patch('wyn360_cli.config.Path.cwd', return_value=Path(tmpdir)):
+            with patch('clawdeck.config.Path.cwd', return_value=Path(tmpdir)):
                 success = create_default_project_config()
 
                 assert success is True
@@ -336,10 +336,10 @@ class TestCreateDefaultConfigs:
     def test_create_default_project_config_already_exists(self):
         """Test creating default project config when it already exists"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            config_path = Path(tmpdir) / ".wyn360.yaml"
+            config_path = Path(tmpdir) / ".clawdeck.yaml"
             config_path.touch()
 
-            with patch('wyn360_cli.config.Path.cwd', return_value=Path(tmpdir)):
+            with patch('clawdeck.config.Path.cwd', return_value=Path(tmpdir)):
                 success = create_default_project_config()
 
                 assert success is False  # Should not overwrite
@@ -350,27 +350,27 @@ class TestConfigWithAgent:
 
     def test_agent_uses_config_model(self):
         """Test that agent uses model from config"""
-        from wyn360_cli.agent import WYN360Agent
+        from clawdeck.agent import ClawdeckAgent
 
-        config = WYN360Config(model="claude-3-5-haiku-20241022")
-        agent = WYN360Agent(api_key="test_key", config=config)
+        config = ClawdeckConfig(model="claude-3-5-haiku-20241022")
+        agent = ClawdeckAgent(api_key="test_key", config=config)
 
         assert agent.model_name == "claude-3-5-haiku-20241022"
 
     def test_agent_without_config_uses_default(self):
         """Test that agent uses default model without config"""
-        from wyn360_cli.agent import WYN360Agent
+        from clawdeck.agent import ClawdeckAgent
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         assert agent.model_name == "claude-sonnet-4-20250514"
 
     def test_agent_cli_arg_overrides_config(self):
         """Test that CLI model argument overrides config"""
-        from wyn360_cli.agent import WYN360Agent
+        from clawdeck.agent import ClawdeckAgent
 
-        config = WYN360Config(model="claude-sonnet-4-20250514")
-        agent = WYN360Agent(api_key="test_key", model="claude-3-5-haiku-20241022", config=config)
+        config = ClawdeckConfig(model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-3-5-haiku-20241022", config=config)
 
         # CLI arg should take precedence (Note: This is a design decision for the test)
         # In current implementation, config model is used if config is provided

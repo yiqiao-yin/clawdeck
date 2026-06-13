@@ -1,4 +1,4 @@
-# WYN360 CLI - DOM-First Browser Automation Enhancement Roadmap
+# Clawdeck CLI - DOM-First Browser Automation Enhancement Roadmap
 
 **Status:** 🚧 In Development
 **Priority:** HIGH - Performance & Cost Optimization
@@ -9,7 +9,7 @@
 
 ## 📋 Executive Summary
 
-This roadmap outlines the enhancement of WYN360 CLI's autonomous browser automation capabilities by implementing a **DOM-first approach with intelligent fallbacks**. The goal is to replace the current expensive and slow vision-based system with a faster, cheaper, and more reliable solution.
+This roadmap outlines the enhancement of Clawdeck CLI's autonomous browser automation capabilities by implementing a **DOM-first approach with intelligent fallbacks**. The goal is to replace the current expensive and slow vision-based system with a faster, cheaper, and more reliable solution.
 
 ### Current Problem
 
@@ -132,7 +132,7 @@ This roadmap outlines the enhancement of WYN360 CLI's autonomous browser automat
 ### **Tool Interface Design**
 
 ```python
-# New pydantic-ai tools in WYN360Agent:
+# New pydantic-ai tools in ClawdeckAgent:
 
 @tool
 async def browse_page_intelligently(
@@ -221,10 +221,10 @@ graph TD
 ### **Environment Variables**
 ```bash
 # New browser control flags (to be documented in README.md)
-WYN360_BROWSER_HEADLESS=true          # Default: true
-WYN360_BROWSER_SHOW=false             # Override with --show-browser
-WYN360_DOM_CONFIDENCE_THRESHOLD=0.7   # DOM action confidence threshold
-WYN360_STAGEHAND_CACHE=true           # Enable pattern caching
+CLAWDECK_BROWSER_HEADLESS=true          # Default: true
+CLAWDECK_BROWSER_SHOW=false             # Override with --show-browser
+CLAWDECK_DOM_CONFIDENCE_THRESHOLD=0.7   # DOM action confidence threshold
+CLAWDECK_STAGEHAND_CACHE=true           # Enable pattern caching
 ```
 
 ---
@@ -284,7 +284,7 @@ WYN360_STAGEHAND_CACHE=true           # Enable pattern caching
 
 ### **Code Organization**
 ```
-src/wyn360/tools/
+src/clawdeck/tools/
 ├── browser/
 │   ├── dom_analyzer.py          # Phase 1
 │   ├── stagehand_generator.py   # Phase 2
@@ -421,14 +421,14 @@ Unified Error Handling → Consistent Results & Analytics
 ### **Technical Implementation:**
 - **3 New/Enhanced Modules:** Enhanced orchestrator with interactive capabilities, unified browser manager, and interactive error handler
 - **100+ Functions:** Complete browser control implementation with error recovery, resource management, and user interaction
-- **Environment Variable Integration:** `WYN360_BROWSER_SHOW=1` support with CLI flag precedence
+- **Environment Variable Integration:** `CLAWDECK_BROWSER_SHOW=1` support with CLI flag precedence
 - **Agent Integration:** Full agent injection for LLM-assisted error analysis and recovery suggestions
 
 ### **Architecture Delivered:**
 ```
 Browser Control Layer
 ├── --show-browser CLI flag
-├── WYN360_BROWSER_SHOW env var
+├── CLAWDECK_BROWSER_SHOW env var
 ├── UnifiedBrowserManager (singleton)
 │   ├── Shared Playwright instances
 │   ├── Context & page management
@@ -480,5 +480,5 @@ RecoveryAction.ABORT_TASK              # Stop automation gracefully
 
 **Last Updated:** November 24, 2025
 **Document Version:** 2.0
-**Maintained by:** WYN360 CLI Development Team
+**Maintained by:** Clawdeck CLI Development Team
 **Next Review Date:** December 1, 2025

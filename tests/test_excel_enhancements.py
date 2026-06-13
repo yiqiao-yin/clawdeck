@@ -19,7 +19,7 @@ import sys
 sys.modules['openpyxl'] = MagicMock()
 sys.modules['openpyxl.chart'] = MagicMock()
 
-from wyn360_cli.document_readers import ExcelReader
+from clawdeck.document_readers import ExcelReader
 
 
 def create_mock_sheet(title="Sheet1", cells_data=None):
@@ -64,8 +64,8 @@ class TestExcelChartExtraction:
 
             assert reader.extract_charts is False
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_extract_charts_from_sheet(self, mock_openpyxl):
         """Test extracting charts from Excel sheet."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -130,8 +130,8 @@ class TestExcelChartExtraction:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_sheet_without_charts(self, mock_openpyxl):
         """Test sheet with no charts."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -155,8 +155,8 @@ class TestExcelChartExtraction:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_chart_extraction_disabled(self, mock_openpyxl):
         """Test that charts are not extracted when disabled."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -198,8 +198,8 @@ class TestExcelNamedRanges:
 
             assert reader.extract_named_ranges is True
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_extract_named_ranges(self, mock_openpyxl):
         """Test extracting named ranges from workbook."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -245,8 +245,8 @@ class TestExcelNamedRanges:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_workbook_without_named_ranges(self, mock_openpyxl):
         """Test workbook with no named ranges."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -274,8 +274,8 @@ class TestExcelNamedRanges:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_named_ranges_disabled(self, mock_openpyxl):
         """Test that named ranges are not extracted when disabled."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -321,8 +321,8 @@ class TestExcelFormulaTracking:
 
             assert reader.track_formulas is True
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_track_formulas_in_sheet(self, mock_openpyxl):
         """Test tracking formulas in Excel sheet."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -367,8 +367,8 @@ class TestExcelFormulaTracking:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_sheet_without_formulas(self, mock_openpyxl):
         """Test sheet with no formulas."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -397,8 +397,8 @@ class TestExcelFormulaTracking:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_formula_tracking_disabled(self, mock_openpyxl):
         """Test that formulas are not tracked when disabled."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -434,8 +434,8 @@ class TestExcelFormulaTracking:
 class TestExcelEnhancementsIntegration:
     """Test integration of all enhancements together."""
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_all_enhancements_enabled(self, mock_openpyxl):
         """Test all enhancements working together."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -491,8 +491,8 @@ class TestExcelEnhancementsIntegration:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_all_enhancements_disabled(self, mock_openpyxl):
         """Test all enhancements disabled (backward compatibility)."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:

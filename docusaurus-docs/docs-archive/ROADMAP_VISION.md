@@ -1,4 +1,4 @@
-# WYN360 CLI - Vision Mode Implementation Roadmap
+# Clawdeck CLI - Vision Mode Implementation Roadmap
 
 **Status:** ✅ Phase 5.1 - Implementation Complete (Documentation in Progress)
 **Priority:** High (Phase 5.1)
@@ -62,7 +62,7 @@ This roadmap outlines the implementation of **Vision Mode** - a feature that ena
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    WYN360 Agent                              │
+│                    Clawdeck Agent                              │
 │  ┌────────────────────────────────────────────────────┐     │
 │  │  read_word() / read_pdf()                          │     │
 │  │  - Check image_handling_mode                       │     │
@@ -218,7 +218,7 @@ User: receives document with image descriptions
 
 **Step 1: Add Image Extraction Method to WordReader**
 
-Location: `wyn360_cli/document_readers.py` (after line 1327, in WordReader class)
+Location: `clawdeck/document_readers.py` (after line 1327, in WordReader class)
 
 ```python
 def _extract_images(self, doc) -> List[Dict[str, Any]]:
@@ -332,7 +332,7 @@ async def read(self, image_processor: Optional['ImageProcessor'] = None) -> Dict
 ```
 
 #### Files Modified
-- `wyn360_cli/document_readers.py` - WordReader class (~150 new lines)
+- `clawdeck/document_readers.py` - WordReader class (~150 new lines)
 
 #### Tests Required
 - `test_word_reader.py`:
@@ -352,7 +352,7 @@ async def read(self, image_processor: Optional['ImageProcessor'] = None) -> Dict
 
 **Step 1: Add Image Extraction for PyMuPDF**
 
-Location: `wyn360_cli/document_readers.py` (in PDFReader class)
+Location: `clawdeck/document_readers.py` (in PDFReader class)
 
 ```python
 def _extract_images_pymupdf(self, page, page_num: int) -> List[Dict[str, Any]]:
@@ -438,7 +438,7 @@ Modify `_read_with_pymupdf()` and `_read_with_pdfplumber()` to:
 - Track image count
 
 #### Files Modified
-- `wyn360_cli/document_readers.py` - PDFReader class (~200 new lines)
+- `clawdeck/document_readers.py` - PDFReader class (~200 new lines)
 
 #### Tests Required
 - `test_pdf_reader.py`:
@@ -458,7 +458,7 @@ Modify `_read_with_pymupdf()` and `_read_with_pdfplumber()` to:
 
 **Step 1: Update Agent Initialization**
 
-Location: `wyn360_cli/agent.py` (around line 100-110)
+Location: `clawdeck/agent.py` (around line 100-110)
 
 ```python
 # Add to __init__
@@ -468,7 +468,7 @@ self.vision_enabled = False  # Can be toggled
 
 **Step 2: Update read_word() Method**
 
-Location: `wyn360_cli/agent.py` (around line 2178)
+Location: `clawdeck/agent.py` (around line 2178)
 
 ```python
 async def read_word(
@@ -526,7 +526,7 @@ async def read_word(
 
 **Step 4: Update /tokens Command**
 
-Location: `wyn360_cli/cli.py` (tokens command)
+Location: `clawdeck/cli.py` (tokens command)
 
 ```python
 # Add vision tokens to display
@@ -537,8 +537,8 @@ if agent.vision_tokens_used > 0:
 ```
 
 #### Files Modified
-- `wyn360_cli/agent.py` - read_word(), read_pdf() methods (~100 lines)
-- `wyn360_cli/cli.py` - /tokens command (~20 lines)
+- `clawdeck/agent.py` - read_word(), read_pdf() methods (~100 lines)
+- `clawdeck/cli.py` - /tokens command (~20 lines)
 
 ---
 
@@ -607,11 +607,11 @@ Add section: **Vision Mode for Images**
 ```markdown
 ### 🖼️ Vision Mode for Images
 
-WYN360 can intelligently describe images in Word and PDF documents using Claude Vision API.
+Clawdeck can intelligently describe images in Word and PDF documents using Claude Vision API.
 
 #### Usage
 
-wyn360 read presentation.docx --image-mode vision
+clawdeck read presentation.docx --image-mode vision
 
 
 #### Image Handling Modes
@@ -653,7 +653,7 @@ Add new use case:
 **Scenario:** User needs to understand a PowerPoint presentation converted to Word with multiple charts.
 
 **Commands:**
-wyn360 read quarterly_report.docx --image-mode vision
+clawdeck read quarterly_report.docx --image-mode vision
 
 **Output:** Full document summary with intelligent descriptions of all charts, graphs, and diagrams.
 
@@ -859,8 +859,8 @@ Create cost guide:
 - [pdfplumber](https://github.com/jsvine/pdfplumber)
 
 ### Related Files
-- `wyn360_cli/document_readers.py` - Core implementation
-- `wyn360_cli/agent.py` - Agent integration
+- `clawdeck/document_readers.py` - Core implementation
+- `clawdeck/agent.py` - Agent integration
 - `docs/ROADMAP_DOCUMENTS.md` - Parent roadmap
 - `docs/USE_CASES.md` - Use cases
 

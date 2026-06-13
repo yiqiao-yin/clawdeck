@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions to WYN360 CLI are welcome! This guide will help you get started.
+Contributions to Clawdeck CLI are welcome! This guide will help you get started.
 
 ## Development Setup
 
@@ -14,8 +14,8 @@ Contributions to WYN360 CLI are welcome! This guide will help you get started.
 
 1. **Fork and clone the repository:**
    ```bash
-   git clone https://github.com/your-username/wyn360-cli.git
-   cd wyn360-cli
+   git clone https://github.com/your-username/clawdeck.git
+   cd clawdeck
    ```
 
 2. **Install Poetry** (if not already installed):
@@ -45,10 +45,10 @@ Contributions to WYN360 CLI are welcome! This guide will help you get started.
 2. **Make your changes and test:**
    ```bash
    # Run tests
-   WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
+   CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v
 
    # Test your changes manually
-   poetry run wyn360
+   poetry run clawdeck
    ```
 
 3. **Update documentation if needed:**
@@ -61,7 +61,7 @@ Contributions to WYN360 CLI are welcome! This guide will help you get started.
 
 **Run all tests:**
 ```bash
-WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
+CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v
 ```
 
 **Run specific test file:**
@@ -71,7 +71,7 @@ poetry run pytest tests/test_agent.py -v
 
 **Run with coverage:**
 ```bash
-poetry run pytest tests/ --cov=wyn360_cli --cov-report=html
+poetry run pytest tests/ --cov=clawdeck --cov-report=html
 ```
 
 ### Code Style
@@ -90,7 +90,7 @@ We follow Python best practices:
 
 1. **Ensure tests pass:**
    ```bash
-   WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
+   CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v
    ```
 
 2. **Update documentation:**
@@ -168,7 +168,7 @@ test: Add tests for document processing
 
 Update version in:
 - `pyproject.toml` - `version = "X.Y.Z"`
-- `wyn360_cli/__init__.py` - `__version__ = "X.Y.Z"`
+- `clawdeck/__init__.py` - `__version__ = "X.Y.Z"`
 - Documentation files as needed
 
 ### Building and Publishing
@@ -178,7 +178,7 @@ Update version in:
 poetry build
 
 # Test locally
-pip install dist/wyn360_cli-X.Y.Z-py3-none-any.whl
+pip install dist/clawdeck-X.Y.Z-py3-none-any.whl
 
 # Publish to PyPI (maintainers only)
 poetry publish
@@ -191,4 +191,4 @@ poetry publish
 - Focus on constructive feedback
 - Maintain professional communication
 
-Thank you for contributing to WYN360 CLI!
+Thank you for contributing to Clawdeck CLI!

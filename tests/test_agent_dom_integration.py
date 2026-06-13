@@ -1,26 +1,26 @@
 """
-Integration tests for DOM-first browser automation tools in WYN360Agent
+Integration tests for DOM-first browser automation tools in ClawdeckAgent
 
 Tests that the new DOM-first browser automation tools are properly
-integrated into the WYN360 pydantic-ai agent system.
+integrated into the Clawdeck pydantic-ai agent system.
 """
 
 import pytest
 import os
 from unittest.mock import Mock, AsyncMock, patch
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 class TestAgentDOMIntegration:
-    """Test DOM-first browser automation integration with WYN360Agent"""
+    """Test DOM-first browser automation integration with ClawdeckAgent"""
 
     @pytest.fixture
     def mock_agent(self):
-        """Create a mock WYN360Agent for testing"""
+        """Create a mock ClawdeckAgent for testing"""
         with patch.dict(os.environ, {'ANTHROPIC_API_KEY': 'test-key'}):
-            with patch('wyn360_cli.agent.AnthropicModel'):
-                with patch('wyn360_cli.agent.Agent'):
-                    agent = WYN360Agent()
+            with patch('clawdeck.agent.AnthropicModel'):
+                with patch('clawdeck.agent.Agent'):
+                    agent = ClawdeckAgent()
                     return agent
 
     def test_agent_has_new_tools(self, mock_agent):
@@ -41,7 +41,7 @@ class TestAgentDOMIntegration:
         mock_ctx = Mock()
 
         # Mock the browser_tools.analyze_page_dom method
-        with patch('wyn360_cli.agent.browser_tools.analyze_page_dom') as mock_analyze:
+        with patch('clawdeck.agent.browser_tools.analyze_page_dom') as mock_analyze:
             mock_analyze.return_value = {
                 'success': True,
                 'title': 'Test Page',
@@ -74,7 +74,7 @@ class TestAgentDOMIntegration:
         mock_ctx = Mock()
 
         # Mock the browser_tools.execute_dom_action method
-        with patch('wyn360_cli.agent.browser_tools.execute_dom_action') as mock_execute:
+        with patch('clawdeck.agent.browser_tools.execute_dom_action') as mock_execute:
             mock_execute.return_value = {
                 'success': True,
                 'action': 'click',
@@ -105,7 +105,7 @@ class TestAgentDOMIntegration:
         """Test execute_dom_action with action data"""
         mock_ctx = Mock()
 
-        with patch('wyn360_cli.agent.browser_tools.execute_dom_action') as mock_execute:
+        with patch('clawdeck.agent.browser_tools.execute_dom_action') as mock_execute:
             mock_execute.return_value = {
                 'success': True,
                 'action': 'type',
@@ -131,10 +131,10 @@ class TestAgentDOMIntegration:
         mock_ctx = Mock()
 
         # Mock browser_tools and orchestrator
-        with patch('wyn360_cli.agent.browser_tools.analyze_page_dom') as mock_analyze:
-            with patch('wyn360_cli.agent.automation_orchestrator.decide_automation_approach') as mock_decide:
-                with patch('wyn360_cli.agent.automation_orchestrator.record_execution_result'):
-                    with patch('wyn360_cli.agent.automation_orchestrator.get_decision_analytics') as mock_analytics:
+        with patch('clawdeck.agent.browser_tools.analyze_page_dom') as mock_analyze:
+            with patch('clawdeck.agent.automation_orchestrator.decide_automation_approach') as mock_decide:
+                with patch('clawdeck.agent.automation_orchestrator.record_execution_result'):
+                    with patch('clawdeck.agent.automation_orchestrator.get_decision_analytics') as mock_analytics:
 
                         # Setup mocks
                         mock_analyze.return_value = {
@@ -146,7 +146,7 @@ class TestAgentDOMIntegration:
                         }
 
                         # Mock AutomationApproach enum
-                        from src.wyn360.tools.browser import AutomationApproach
+                        from clawdeck.tools.browser import AutomationApproach
                         mock_context = Mock()
                         mock_context.dom_confidence = 0.85
                         mock_context.page_complexity = 'moderate'
@@ -184,7 +184,7 @@ class TestAgentDOMIntegration:
         mock_ctx = Mock()
 
         # Test analyze_page_dom error handling
-        with patch('wyn360_cli.agent.browser_tools.analyze_page_dom') as mock_analyze:
+        with patch('clawdeck.agent.browser_tools.analyze_page_dom') as mock_analyze:
             mock_analyze.side_effect = Exception('Browser error')
 
             result = await mock_agent.analyze_page_dom(
@@ -194,7 +194,7 @@ class TestAgentDOMIntegration:
             assert '❌ Error analyzing DOM: Browser error' in result
 
         # Test execute_dom_action error handling
-        with patch('wyn360_cli.agent.browser_tools.execute_dom_action') as mock_execute:
+        with patch('clawdeck.agent.browser_tools.execute_dom_action') as mock_execute:
             mock_execute.side_effect = Exception('Action failed')
 
             result = await mock_agent.execute_dom_action(
@@ -209,7 +209,7 @@ class TestAgentDOMIntegration:
         mock_ctx = Mock()
 
         # Test analyze_page_dom failure
-        with patch('wyn360_cli.agent.browser_tools.analyze_page_dom') as mock_analyze:
+        with patch('clawdeck.agent.browser_tools.analyze_page_dom') as mock_analyze:
             mock_analyze.return_value = {
                 'success': False,
                 'error': 'Page not accessible',
@@ -244,7 +244,7 @@ class TestAgentDOMIntegration:
     def test_import_integration(self):
         """Test that all necessary imports are available"""
         # Test that DOM tools can be imported
-        from src.wyn360.tools.browser import (
+        from clawdeck.tools.browser import (
             browser_tools,
             automation_orchestrator,
             AutomationApproach,

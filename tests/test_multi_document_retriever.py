@@ -13,7 +13,7 @@ import pytest
 import tempfile
 import time
 from pathlib import Path
-from wyn360_cli.document_readers import (
+from clawdeck.document_readers import (
     MultiDocumentRetriever,
     ChunkCache,
     ChunkRetriever,

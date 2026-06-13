@@ -3,7 +3,7 @@
 import pytest
 import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
-from wyn360_cli.subagent import SubAgentManager, SubAgentTask, TaskStatus, TaskType
+from clawdeck.subagent import SubAgentManager, SubAgentTask, TaskStatus, TaskType
 
 
 class TestSubAgentTask:

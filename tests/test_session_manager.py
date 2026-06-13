@@ -16,7 +16,7 @@ import pytest
 import tempfile
 import time
 from pathlib import Path
-from wyn360_cli.session_manager import SessionManager
+from clawdeck.session_manager import SessionManager
 
 
 class TestSessionManager:

@@ -12,10 +12,10 @@ from dotenv import load_dotenv
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(env_path)
 
-# Add the parent directory to sys.path so we can import from wyn360_cli
+# Add the parent directory to sys.path so we can import from clawdeck
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 class TestAnthropicFileReading:
@@ -60,7 +60,7 @@ class TestAnthropicFileReading:
 
         try:
             # Create agent
-            agent = WYN360Agent()
+            agent = ClawdeckAgent()
             print(f"✅ Agent created: {agent.model_name}")
             assert "anthropic" in agent.model_name.lower() or "claude" in agent.model_name.lower()
 
@@ -92,7 +92,7 @@ class TestAnthropicFileReading:
 
         try:
             # Create agent
-            agent = WYN360Agent()
+            agent = ClawdeckAgent()
             print(f"✅ Agent created: {agent.model_name}")
 
             # Test Excel reading
@@ -122,7 +122,7 @@ class TestAnthropicFileReading:
 
         try:
             # Create agent
-            agent = WYN360Agent()
+            agent = ClawdeckAgent()
             print(f"✅ Agent created: {agent.model_name}")
 
             # Test Word reading
@@ -152,7 +152,7 @@ class TestAnthropicFileReading:
 
         try:
             # Create agent
-            agent = WYN360Agent()
+            agent = ClawdeckAgent()
             print(f"✅ Agent created: {agent.model_name}")
 
             # Test multiple file reading in sequence

@@ -1,10 +1,10 @@
 services:
-  wyn360-web:
+  clawdeck-web:
     build:
       context: .
       dockerfile: Dockerfile.web
     ports:
-      - "${WYN360_WEB_PORT:-8360}:8360"
+      - "${CLAWDECK_WEB_PORT:-8360}:8360"
     restart: unless-stopped
 
 # No secrets needed -- users enter their own API keys in the terminal.

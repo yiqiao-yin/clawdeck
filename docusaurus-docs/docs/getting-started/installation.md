@@ -2,10 +2,10 @@
 
 ## Basic Installation
 
-Install WYN360 CLI from PyPI using pip:
+Install Clawdeck CLI from PyPI using pip:
 
 ```bash
-pip install wyn360-cli
+pip install clawdeck
 ```
 
 ## System Requirements
@@ -34,11 +34,11 @@ playwright install chromium
 Test your installation:
 
 ```bash
-# Check if wyn360 is installed
-wyn360 --help
+# Check if clawdeck is installed
+clawdeck --help
 
 # Expected output:
-Usage: wyn360 [OPTIONS]
+Usage: clawdeck [OPTIONS]
 
 An intelligent AI coding assistant CLI tool powered by Anthropic Claude.
 
@@ -50,7 +50,7 @@ Options:
 
 ## Dependencies
 
-WYN360 CLI automatically installs these core dependencies:
+Clawdeck CLI automatically installs these core dependencies:
 
 ### Core Framework
 - `click>=8.1.0` - CLI framework
@@ -92,8 +92,8 @@ For contributors or advanced users who want to install from source:
 
 2. **Clone the repository**:
    ```bash
-   git clone https://github.com/yiqiao-yin/wyn360-cli.git
-   cd wyn360-cli
+   git clone https://github.com/yiqiao-yin/clawdeck.git
+   cd clawdeck
    ```
 
 3. **Install dependencies**:
@@ -108,16 +108,16 @@ For contributors or advanced users who want to install from source:
 
 5. **Run from source**:
    ```bash
-   python -m wyn360_cli.cli
+   python -m clawdeck.cli
    # or
-   poetry run wyn360
+   poetry run clawdeck
    ```
 
 ### Running Tests
 
 ```bash
 # Skip command confirmation prompts in tests
-WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
+CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v
 ```
 
 ## Next Steps
@@ -131,11 +131,11 @@ Once installed, you'll need to configure your AI provider credentials:
 
 ### Common Issues
 
-??? question "ImportError: No module named 'wyn360_cli'"
+??? question "ImportError: No module named 'clawdeck'"
     This usually means the package wasn't installed correctly. Try:
     ```bash
-    pip uninstall wyn360-cli
-    pip install wyn360-cli
+    pip uninstall clawdeck
+    pip install clawdeck
     ```
 
 ??? question "playwright command not found"
@@ -151,7 +151,7 @@ Once installed, you'll need to configure your AI provider credentials:
 ??? question "Permission denied errors"
     On some systems, you may need to install with user permissions:
     ```bash
-    pip install --user wyn360-cli
+    pip install --user clawdeck
     ```
 
 ??? question "Python version errors"
@@ -165,7 +165,7 @@ Once installed, you'll need to configure your AI provider credentials:
 
 If you encounter issues:
 
-1. Check the [GitHub Issues](https://github.com/yiqiao-yin/wyn360-cli/issues) page
+1. Check the [GitHub Issues](https://github.com/yiqiao-yin/clawdeck/issues) page
 2. Search existing issues or create a new one
 3. Include your Python version, OS, and error message
 

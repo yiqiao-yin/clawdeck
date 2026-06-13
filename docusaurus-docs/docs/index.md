@@ -1,20 +1,20 @@
-# WYN360 CLI
+# Clawdeck CLI
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 An intelligent AI coding assistant that helps you build projects, generate code, and improve your codebase through natural language conversations. Now featuring enhanced semantic search for documentation.
 
-[![PyPI version](https://badge.fury.io/py/wyn360-cli.svg)](https://pypi.org/project/wyn360-cli/)
+[![PyPI version](https://badge.fury.io/py/clawdeck.svg)](https://pypi.org/project/clawdeck/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yiqiao-yin/wyn360-cli/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yiqiao-yin/clawdeck/blob/main/LICENSE)
 
-📚 **Documentation:** [https://yiqiao-yin.github.io/wyn360-cli/](https://yiqiao-yin.github.io/wyn360-cli/)
+📚 **Documentation:** [https://yiqiao-yin.github.io/clawdeck/](https://yiqiao-yin.github.io/clawdeck/)
 🚀 **Now powered by Docusaurus** with enhanced AI search capabilities!
 
-🔗 **GitHub Repository:** [https://github.com/yiqiao-yin/wyn360-cli](https://github.com/yiqiao-yin/wyn360-cli)
+🔗 **GitHub Repository:** [https://github.com/yiqiao-yin/clawdeck](https://github.com/yiqiao-yin/clawdeck)
 
-## Why Choose WYN360 CLI?
+## Why Choose Clawdeck CLI?
 
 - 🤖 **Interactive AI Assistant** - Natural language conversations with Claude
 - 📝 **Code Generation** - Generate production-ready Python code from descriptions
@@ -28,12 +28,12 @@ An intelligent AI coding assistant that helps you build projects, generate code,
 
 ### 1. Install
 ```bash
-pip install wyn360-cli
+pip install clawdeck
 ```
 
 ### 2. Choose Your AI Provider
 
-WYN360 CLI supports multiple AI providers:
+Clawdeck CLI supports multiple AI providers:
 
 <Tabs>
 <TabItem value="anthropic" label="Anthropic Claude" default>
@@ -109,7 +109,7 @@ export OPENAI_MODEL=gpt-4o
 </TabItem>
 <TabItem value="auto" label="Auto-Detection">
 
-**Let WYN360 choose automatically** based on available credentials:
+**Let Clawdeck choose automatically** based on available credentials:
 
 ```bash
 # Just set your preferred API key - no CHOOSE_CLIENT needed
@@ -128,13 +128,13 @@ export GEMINI_API_KEY=your_key_here
 
 ### 3. Start Chatting
 ```bash
-wyn360
+clawdeck
 ```
 
 ```
 You: Build a Streamlit app for data visualization
 
-WYN360: I'll create a Streamlit app for you...
+Clawdeck: I'll create a Streamlit app for you...
 [Generates complete code and saves to app.py]
 ```
 
@@ -189,7 +189,7 @@ WYN360: I'll create a Streamlit app for you...
 ```
 You: Create a FastAPI app with authentication
 
-WYN360:
+Clawdeck:
 ✓ Generated main.py with FastAPI setup
 ✓ Created auth middleware
 ✓ Added example routes
@@ -200,7 +200,7 @@ WYN360:
 ```
 You: Find the latest Python web frameworks and compare them
 
-WYN360: [Searches web for current information]
+Clawdeck: [Searches web for current information]
 
 ## Popular Python Web Frameworks (2025)
 
@@ -215,7 +215,7 @@ WYN360: [Searches web for current information]
 ```
 You: Analyze quarterly_report.docx with vision mode
 
-WYN360:
+Clawdeck:
 📊 Revenue Chart: Q4 shows 23% growth to $2.5M
 📐 Architecture Diagram: 3-tier system (React → FastAPI → PostgreSQL)
 💰 Vision Cost: $0.06 (2 images processed)
@@ -225,7 +225,7 @@ WYN360:
 
 ## What's Next?
 
-Explore the documentation to learn more about WYN360 CLI's capabilities:
+Explore the documentation to learn more about Clawdeck CLI's capabilities:
 
 - **[Getting Started](getting-started/installation.md)** - Installation and setup
 - **[Features](features/overview.md)** - Complete feature overview

@@ -1,7 +1,7 @@
 """Unit tests for the plan mode system."""
 
 import pytest
-from wyn360_cli.planner import Planner, Plan, PlanStep, PlanStepStatus
+from clawdeck.planner import Planner, Plan, PlanStep, PlanStepStatus
 
 
 class TestPlanStep:
@@ -173,8 +173,8 @@ class TestPlanModeTools:
     def setup_method(self):
         import os
         os.environ['CHOOSE_CLIENT'] = '1'
-        from wyn360_cli.agent import WYN360Agent
-        self.agent = WYN360Agent(api_key="test_key")
+        from clawdeck.agent import ClawdeckAgent
+        self.agent = ClawdeckAgent(api_key="test_key")
 
     @pytest.mark.asyncio
     async def test_enter_plan_mode(self):

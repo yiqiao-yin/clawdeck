@@ -3,21 +3,21 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-WYN360 CLI uses a hierarchical configuration system that allows you to customize behavior at multiple levels.
+Clawdeck CLI uses a hierarchical configuration system that allows you to customize behavior at multiple levels.
 
 ## Configuration Hierarchy
 
 Configuration is loaded in this priority order (highest to lowest):
 
-1. **Project Configuration** (`.wyn360.yaml`) - Highest priority
-2. **User Configuration** (`~/.wyn360/config.yaml`)
+1. **Project Configuration** (`.clawdeck.yaml`) - Highest priority
+2. **User Configuration** (`~/.clawdeck/config.yaml`)
 3. **Default Values** - Lowest priority
 
 ## User Configuration
 
 ### Location
 ```
-~/.wyn360/config.yaml
+~/.clawdeck/config.yaml
 ```
 
 ### Creating User Config
@@ -25,14 +25,14 @@ Configuration is loaded in this priority order (highest to lowest):
 Create your user configuration directory and file:
 
 ```bash
-mkdir -p ~/.wyn360
-touch ~/.wyn360/config.yaml
+mkdir -p ~/.clawdeck
+touch ~/.clawdeck/config.yaml
 ```
 
 ### User Config Example
 
 ```yaml
-# ~/.wyn360/config.yaml
+# ~/.clawdeck/config.yaml
 model: "claude-sonnet-4-20250514"
 max_tokens: 4096
 temperature: 0.1
@@ -63,13 +63,13 @@ aliases:
 
 ### Location
 ```
-.wyn360.yaml  # In your project root directory
+.clawdeck.yaml  # In your project root directory
 ```
 
 ### Project Config Example
 
 ```yaml
-# .wyn360.yaml - Project-specific settings
+# .clawdeck.yaml - Project-specific settings
 model: "gemini-2.5-flash"  # Cost-effective for this project
 max_tokens: 2048
 
@@ -140,7 +140,7 @@ Environment variables override all configuration files:
 | `CHOOSE_CLIENT` | AI provider (1=Anthropic, 2=Bedrock, 3=Gemini, 0=auto) | `3` |
 | `MAX_TOKEN` | Maximum output tokens | `4096` |
 | `MAX_INTERNET_SEARCH_LIMIT` | Web searches per session | `5` |
-| `WYN360_SKIP_CONFIRM` | Skip command confirmations | `1` |
+| `CLAWDECK_SKIP_CONFIRM` | Skip command confirmations | `1` |
 
 ### AI Provider Credentials
 
@@ -198,7 +198,7 @@ HUGGINGFACE_TOKEN=hf_your_huggingface_token # Alternative HF token var
 Create different configurations for different types of projects:
 
 ```yaml
-# ~/.wyn360/config.yaml
+# ~/.clawdeck/config.yaml
 # Default settings
 model: "gemini-2.5-flash"
 max_tokens: 4096
@@ -230,7 +230,7 @@ workspaces:
 ### Aliases and Shortcuts
 
 ```yaml
-# ~/.wyn360/config.yaml
+# ~/.clawdeck/config.yaml
 aliases:
   # Code review shortcuts
   review: "Review this code for bugs, performance issues, and style problems"
@@ -261,7 +261,7 @@ You: @review main.py
 ### View Current Configuration
 
 ```bash
-# In WYN360 CLI session
+# In Clawdeck CLI session
 /config
 
 # Shows:
@@ -279,7 +279,7 @@ You: @review main.py
 # Check config file syntax
 poetry run python -c "
 import yaml
-with open('.wyn360.yaml') as f:
+with open('.clawdeck.yaml') as f:
     config = yaml.safe_load(f)
     print('✅ Configuration is valid')
 "
@@ -330,10 +330,10 @@ browser_use_cache_ttl: 3600      # Cache for 1 hour
 
 ### 4. Team Consistency
 
-Create a shared `.wyn360.yaml` in your project repository:
+Create a shared `.clawdeck.yaml` in your project repository:
 
 ```yaml
-# .wyn360.yaml - Team settings
+# .clawdeck.yaml - Team settings
 model: "claude-sonnet-4-20250514"  # Consistent model for team
 max_tokens: 4096
 temperature: 0.1  # Consistent, less random responses

@@ -78,5 +78,5 @@ def analyze_excel_file(file_path):
         print(f"❌ Error analyzing Excel file: {str(e)}")
 
 if __name__ == "__main__":
-    file_path = "/home/workbench/wyn360-cli/wyn360-cli/tests/test_files/sales_invoice.xlsx"
+    file_path = "/home/workbench/clawdeck/clawdeck/tests/test_files/sales_invoice.xlsx"
     analyze_excel_file(file_path)

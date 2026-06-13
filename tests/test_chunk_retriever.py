@@ -9,7 +9,7 @@ Tests cover:
 """
 
 import pytest
-from wyn360_cli.document_readers import ChunkRetriever
+from clawdeck.document_readers import ChunkRetriever
 
 
 class TestChunkRetriever:

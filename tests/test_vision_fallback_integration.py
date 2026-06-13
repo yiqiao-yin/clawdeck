@@ -8,11 +8,11 @@ browser automation system for integration with the unified automation pipeline.
 import pytest
 import time
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from src.wyn360.tools.browser.vision_fallback_integration import (
+from clawdeck.tools.browser.vision_fallback_integration import (
     VisionFallbackIntegration,
     VisionFallbackConfig
 )
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationApproach,
     ActionRequest,
     ActionResult

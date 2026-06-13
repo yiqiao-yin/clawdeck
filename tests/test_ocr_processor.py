@@ -22,14 +22,14 @@ import numpy as np
 sys.modules['pytesseract'] = MagicMock()
 sys.modules['pdf2image'] = MagicMock()
 
-from wyn360_cli.document_readers import OCRProcessor, HAS_PYTESSERACT
+from clawdeck.document_readers import OCRProcessor, HAS_PYTESSERACT
 
 
 class TestOCRProcessor:
     """Test OCRProcessor functionality."""
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_processor_initialization(self, mock_pytesseract):
         """Test processor initializes with correct language."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -39,8 +39,8 @@ class TestOCRProcessor:
         assert processor.language == "eng"
         mock_pytesseract.get_tesseract_version.assert_called_once()
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_processor_custom_language(self, mock_pytesseract):
         """Test processor with custom language."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -49,7 +49,7 @@ class TestOCRProcessor:
 
         assert processor.language == "spa"
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', False)
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', False)
     def test_initialization_without_pytesseract(self):
         """Test error when pytesseract not installed."""
         with pytest.raises(RuntimeError) as exc_info:
@@ -58,8 +58,8 @@ class TestOCRProcessor:
         assert "Tesseract OCR not installed" in str(exc_info.value)
         assert "pip install pytesseract" in str(exc_info.value)
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_tesseract_binary_not_found(self, mock_pytesseract):
         """Test error when Tesseract binary not accessible."""
         mock_pytesseract.get_tesseract_version.side_effect = Exception("Binary not found")
@@ -69,8 +69,8 @@ class TestOCRProcessor:
 
         assert "Tesseract binary not found" in str(exc_info.value)
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_extract_text_basic(self, mock_pytesseract):
         """Test basic text extraction."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -95,8 +95,8 @@ class TestOCRProcessor:
         assert result["confidence"] == pytest.approx(90.5, abs=0.1)  # (95+90+85+92)/4
         assert result["word_count"] == 4
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_extract_text_with_preprocessing(self, mock_pytesseract):
         """Test text extraction with preprocessing enabled."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -116,8 +116,8 @@ class TestOCRProcessor:
         assert "text" in result
         assert "confidence" in result
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_extract_text_empty_result(self, mock_pytesseract):
         """Test extraction with no text found."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -137,8 +137,8 @@ class TestOCRProcessor:
         assert result["confidence"] == 0
         assert result["word_count"] == 0
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_is_scanned_page_true(self, mock_pytesseract):
         """Test detection of scanned page."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -157,8 +157,8 @@ class TestOCRProcessor:
 
         assert is_scanned is True
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_is_scanned_page_false(self, mock_pytesseract):
         """Test detection of non-scanned page."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -175,8 +175,8 @@ class TestOCRProcessor:
 
         assert is_scanned is False
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_assess_quality_excellent(self, mock_pytesseract):
         """Test quality assessment for excellent OCR."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -188,8 +188,8 @@ class TestOCRProcessor:
 
         assert quality == "excellent"
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_assess_quality_good(self, mock_pytesseract):
         """Test quality assessment for good OCR."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -201,8 +201,8 @@ class TestOCRProcessor:
 
         assert quality == "good"
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_assess_quality_fair(self, mock_pytesseract):
         """Test quality assessment for fair OCR."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -214,8 +214,8 @@ class TestOCRProcessor:
 
         assert quality == "fair"
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_assess_quality_poor(self, mock_pytesseract):
         """Test quality assessment for poor OCR."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -227,8 +227,8 @@ class TestOCRProcessor:
 
         assert quality == "poor"
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_preprocess_image(self, mock_pytesseract):
         """Test image preprocessing."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"
@@ -243,8 +243,8 @@ class TestOCRProcessor:
         # Should be grayscale
         assert processed.mode == 'L'
 
-    @patch('wyn360_cli.document_readers.HAS_PYTESSERACT', True)
-    @patch('wyn360_cli.document_readers.pytesseract')
+    @patch('clawdeck.document_readers.HAS_PYTESSERACT', True)
+    @patch('clawdeck.document_readers.pytesseract')
     def test_extract_text_with_special_characters(self, mock_pytesseract):
         """Test text extraction with special characters."""
         mock_pytesseract.get_tesseract_version.return_value = "5.0.0"

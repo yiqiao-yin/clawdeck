@@ -3,7 +3,7 @@
 import pytest
 import json
 from unittest.mock import Mock, AsyncMock, patch
-from wyn360_cli.vision_engine import VisionDecisionEngine, VisionDecisionError
+from clawdeck.vision_engine import VisionDecisionEngine, VisionDecisionError
 
 
 class TestVisionDecisionEngineInitialization:

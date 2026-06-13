@@ -81,7 +81,7 @@ def read_word_document_robust(file_path):
         return None
 
 if __name__ == "__main__":
-    file_path = "/home/workbench/wyn360-cli/wyn360-cli/tests/test_files/test_cl.docx"
+    file_path = "/home/workbench/clawdeck/clawdeck/tests/test_files/test_cl.docx"
     
     print("Reading Word document with robust error handling...")
     content = read_word_document_robust(file_path)

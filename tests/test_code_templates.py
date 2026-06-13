@@ -5,7 +5,7 @@ Tests the automation code templates and patterns.
 """
 
 import pytest
-from wyn360_cli.tools.browser.code_templates import (
+from clawdeck.tools.browser.code_templates import (
     AutomationTemplates,
     TemplateCategory
 )

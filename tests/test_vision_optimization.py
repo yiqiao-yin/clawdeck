@@ -7,11 +7,11 @@ ensuring cost-effective and performance-aware automation approach selection.
 
 import pytest
 from unittest.mock import Mock, patch
-from src.wyn360.tools.browser.enhanced_automation_orchestrator import (
+from clawdeck.tools.browser.enhanced_automation_orchestrator import (
     EnhancedAutomationOrchestrator,
     EnhancedActionRequest
 )
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationApproach,
     DecisionContext
 )

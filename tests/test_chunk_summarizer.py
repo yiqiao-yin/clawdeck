@@ -11,7 +11,7 @@ Tests cover:
 
 import pytest
 from unittest.mock import Mock, patch, AsyncMock
-from wyn360_cli.document_readers import ChunkSummarizer
+from clawdeck.document_readers import ChunkSummarizer
 
 
 class TestChunkSummarizer:
@@ -159,7 +159,7 @@ TAGS: [expenses, Q1, budget, financial, spending, categories, analysis, report]"
         assert "document" in keywords
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.Anthropic')
+    @patch('clawdeck.document_readers.Anthropic')
     async def test_summarize_chunk_success(self, mock_anthropic_class):
         """Test successful chunk summarization."""
         # Mock the API client
@@ -198,7 +198,7 @@ TAGS: [expenses, Q1, food, gas, utilities, budget, financial, quarterly]""")]
         assert call_args[1]["max_tokens"] == 200
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.Anthropic')
+    @patch('clawdeck.document_readers.Anthropic')
     async def test_summarize_chunk_api_failure(self, mock_anthropic_class):
         """Test summarization with API failure (fallback)."""
         # Mock API failure
@@ -225,7 +225,7 @@ TAGS: [expenses, Q1, food, gas, utilities, budget, financial, quarterly]""")]
         assert len(result["tags"]) > 0
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.Anthropic')
+    @patch('clawdeck.document_readers.Anthropic')
     async def test_summarize_chunk_token_tracking(self, mock_anthropic_class):
         """Test that token usage is tracked correctly."""
         mock_client = Mock()

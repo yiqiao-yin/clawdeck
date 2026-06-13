@@ -1,11 +1,11 @@
 /**
- * WYN360 CLI Documentation - AI Search System (GitHub Book Feature)
+ * Clawdeck CLI Documentation - AI Search System (GitHub Book Feature)
  *
- * Provides intelligent search capabilities for WYN360 CLI documentation.
+ * Provides intelligent search capabilities for Clawdeck CLI documentation.
  * Integrates seamlessly with existing MkDocs Material search functionality.
  *
  * NOTE: This is ONLY for the GitHub book documentation search feature.
- * Does NOT interfere with the main WYN360 CLI codebase.
+ * Does NOT interfere with the main Clawdeck CLI codebase.
  *
  * Features:
  * - Semantic search using sentence-transformers (all-MiniLM-L6-v2)
@@ -15,10 +15,10 @@
  * - Graceful fallback to regular search
  *
  * @version 1.1.0
- * @author WYN360 CLI Documentation Team
+ * @author Clawdeck CLI Documentation Team
  */
 
-class WYN360AISearch {
+class ClawdeckAISearch {
   constructor() {
     this.isInitialized = false;
     this.searchIndex = null;
@@ -65,7 +65,7 @@ class WYN360AISearch {
       await this.loadSearchIndex();
 
       // Log initialization for debugging
-      console.log('[AI Search] WYN360 AI Search initialized');
+      console.log('[AI Search] Clawdeck AI Search initialized');
 
       this.isInitialized = true;
     } catch (error) {
@@ -426,7 +426,7 @@ class WYN360AISearch {
    */
   _generateAnswerFromContext(query, searchResults) {
     if (!searchResults || searchResults.length === 0) {
-      return `I couldn't find specific information about "${query}" in the WYN360 CLI documentation. Please try a different search term or browse the documentation sections.`;
+      return `I couldn't find specific information about "${query}" in the Clawdeck CLI documentation. Please try a different search term or browse the documentation sections.`;
     }
 
     // Use actual search results to generate contextual response
@@ -437,22 +437,22 @@ class WYN360AISearch {
     const resultTopics = this._analyzeSearchResults(searchResults, queryLower);
 
     // Generate response based on actual found content
-    let response = `Based on the WYN360 CLI documentation, here's what I found about "${query}": `;
+    let response = `Based on the Clawdeck CLI documentation, here's what I found about "${query}": `;
 
     if (resultTopics.streamlit || resultTopics.webApps) {
-      response += `WYN360 CLI can help you build Streamlit applications! It can generate complete app.py files with Streamlit code for chatbots, data visualization apps, and more. `;
+      response += `Clawdeck CLI can help you build Streamlit applications! It can generate complete app.py files with Streamlit code for chatbots, data visualization apps, and more. `;
     }
     else if (resultTopics.installation) {
-      response += `To set up WYN360 CLI: Install with \`pip install wyn360-cli\`, configure your API key with \`export ANTHROPIC_API_KEY=your_key_here\`, and launch with \`wyn360\`. `;
+      response += `To set up Clawdeck CLI: Install with \`pip install clawdeck\`, configure your API key with \`export ANTHROPIC_API_KEY=your_key_here\`, and launch with \`clawdeck\`. `;
     }
     else if (resultTopics.browserAutomation) {
-      response += `WYN360 CLI provides autonomous browser automation through vision-powered navigation. Perfect for web scraping, form filling, and automated browsing tasks. `;
+      response += `Clawdeck CLI provides autonomous browser automation through vision-powered navigation. Perfect for web scraping, form filling, and automated browsing tasks. `;
     }
     else if (resultTopics.webSearch) {
-      response += `WYN360 CLI includes real-time web search capabilities for accessing current information, weather data, GitHub repositories, and website content. `;
+      response += `Clawdeck CLI includes real-time web search capabilities for accessing current information, weather data, GitHub repositories, and website content. `;
     }
     else if (resultTopics.vision) {
-      response += `Vision Mode allows WYN360 CLI to process images, charts, and diagrams in documents with AI-powered analysis. `;
+      response += `Vision Mode allows Clawdeck CLI to process images, charts, and diagrams in documents with AI-powered analysis. `;
     }
     else {
       // Use the actual search result content
@@ -500,7 +500,7 @@ class WYN360AISearch {
     // Mock responses based on common queries
     const mockResponses = {
       'browser automation': {
-        answer: 'WYN360 CLI provides powerful browser automation through the `browse_and_find()` tool. This feature uses Claude Vision to analyze web pages and make intelligent decisions about what to click, type, or navigate. It works great for tasks like finding products on e-commerce sites, filling forms, and extracting information.',
+        answer: 'Clawdeck CLI provides powerful browser automation through the `browse_and_find()` tool. This feature uses Claude Vision to analyze web pages and make intelligent decisions about what to click, type, or navigate. It works great for tasks like finding products on e-commerce sites, filling forms, and extracting information.',
         sources: [
           {
             title: 'Browser Automation Overview',
@@ -515,7 +515,7 @@ class WYN360AISearch {
         ]
       },
       'web search': {
-        answer: 'WYN360 CLI includes built-in web search capabilities that let you access real-time information from the internet. You can search for current information, browse websites, and integrate web data into your development workflow.',
+        answer: 'Clawdeck CLI includes built-in web search capabilities that let you access real-time information from the internet. You can search for current information, browse websites, and integrate web data into your development workflow.',
         sources: [
           {
             title: 'Web Search Integration',
@@ -530,7 +530,7 @@ class WYN360AISearch {
         ]
       },
       'getting started': {
-        answer: 'To get started with WYN360 CLI, first install it using `pip install wyn360-cli`, then set up your API key with `export ANTHROPIC_API_KEY=your_key_here`, and finally launch it with `wyn360`. You\'ll then have access to all the AI-powered development tools.',
+        answer: 'To get started with Clawdeck CLI, first install it using `pip install clawdeck`, then set up your API key with `export ANTHROPIC_API_KEY=your_key_here`, and finally launch it with `clawdeck`. You\'ll then have access to all the AI-powered development tools.',
         sources: [
           {
             title: 'Installation Guide',
@@ -540,12 +540,12 @@ class WYN360AISearch {
           {
             title: 'Quick Start Tutorial',
             url: '/getting-started/quickstart/',
-            snippet: 'Get up and running with WYN360 CLI in under 5 minutes...'
+            snippet: 'Get up and running with Clawdeck CLI in under 5 minutes...'
           }
         ]
       },
       'vision mode': {
-        answer: 'Vision Mode enables WYN360 CLI to process images, charts, diagrams, and visual content in documents. When reading Word or PDF files, it automatically analyzes images using Claude Vision API and provides intelligent descriptions of visual elements.',
+        answer: 'Vision Mode enables Clawdeck CLI to process images, charts, diagrams, and visual content in documents. When reading Word or PDF files, it automatically analyzes images using Claude Vision API and provides intelligent descriptions of visual elements.',
         sources: [
           {
             title: 'Vision Mode Features',
@@ -571,12 +571,12 @@ class WYN360AISearch {
 
     // Default response for unmatched queries
     return {
-      answer: `I found information related to "${query}" in the WYN360 CLI documentation. WYN360 CLI is an AI-powered coding assistant that helps you build projects, generate code, and improve your codebase through natural language conversations. Check out the links below for specific information about your query.`,
+      answer: `I found information related to "${query}" in the Clawdeck CLI documentation. Clawdeck CLI is an AI-powered coding assistant that helps you build projects, generate code, and improve your codebase through natural language conversations. Check out the links below for specific information about your query.`,
       sources: [
         {
           title: 'Complete User Guide',
           url: '/usage/use-cases/',
-          snippet: 'Comprehensive guide covering all WYN360 CLI features and use cases...'
+          snippet: 'Comprehensive guide covering all Clawdeck CLI features and use cases...'
         },
         {
           title: 'Feature Overview',
@@ -1115,17 +1115,17 @@ class WYN360AISearch {
 
     // For GitHub Pages, determine the correct relative path to assets
     // Examples:
-    // - From /wyn360-cli/ -> assets/search-index.json
-    // - From /wyn360-cli/features/browser-use/ -> ../../assets/search-index.json
-    // - From /wyn360-cli/usage/commands/ -> ../../assets/search-index.json
+    // - From /clawdeck/ -> assets/search-index.json
+    // - From /clawdeck/features/browser-use/ -> ../../assets/search-index.json
+    // - From /clawdeck/usage/commands/ -> ../../assets/search-index.json
 
-    if (currentPath.endsWith('/wyn360-cli/') || currentPath === '/wyn360-cli') {
+    if (currentPath.endsWith('/clawdeck/') || currentPath === '/clawdeck') {
       // Homepage - direct relative path
       return 'assets/search-index.json';
     }
 
-    // Count directory depth from the base (/wyn360-cli/)
-    const pathParts = currentPath.replace('/wyn360-cli/', '').split('/').filter(part => part);
+    // Count directory depth from the base (/clawdeck/)
+    const pathParts = currentPath.replace('/clawdeck/', '').split('/').filter(part => part);
     const depth = pathParts.length - (currentPath.endsWith('/') ? 0 : 1);
 
     // Build relative path with appropriate number of ../
@@ -1136,18 +1136,18 @@ class WYN360AISearch {
   }
 
   /**
-   * Fix GitHub Pages URLs by adding the repository name (/wyn360-cli/)
+   * Fix GitHub Pages URLs by adding the repository name (/clawdeck/)
    */
   _fixGitHubPagesUrl(url) {
-    // If we're on GitHub Pages and URL doesn't already include /wyn360-cli/
+    // If we're on GitHub Pages and URL doesn't already include /clawdeck/
     const currentHostname = window.location.hostname;
 
     if (currentHostname.includes('github.io')) {
       // Check if URL already includes the repo name
-      if (!url.includes('/wyn360-cli/')) {
-        // Remove leading slash if present and add /wyn360-cli/ prefix
+      if (!url.includes('/clawdeck/')) {
+        // Remove leading slash if present and add /clawdeck/ prefix
         const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
-        const fixedUrl = `/wyn360-cli/${cleanUrl}`;
+        const fixedUrl = `/clawdeck/${cleanUrl}`;
 
         console.log(`[AI Search] Fixed GitHub Pages URL: ${url} → ${fixedUrl}`);
         return fixedUrl;
@@ -1160,11 +1160,11 @@ class WYN360AISearch {
 }
 
 // Global access for debugging and external integration
-window.WYN360AISearch = WYN360AISearch;
+window.ClawdeckAISearch = ClawdeckAISearch;
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   if (typeof window.aiSearch === 'undefined') {
-    window.aiSearch = new WYN360AISearch();
+    window.aiSearch = new ClawdeckAISearch();
   }
 });

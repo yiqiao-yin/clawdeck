@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Deploy WYN360 Web Terminal to Azure
+# Deploy Clawdeck Web Terminal to Azure
 #
 # Prerequisites:
 #   - Azure CLI installed and logged in (az login)
@@ -12,14 +12,14 @@
 set -euo pipefail
 
 # ── Configuration ──────────────────────────────────────────────
-PREFIX="wyn360terminal"
+PREFIX="clawdeckterminal"
 LOCATION="westus2"
 
 RESOURCE_GROUP="${PREFIX}-rg"
 ACR_NAME="${PREFIX}acr"
 APP_PLAN="${PREFIX}-plan"
 WEB_APP="${PREFIX}-app"
-IMAGE_NAME="wyn360-web"
+IMAGE_NAME="clawdeck-web"
 IMAGE_TAG="latest"
 
 # ── Validate prerequisites ─────────────────────────────────────
@@ -39,7 +39,7 @@ if ! command -v docker &>/dev/null; then
 fi
 
 echo "============================================"
-echo "  WYN360 Web Terminal - Azure Deployment"
+echo "  Clawdeck Web Terminal - Azure Deployment"
 echo "============================================"
 echo ""
 echo "  Resources to create (all prefixed '${PREFIX}'):"

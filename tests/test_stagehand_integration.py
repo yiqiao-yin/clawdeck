@@ -8,17 +8,17 @@ import pytest
 import asyncio
 import time
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from src.wyn360.tools.browser.stagehand_integration import (
+from clawdeck.tools.browser.stagehand_integration import (
     StagehandIntegration,
     StagehandExecutionPipeline
 )
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationOrchestrator,
     AutomationApproach,
     ActionRequest,
     ActionResult
 )
-from src.wyn360.tools.browser.stagehand_generator import (
+from clawdeck.tools.browser.stagehand_generator import (
     StagehandExecutionResult,
     StagehandPattern
 )
@@ -76,7 +76,7 @@ class TestStagehandIntegration:
     @pytest.fixture
     def integration(self, mock_orchestrator):
         """Create StagehandIntegration instance"""
-        with patch('src.wyn360.tools.browser.stagehand_integration.stagehand_generator') as mock_gen:
+        with patch('clawdeck.tools.browser.stagehand_integration.stagehand_generator') as mock_gen:
             mock_gen.is_available.return_value = True
             integration = StagehandIntegration(mock_orchestrator)
             integration.stagehand_generator = Mock()
@@ -107,7 +107,7 @@ class TestStagehandIntegration:
 
     def test_integration_initialization_default_orchestrator(self):
         """Test integration initialization with default orchestrator"""
-        with patch('src.wyn360.tools.browser.stagehand_integration.stagehand_generator'):
+        with patch('clawdeck.tools.browser.stagehand_integration.stagehand_generator'):
             integration = StagehandIntegration()
             assert integration.orchestrator is not None
             assert isinstance(integration.orchestrator, AutomationOrchestrator)
@@ -115,7 +115,7 @@ class TestStagehandIntegration:
 
     def test_integration_initialization_custom_orchestrator(self, mock_orchestrator):
         """Test integration initialization with custom orchestrator"""
-        with patch('src.wyn360.tools.browser.stagehand_integration.stagehand_generator'):
+        with patch('clawdeck.tools.browser.stagehand_integration.stagehand_generator'):
             integration = StagehandIntegration(mock_orchestrator)
             assert integration.orchestrator == mock_orchestrator
 

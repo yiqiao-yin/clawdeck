@@ -3,7 +3,7 @@
 import pytest
 import json
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from wyn360_cli.browser_task_executor import BrowserTaskExecutor, BrowserTaskExecutorError
+from clawdeck.browser_task_executor import BrowserTaskExecutor, BrowserTaskExecutorError
 
 
 class TestBrowserTaskExecutorInitialization:
@@ -275,7 +275,7 @@ class TestErrorHandling:
             call_count += 1
 
             if call_count == 1:
-                from wyn360_cli.vision_engine import VisionDecisionError
+                from clawdeck.vision_engine import VisionDecisionError
                 raise VisionDecisionError("API error")
             else:
                 return {
@@ -324,7 +324,7 @@ class TestErrorHandling:
             call_count += 1
 
             if call_count == 1:
-                from wyn360_cli.browser_controller import BrowserControllerError
+                from clawdeck.browser_controller import BrowserControllerError
                 raise BrowserControllerError("Click failed")
             else:
                 return {'success': True}

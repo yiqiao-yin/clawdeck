@@ -1,4 +1,4 @@
-# WYN360 CLI - Ask AI Documentation Search Feature Roadmap
+# Clawdeck CLI - Ask AI Documentation Search Feature Roadmap
 
 **Status:** 🚀 Phase 2 Complete - Real Search Index Operational
 **Priority:** Enhancement (Documentation UX)
@@ -9,7 +9,7 @@
 
 ## 📋 Executive Summary
 
-This roadmap outlines the implementation of **Ask AI** - an intelligent search feature for the WYN360 CLI documentation that enhances the existing search experience with semantic understanding and AI-powered responses.
+This roadmap outlines the implementation of **Ask AI** - an intelligent search feature for the Clawdeck CLI documentation that enhances the existing search experience with semantic understanding and AI-powered responses.
 
 ### Key Value Proposition
 
@@ -23,7 +23,7 @@ This roadmap outlines the implementation of **Ask AI** - an intelligent search f
 
 ### Core Principles
 
-✅ **Non-Invasive**: Zero impact on main WYN360 CLI codebase
+✅ **Non-Invasive**: Zero impact on main Clawdeck CLI codebase
 ✅ **Progressive Enhancement**: Regular search continues working if AI fails
 ✅ **Documentation-Focused**: Scoped only to GitHub book enhancement
 ✅ **User-Friendly**: Seamless integration with existing MkDocs interface
@@ -223,7 +223,7 @@ User Query → Semantic Search → AI Generation → Format Response → Show Re
 ### **AI Response Format**
 ```json
 {
-  "answer": "To start a new project with WYN360...",
+  "answer": "To start a new project with Clawdeck...",
   "confidence": 0.9,
   "sources": [
     {
@@ -305,5 +305,5 @@ User Query → Semantic Search → AI Generation → Format Response → Show Re
 
 **Last Updated:** November 23, 2025
 **Document Version:** 1.0
-**Maintained by:** WYN360 CLI Documentation Team
+**Maintained by:** Clawdeck CLI Documentation Team
 **Next Review Date:** December 1, 2025

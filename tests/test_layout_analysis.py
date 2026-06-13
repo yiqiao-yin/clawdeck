@@ -17,7 +17,7 @@ from pathlib import Path
 # Add the package to the path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 async def test_layout_analysis():
@@ -34,7 +34,7 @@ async def test_layout_analysis():
     try:
         # Test 1: Check if layout analysis is available
         print("🔍 Checking layout analysis availability...")
-        from wyn360_cli.document_readers import HAS_PYMUPDF_LAYOUT
+        from clawdeck.document_readers import HAS_PYMUPDF_LAYOUT
 
         if HAS_PYMUPDF_LAYOUT:
             print("✅ PyMuPDF Layout is available")
@@ -45,7 +45,7 @@ async def test_layout_analysis():
 
         # Test 2: Create agent and test enhanced PDF reading
         print("\n🤖 Creating AI agent...")
-        agent = WYN360Agent()
+        agent = ClawdeckAgent()
         print(f"✅ Agent created: {agent.model_name}")
 
         # Test 3: Test layout-enhanced PDF reading

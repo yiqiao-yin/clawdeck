@@ -15,7 +15,7 @@ import pytest
 import tempfile
 from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch
-from wyn360_cli.document_readers import ExcelReader, count_tokens
+from clawdeck.document_readers import ExcelReader, count_tokens
 
 
 class TestExcelReader:
@@ -40,7 +40,7 @@ class TestExcelReader:
         assert reader.include_sheets == ["Sheet1", "Sheet2"]
         assert reader.chunk_size == 500
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', False)
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', False)
     def test_read_without_openpyxl(self):
         """Test error when openpyxl not installed."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx") as tmpfile:
@@ -51,8 +51,8 @@ class TestExcelReader:
 
             assert "openpyxl not installed" in str(exc_info.value)
 
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
-    @patch('wyn360_cli.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
     def test_read_nonexistent_file(self, mock_openpyxl):
         """Test error when file doesn't exist."""
         reader = ExcelReader(file_path="/nonexistent/file.xlsx")
@@ -60,8 +60,8 @@ class TestExcelReader:
         with pytest.raises(FileNotFoundError):
             reader.read()
 
-    @patch('wyn360_cli.document_readers.openpyxl')
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
     def test_read_simple_sheet(self, mock_openpyxl):
         """Test reading a simple Excel sheet."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -123,8 +123,8 @@ class TestExcelReader:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.openpyxl')
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
     def test_detect_data_region_not_at_a1(self, mock_openpyxl):
         """Test data region detection when data doesn't start at A1."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -167,8 +167,8 @@ class TestExcelReader:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.openpyxl')
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
     def test_handle_merged_cells(self, mock_openpyxl):
         """Test handling of merged cells."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -227,8 +227,8 @@ class TestExcelReader:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.openpyxl')
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
     def test_empty_sheet(self, mock_openpyxl):
         """Test handling of empty sheet."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:
@@ -259,8 +259,8 @@ class TestExcelReader:
         finally:
             Path(tmpfile_path).unlink()
 
-    @patch('wyn360_cli.document_readers.openpyxl')
-    @patch('wyn360_cli.document_readers.HAS_OPENPYXL', True)
+    @patch('clawdeck.document_readers.openpyxl')
+    @patch('clawdeck.document_readers.HAS_OPENPYXL', True)
     def test_include_sheets_filter(self, mock_openpyxl):
         """Test include_sheets filter."""
         with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmpfile:

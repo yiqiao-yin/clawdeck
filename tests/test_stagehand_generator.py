@@ -9,7 +9,7 @@ import pytest
 import os
 import asyncio
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from src.wyn360.tools.browser.stagehand_generator import (
+from clawdeck.tools.browser.stagehand_generator import (
     StagehandCodeGenerator,
     StagehandAvailability,
     StagehandPattern,
@@ -92,20 +92,20 @@ class TestStagehandCodeGenerator:
             'STAGEHAND_API_URL': 'http://test.url',
             'BROWSERBASE_API_KEY': 'test_key'
         }):
-            with patch('src.wyn360.tools.browser.stagehand_generator.HAS_STAGEHAND', True):
+            with patch('clawdeck.tools.browser.stagehand_generator.HAS_STAGEHAND', True):
                 yield
 
     @pytest.fixture
     def mock_stagehand_unavailable(self):
         """Mock Stagehand as unavailable"""
-        with patch('src.wyn360.tools.browser.stagehand_generator.HAS_STAGEHAND', False):
+        with patch('clawdeck.tools.browser.stagehand_generator.HAS_STAGEHAND', False):
             yield
 
     @pytest.fixture
     def mock_stagehand_not_configured(self):
         """Mock Stagehand package available but not configured"""
         with patch.dict(os.environ, {}, clear=True):
-            with patch('src.wyn360.tools.browser.stagehand_generator.HAS_STAGEHAND', True):
+            with patch('clawdeck.tools.browser.stagehand_generator.HAS_STAGEHAND', True):
                 yield
 
     def test_availability_check_not_installed(self, mock_stagehand_unavailable):

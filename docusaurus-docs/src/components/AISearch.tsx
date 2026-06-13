@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 
 /**
- * WYN360 CLI Documentation - AI Search Component (Docusaurus Version)
+ * Clawdeck CLI Documentation - AI Search Component (Docusaurus Version)
  *
  * Enhanced semantic search with cosine similarity using pre-generated embeddings.
  * Provides fallback to keyword and fuzzy search when semantic search yields no results.
@@ -81,7 +81,7 @@ function AISearchComponent(): JSX.Element {
 
   const loadSearchIndex = async () => {
     try {
-      const response = await fetch('/wyn360-cli/assets/search-index.json');
+      const response = await fetch('/clawdeck/assets/search-index.json');
       if (response.ok) {
         const data = await response.json();
         setSearchIndex(data.chunks || []);
@@ -376,7 +376,7 @@ function AISearchComponent(): JSX.Element {
         <div className="ai-search-chat">
           {messages.length === 0 && (
             <div style={{ textAlign: 'center', padding: '1rem', color: 'var(--ifm-color-emphasis-600)' }}>
-              <p>Ask me anything about WYN360 CLI! I'll search the documentation for you.</p>
+              <p>Ask me anything about Clawdeck CLI! I'll search the documentation for you.</p>
             </div>
           )}
 

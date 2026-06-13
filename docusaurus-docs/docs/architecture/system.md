@@ -1,6 +1,6 @@
-# WYN360 CLI - System Architecture
+# Clawdeck CLI - System Architecture
 
-This document provides a detailed overview of the WYN360 CLI system architecture, including all components, layers, and data flows.
+This document provides a detailed overview of the Clawdeck CLI system architecture, including all components, layers, and data flows.
 
 **Version:** 0.5.2
 **Last Updated:** April 2026
@@ -9,7 +9,7 @@ This document provides a detailed overview of the WYN360 CLI system architecture
 
 ## Architecture Overview
 
-WYN360 CLI is built on a modular, layered architecture with six main layers. The v0.4.0 and v0.5.0 releases added three new architectural layers (Pipeline, Agentic, State Management) on top of the original three (UI, Agent, Tools).
+Clawdeck CLI is built on a modular, layered architecture with six main layers. The v0.4.0 and v0.5.0 releases added three new architectural layers (Pipeline, Agentic, State Management) on top of the original three (UI, Agent, Tools).
 
 ```mermaid
 ---
@@ -32,7 +32,7 @@ graph TB
     end
 
     subgraph "Agent Layer"
-        Agent[WYN360Agent]
+        Agent[ClawdeckAgent]
         Model[LLM Provider]
         Prompt[System Prompt]
     end
@@ -83,36 +83,36 @@ graph TB
     Dream --> Memory
     Cron --> Agent
 
-    style CLI fill:#2563eb,color:#fff,stroke:#fff,stroke-width:1px
-    style Slash fill:#2563eb,color:#fff,stroke:#fff,stroke-width:1px
-    style Vim fill:#2563eb,color:#fff,stroke:#fff,stroke-width:1px
-    style Voice fill:#2563eb,color:#fff,stroke:#fff,stroke-width:1px
-    style Buddy fill:#2563eb,color:#fff,stroke:#fff,stroke-width:1px
-    style PreHook fill:#1d4ed8,color:#fff,stroke:#fff,stroke-width:1px
-    style PostHook fill:#1d4ed8,color:#fff,stroke:#fff,stroke-width:1px
-    style Budget fill:#1d4ed8,color:#fff,stroke:#fff,stroke-width:1px
-    style Agent fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Model fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Prompt fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Planner fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style SubAgent fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style Dream fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style Cron fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style Files fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Git fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Web fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style GitHub fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Browser fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Docs fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style LSP fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style PlanTools fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Memory fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
-    style Rewind fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
-    style Compact fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
-    style Skills fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
-    style Plugins fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
-    style Config fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
-    style Sessions fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
+    style CLI fill:#4d4d4d,color:#fff,stroke:#fff,stroke-width:1px
+    style Slash fill:#4d4d4d,color:#fff,stroke:#fff,stroke-width:1px
+    style Vim fill:#4d4d4d,color:#fff,stroke:#fff,stroke-width:1px
+    style Voice fill:#4d4d4d,color:#fff,stroke:#fff,stroke-width:1px
+    style Buddy fill:#4d4d4d,color:#fff,stroke:#fff,stroke-width:1px
+    style PreHook fill:#404040,color:#fff,stroke:#fff,stroke-width:1px
+    style PostHook fill:#404040,color:#fff,stroke:#fff,stroke-width:1px
+    style Budget fill:#404040,color:#fff,stroke:#fff,stroke-width:1px
+    style Agent fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Model fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Prompt fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Planner fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style SubAgent fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style Dream fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style Cron fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style Files fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Git fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Web fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style GitHub fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Browser fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Docs fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style LSP fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style PlanTools fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Memory fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
+    style Rewind fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
+    style Compact fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
+    style Skills fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
+    style Plugins fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
+    style Config fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
+    style Sessions fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
 ```
 
 ---
@@ -156,13 +156,13 @@ graph LR
     Continue --> Agent
     Budget -->|Complete| Output[Display Response]
 
-    style Input fill:#2563eb,color:#fff,stroke:#fff,stroke-width:1px
-    style Pre fill:#1d4ed8,color:#fff,stroke:#fff,stroke-width:1px
-    style Agent fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Post fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style Budget fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Continue fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Output fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
+    style Input fill:#4d4d4d,color:#fff,stroke:#fff,stroke-width:1px
+    style Pre fill:#404040,color:#fff,stroke:#fff,stroke-width:1px
+    style Agent fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Post fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style Budget fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Continue fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Output fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
 ```
 
 | Component | Module | Trigger | Purpose |
@@ -181,7 +181,7 @@ The core orchestrator that routes between the LLM and tools.
 
 | Component | Module | Purpose |
 |-----------|--------|---------|
-| **WYN360Agent** | `agent.py` | Main agent class using pydantic-ai framework |
+| **ClawdeckAgent** | `agent.py` | Main agent class using pydantic-ai framework |
 | **LLM Provider** | `agent.py` | Routes to Anthropic, AWS Bedrock, Google Gemini, or OpenAI |
 | **System Prompt** | `agent.py` | Dynamic prompt including memory context, plan state, skills list |
 | **Conversation History** | `agent.py` | Maintains context across turns with pydantic-ai message objects |
@@ -198,7 +198,7 @@ config:
   layout: elk
 ---
 graph TB
-    Agent[WYN360Agent] --> Planner
+    Agent[ClawdeckAgent] --> Planner
     Agent --> SubAgent
     Agent --> Dream
     Agent --> Cron
@@ -222,21 +222,21 @@ graph TB
         Cron[CronManager] --> Jobs[Scheduled Jobs]
     end
 
-    style Agent fill:#2563eb,color:#fff,stroke:#fff,stroke-width:1px
-    style Planner fill:#1d4ed8,color:#fff,stroke:#fff,stroke-width:1px
-    style Investigate fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Exit fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Approve fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style Execute fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style SubAgent fill:#1d4ed8,color:#fff,stroke:#fff,stroke-width:1px
-    style W1 fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style W2 fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style W3 fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Dream fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Consolidate fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style SaveMem fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
-    style Cron fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Jobs fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
+    style Agent fill:#4d4d4d,color:#fff,stroke:#fff,stroke-width:1px
+    style Planner fill:#404040,color:#fff,stroke:#fff,stroke-width:1px
+    style Investigate fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Exit fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Approve fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style Execute fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style SubAgent fill:#404040,color:#fff,stroke:#fff,stroke-width:1px
+    style W1 fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style W2 fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style W3 fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Dream fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Consolidate fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style SaveMem fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
+    style Cron fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Jobs fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
 ```
 
 | Component | Module | Trigger | Purpose |
@@ -272,7 +272,7 @@ config:
   layout: elk
 ---
 graph LR
-    subgraph "~/.wyn360/"
+    subgraph "~/.clawdeck/"
         Memory["memory/<br/>MEMORY.md + topic files"]
         Sessions["sessions/<br/>*.session.json"]
         Plugins["plugins/<br/>plugin dirs"]
@@ -288,29 +288,29 @@ graph LR
         History["Conversation History"]
     end
 
-    style Memory fill:#2563eb,color:#fff,stroke:#fff,stroke-width:1px
-    style Sessions fill:#1d4ed8,color:#fff,stroke:#fff,stroke-width:1px
-    style Plugins fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Skills fill:#1e40af,color:#fff,stroke:#fff,stroke-width:1px
-    style Dream fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style Cache fill:#1d4ed8,color:#fff,stroke:#fff,stroke-width:1px
-    style Creds fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style Rewind fill:#1e3a8a,color:#fff,stroke:#fff,stroke-width:1px
-    style Compact fill:#172554,color:#fff,stroke:#fff,stroke-width:1px
-    style History fill:#0f172a,color:#fff,stroke:#fff,stroke-width:1px
+    style Memory fill:#4d4d4d,color:#fff,stroke:#fff,stroke-width:1px
+    style Sessions fill:#404040,color:#fff,stroke:#fff,stroke-width:1px
+    style Plugins fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Skills fill:#333333,color:#fff,stroke:#fff,stroke-width:1px
+    style Dream fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style Cache fill:#404040,color:#fff,stroke:#fff,stroke-width:1px
+    style Creds fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style Rewind fill:#262626,color:#fff,stroke:#fff,stroke-width:1px
+    style Compact fill:#0a0a0a,color:#fff,stroke:#fff,stroke-width:1px
+    style History fill:#171717,color:#fff,stroke:#fff,stroke-width:1px
 ```
 
 | Component | Module | Storage | Purpose |
 |-----------|--------|---------|---------|
-| **Memory** | `memory.py` | `~/.wyn360/memory/` | Persistent cross-session knowledge (user, feedback, project, reference) |
-| **Skills** | `skills.py` | `~/.wyn360/skills/` + `.wyn360/skills/` | User-defined slash commands via YAML |
-| **Plugins** | `plugin_system.py` | `~/.wyn360/plugins/` | Installable extensions with YAML manifests |
+| **Memory** | `memory.py` | `~/.clawdeck/memory/` | Persistent cross-session knowledge (user, feedback, project, reference) |
+| **Skills** | `skills.py` | `~/.clawdeck/skills/` + `.clawdeck/skills/` | User-defined slash commands via YAML |
+| **Plugins** | `plugin_system.py` | `~/.clawdeck/plugins/` | Installable extensions with YAML manifests |
 | **Rewind** | `rewind.py` | In-memory | Conversation state snapshots for undo (up to 50) |
 | **Compaction** | `compaction.py` | In-memory | Auto-drops old messages when history exceeds 50 |
-| **Configuration** | `config.py` | `~/.wyn360/config.yaml` + `.wyn360.yaml` | Three-tier config (user < project < env vars) |
-| **Sessions** | `session_manager.py` | `~/.wyn360/sessions/` | Cookie storage for authenticated browsing |
-| **Credentials** | `credential_manager.py` | `~/.wyn360/credentials/vault.enc` | AES-256-GCM encrypted token storage |
-| **Dream State** | `dream.py` | `~/.wyn360/dream/` | Tracks last consolidation time, lock file |
+| **Configuration** | `config.py` | `~/.clawdeck/config.yaml` + `.clawdeck.yaml` | Three-tier config (user < project < env vars) |
+| **Sessions** | `session_manager.py` | `~/.clawdeck/sessions/` | Cookie storage for authenticated browsing |
+| **Credentials** | `credential_manager.py` | `~/.clawdeck/credentials/vault.enc` | AES-256-GCM encrypted token storage |
+| **Dream State** | `dream.py` | `~/.clawdeck/dream/` | Tracks last consolidation time, lock file |
 | **LSP** | `lsp_client.py` | In-memory | Cached diagnostics from pyright/ruff |
 
 ---
@@ -367,7 +367,7 @@ After every AI response (automatic):
   → Yes → Acquire filesystem lock
        → Background task: read recent session transcripts
        → AI agent extracts useful patterns
-       → Save as memory files in ~/.wyn360/memory/
+       → Save as memory files in ~/.clawdeck/memory/
        → Release lock, update dream_state.json
   → No → Skip silently
 ```
@@ -377,9 +377,9 @@ After every AI response (automatic):
 ## Module Map
 
 ```
-wyn360_cli/
+clawdeck/
 ├── cli.py                  # CLI entry, slash commands, chat loop
-├── agent.py                # WYN360Agent, tool definitions, LLM routing
+├── agent.py                # ClawdeckAgent, tool definitions, LLM routing
 ├── config.py               # Three-tier configuration system
 ├── utils.py                # File ops, command execution, metrics
 │

@@ -1,7 +1,7 @@
 """Unit tests for the token budget system."""
 
 import pytest
-from wyn360_cli.token_budget import TokenBudgetManager, BudgetTracker
+from clawdeck.token_budget import TokenBudgetManager, BudgetTracker
 
 
 class TestBudgetTracker:

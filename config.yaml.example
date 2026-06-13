@@ -1,6 +1,6 @@
-# WYN360 CLI Configuration Example
-# Copy this file to ~/.wyn360/config.yaml for user-wide settings
-# or to .wyn360.yaml in your project root for project-specific settings
+# Clawdeck CLI Configuration Example
+# Copy this file to ~/.clawdeck/config.yaml for user-wide settings
+# or to .clawdeck.yaml in your project root for project-specific settings
 
 # Default AI model to use
 # Options: "haiku" (fast & cheap), "sonnet" (balanced), "opus" (most capable)

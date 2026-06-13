@@ -5,7 +5,7 @@ import tempfile
 import shutil
 from pathlib import Path
 from unittest.mock import MagicMock
-from wyn360_cli.dream import DreamManager, DreamConfig, DreamState
+from clawdeck.dream import DreamManager, DreamConfig, DreamState
 
 
 class TestDreamManager:
@@ -56,7 +56,7 @@ class TestDreamManager:
         assert "hours_since_last" in status
 
     def test_parse_memories(self):
-        from wyn360_cli.memory import MemoryManager
+        from clawdeck.memory import MemoryManager
         mem_dir = self.test_dir / "memory"
         mm = MemoryManager(memory_dir=mem_dir)
         response = """Found some useful info.

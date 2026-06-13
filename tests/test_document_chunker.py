@@ -9,7 +9,7 @@ Tests cover:
 """
 
 import pytest
-from wyn360_cli.document_readers import DocumentChunker, count_tokens
+from clawdeck.document_readers import DocumentChunker, count_tokens
 
 
 class TestDocumentChunker:

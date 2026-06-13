@@ -2,7 +2,7 @@
 
 *New in v0.4.0, enhanced in v0.5.1*
 
-WYN360 CLI introduces structured planning and parallel sub-agent workers, enabling the assistant to break complex tasks into steps and parallelize research across multiple workers.
+Clawdeck CLI introduces structured planning and parallel sub-agent workers, enabling the assistant to break complex tasks into steps and parallelize research across multiple workers.
 
 ---
 
@@ -62,9 +62,9 @@ It will NOT enter plan mode for simple tasks (typos, one-line fixes, specific in
 ```
 You: Refactor the auth module to use JWT tokens instead of sessions
 
-WYN360: [Calls enter_plan_mode — investigates codebase...]
-WYN360: [Reads src/auth/session.py, src/auth/middleware.py, tests/...]
-WYN360: [Calls exit_plan_mode with plan:]
+Clawdeck: [Calls enter_plan_mode — investigates codebase...]
+Clawdeck: [Reads src/auth/session.py, src/auth/middleware.py, tests/...]
+Clawdeck: [Calls exit_plan_mode with plan:]
 
 ## Plan: Refactor auth to JWT
 
@@ -82,7 +82,7 @@ WYN360: [Calls exit_plan_mode with plan:]
 Waiting for approval. Use /plan approve or /plan reject.
 
 You: /plan approve
-WYN360: Plan approved. Starting Step 1...
+Clawdeck: Plan approved. Starting Step 1...
 
 You: /plan status
 2/5 steps completed
@@ -109,7 +109,7 @@ The AI creates plans automatically for complex tasks. You can also explicitly as
 
 ## Sub-Agent Workers
 
-The sub-agent system allows WYN360 to spawn parallel worker agents for research, implementation, and verification tasks.
+The sub-agent system allows Clawdeck to spawn parallel worker agents for research, implementation, and verification tasks.
 
 ### Worker Types
 
@@ -127,7 +127,7 @@ When the AI needs to investigate multiple areas simultaneously, it spawns worker
 ```
 You: There's a bug in both the auth and payment modules
 
-WYN360: Let me investigate both areas in parallel.
+Clawdeck: Let me investigate both areas in parallel.
 
 [Spawns worker: "Investigate auth module"]
 [Spawns worker: "Investigate payment module"]

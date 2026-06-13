@@ -5,11 +5,11 @@ import tempfile
 import shutil
 from pathlib import Path
 from unittest.mock import Mock, AsyncMock, patch
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
-class TestWYN360Agent:
-    """Tests for WYN360Agent class"""
+class TestClawdeckAgent:
+    """Tests for ClawdeckAgent class"""
 
     def setup_method(self):
         """Set up test fixtures"""
@@ -37,7 +37,7 @@ class TestWYN360Agent:
 
     def test_agent_initialization(self):
         """Test that agent initializes correctly"""
-        agent = WYN360Agent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
         assert agent.api_key == "test_key"
         # In Anthropic mode, model name should be the original one passed
         assert agent.model_name == "claude-sonnet-4-20250514"
@@ -47,9 +47,9 @@ class TestWYN360Agent:
 
     def test_system_prompt_contains_key_instructions(self):
         """Test that system prompt has necessary instructions"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         prompt = agent._get_system_prompt()
-        assert "WYN360" in prompt
+        assert "Clawdeck" in prompt
         assert "coding assistant" in prompt.lower()
         assert "python" in prompt.lower()
         # Check for file operation intelligence
@@ -64,7 +64,7 @@ class TestWYN360Agent:
         test_content = "Hello, World!"
         test_file.write_text(test_content)
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.read_file(None, str(test_file))
 
         assert test_content in result
@@ -73,7 +73,7 @@ class TestWYN360Agent:
     @pytest.mark.asyncio
     async def test_read_file_tool_nonexistent(self):
         """Test read_file with nonexistent file"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.read_file(None, "nonexistent.txt")
 
         assert "Error" in result
@@ -82,7 +82,7 @@ class TestWYN360Agent:
     @pytest.mark.asyncio
     async def test_write_file_tool(self):
         """Test the write_file tool"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         file_path = str(Path(self.test_dir) / "new_file.txt")
         content = "Test content"
 
@@ -99,7 +99,7 @@ class TestWYN360Agent:
         test_file = Path(self.test_dir) / "existing.txt"
         test_file.write_text("Original")
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.write_file(None, str(test_file), "New", overwrite=False)
 
         assert "already exists" in result.lower()
@@ -112,7 +112,7 @@ class TestWYN360Agent:
         (Path(self.test_dir) / "test.py").write_text("code")
         (Path(self.test_dir) / "readme.md").write_text("docs")
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.list_files(None, self.test_dir)
 
         assert "test.py" in result
@@ -121,7 +121,7 @@ class TestWYN360Agent:
     @pytest.mark.asyncio
     async def test_list_files_empty_directory(self):
         """Test list_files on empty directory"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.list_files(None, self.test_dir)
 
         assert "No files found" in result
@@ -132,7 +132,7 @@ class TestWYN360Agent:
         # Create a test file
         (Path(self.test_dir) / "test.py").write_text("code")
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.get_project_info(None)
 
         assert "Project Summary" in result
@@ -141,14 +141,14 @@ class TestWYN360Agent:
     @pytest.mark.asyncio
     async def test_get_project_info_blank_project(self):
         """Test get_project_info on blank project"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.get_project_info(None)
 
         assert "blank" in result.lower() or "new" in result.lower()
 
     def test_suggest_filename_streamlit(self):
         """Test filename suggestion for streamlit code"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         code = "import streamlit as st\nst.write('Hello')"
         filename = agent._suggest_filename(code)
 
@@ -156,7 +156,7 @@ class TestWYN360Agent:
 
     def test_suggest_filename_main(self):
         """Test filename suggestion for main function"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         code = "def main():\n    print('hello')"
         filename = agent._suggest_filename(code)
 
@@ -164,7 +164,7 @@ class TestWYN360Agent:
 
     def test_suggest_filename_class(self):
         """Test filename suggestion for class"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         code = "class MyClass:\n    pass"
         filename = agent._suggest_filename(code)
 
@@ -172,7 +172,7 @@ class TestWYN360Agent:
 
     def test_suggest_filename_default(self):
         """Test default filename suggestion"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         code = "x = 1 + 2"
         filename = agent._suggest_filename(code)
 
@@ -181,7 +181,7 @@ class TestWYN360Agent:
     @pytest.mark.asyncio
     async def test_chat_updates_history(self, mocker):
         """Test that chat updates conversation history"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock the agent.run method
         mock_result = Mock()
@@ -200,7 +200,7 @@ class TestWYN360Agent:
     @pytest.mark.asyncio
     async def test_chat_handles_errors(self, mocker):
         """Test that chat handles errors gracefully"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock the agent.run to raise an exception
         mocker.patch.object(agent.agent, 'run', side_effect=Exception("Test error"))
@@ -216,7 +216,7 @@ class TestHistoryManagement:
 
     def test_initialization_with_history(self):
         """Test that agent initializes with history enabled by default"""
-        agent = WYN360Agent(api_key="test_key", use_history=True)
+        agent = ClawdeckAgent(api_key="test_key", use_history=True)
         assert agent.use_history is True
         assert agent.conversation_history == []
         assert agent.total_input_tokens == 0
@@ -225,13 +225,13 @@ class TestHistoryManagement:
 
     def test_initialization_without_history(self):
         """Test that agent can be initialized with history disabled"""
-        agent = WYN360Agent(api_key="test_key", use_history=False)
+        agent = ClawdeckAgent(api_key="test_key", use_history=False)
         assert agent.use_history is False
         assert agent.conversation_history == []
 
     def test_clear_history(self):
         """Test clearing conversation history"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         # Manually add some history
         agent.conversation_history = [
             {"role": "user", "content": "Hello"},
@@ -251,7 +251,7 @@ class TestHistoryManagement:
 
     def test_get_history(self):
         """Test getting conversation history"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         agent.conversation_history = [
             {"role": "user", "content": "Hello"},
             {"role": "assistant", "content": "Hi"}
@@ -268,7 +268,7 @@ class TestHistoryManagement:
     def test_save_session(self):
         """Test saving session to JSON file"""
         import tempfile
-        agent = WYN360Agent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
         agent.conversation_history = [
             {"role": "user", "content": "Test message"}
         ]
@@ -297,7 +297,7 @@ class TestHistoryManagement:
     def test_save_session_creates_directories(self):
         """Test that save_session creates parent directories"""
         import tempfile
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         with tempfile.TemporaryDirectory() as tmpdir:
             filepath = f"{tmpdir}/nested/path/session.json"
@@ -311,7 +311,7 @@ class TestHistoryManagement:
         import tempfile
         import json
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         with tempfile.TemporaryDirectory() as tmpdir:
             filepath = f"{tmpdir}/test_session.json"
@@ -344,14 +344,14 @@ class TestHistoryManagement:
 
     def test_load_session_nonexistent_file(self):
         """Test loading from nonexistent file"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         success = agent.load_session("/nonexistent/session.json")
 
         assert success is False
 
     def test_get_token_stats(self):
         """Test getting token usage statistics"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         agent.total_input_tokens = 1_000_000  # 1M tokens
         agent.total_output_tokens = 500_000   # 500K tokens
         agent.request_count = 10
@@ -374,7 +374,7 @@ class TestHistoryManagement:
 
     def test_get_token_stats_no_requests(self):
         """Test token stats with no requests"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         stats = agent.get_token_stats()
 
         assert stats["total_requests"] == 0
@@ -383,7 +383,7 @@ class TestHistoryManagement:
 
     def test_estimate_tokens(self):
         """Test token estimation"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Test with empty string
         assert agent._estimate_tokens("") == 0
@@ -399,7 +399,7 @@ class TestHistoryManagement:
     @pytest.mark.asyncio
     async def test_track_tokens(self, mocker):
         """Test token tracking during chat"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock the agent.run method
         mock_result = Mock()
@@ -429,7 +429,7 @@ class TestHistoryManagement:
     @pytest.mark.asyncio
     async def test_history_persists_across_chats(self, mocker):
         """Test that conversation history persists across multiple chats"""
-        agent = WYN360Agent(api_key="test_key", use_history=True)
+        agent = ClawdeckAgent(api_key="test_key", use_history=True)
 
         mock_result = Mock()
         mock_result.data = None  # Set data to None so it falls back to output
@@ -457,7 +457,7 @@ class TestGitTools:
     @pytest.mark.asyncio
     async def test_git_status(self):
         """Test git_status tool"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.git_status(None)
 
         # Should return git status (in a git repo)
@@ -466,7 +466,7 @@ class TestGitTools:
     @pytest.mark.asyncio
     async def test_git_diff_no_changes(self):
         """Test git_diff with no changes"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.git_diff(None)
 
         # Should return diff or no changes message
@@ -475,7 +475,7 @@ class TestGitTools:
     @pytest.mark.asyncio
     async def test_git_diff_specific_file(self):
         """Test git_diff for specific file"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.git_diff(None, "README.md")
 
         # Should return diff for specific file
@@ -484,7 +484,7 @@ class TestGitTools:
     @pytest.mark.asyncio
     async def test_git_log(self):
         """Test git_log tool"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.git_log(None, max_count=5)
 
         # Should return recent commits
@@ -493,7 +493,7 @@ class TestGitTools:
     @pytest.mark.asyncio
     async def test_git_branch(self):
         """Test git_branch tool"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.git_branch(None)
 
         # Should return branch list
@@ -523,7 +523,7 @@ class TestSearchTool:
         (Path(self.test_dir) / "test1.py").write_text("class User:\n    pass")
         (Path(self.test_dir) / "test2.py").write_text("def hello():\n    print('hi')")
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.search_files(None, "class User", "*.py")
 
         assert "test1.py" in result or "Search Results" in result
@@ -534,7 +534,7 @@ class TestSearchTool:
         # Create test file without the pattern
         (Path(self.test_dir) / "test.py").write_text("def hello():\n    pass")
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.search_files(None, "NonexistentPattern", "*.py")
 
         assert "No matches found" in result
@@ -546,7 +546,7 @@ class TestSearchTool:
         (Path(self.test_dir) / "test.txt").write_text("TODO: fix this")
         (Path(self.test_dir) / "test.py").write_text("print('hello')")
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.search_files(None, "TODO", "*.txt")
 
         # Should find TODO in .txt file only
@@ -576,7 +576,7 @@ class TestFileManagementTools:
         test_file = Path(self.test_dir) / "to_delete.txt"
         test_file.write_text("delete me")
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.delete_file(None, str(test_file))
 
         assert "Successfully deleted" in result
@@ -585,7 +585,7 @@ class TestFileManagementTools:
     @pytest.mark.asyncio
     async def test_delete_file_not_exists(self):
         """Test delete_file when file doesn't exist"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.delete_file(None, "nonexistent.txt")
 
         assert "does not exist" in result
@@ -599,7 +599,7 @@ class TestFileManagementTools:
 
         dest = Path(self.test_dir) / "destination.txt"
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.move_file(None, str(source), str(dest))
 
         assert "Successfully moved" in result
@@ -610,7 +610,7 @@ class TestFileManagementTools:
     @pytest.mark.asyncio
     async def test_move_file_source_not_exists(self):
         """Test move_file when source doesn't exist"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.move_file(None, "nonexistent.txt", "dest.txt")
 
         assert "does not exist" in result
@@ -624,7 +624,7 @@ class TestFileManagementTools:
         dest = Path(self.test_dir) / "dest.txt"
         dest.write_text("existing")
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.move_file(None, str(source), str(dest))
 
         assert "already exists" in result
@@ -637,7 +637,7 @@ class TestFileManagementTools:
 
         dest = Path(self.test_dir) / "nested" / "dirs" / "dest.txt"
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.move_file(None, str(source), str(dest))
 
         assert "Successfully moved" in result
@@ -648,7 +648,7 @@ class TestFileManagementTools:
         """Test create_directory creates a new directory"""
         new_dir = Path(self.test_dir) / "new_directory"
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.create_directory(None, str(new_dir))
 
         assert "Successfully created" in result
@@ -660,7 +660,7 @@ class TestFileManagementTools:
         """Test create_directory with nested path"""
         nested_dir = Path(self.test_dir) / "level1" / "level2" / "level3"
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.create_directory(None, str(nested_dir))
 
         assert "Successfully created" in result
@@ -673,7 +673,7 @@ class TestFileManagementTools:
         existing_dir = Path(self.test_dir) / "existing"
         existing_dir.mkdir()
 
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
         result = await agent.create_directory(None, str(existing_dir))
 
         assert "already exists" in result
@@ -684,7 +684,7 @@ class TestModelSwitching:
 
     def test_get_model_info_default(self):
         """Test get_model_info returns correct info for default model"""
-        agent = WYN360Agent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
         info = agent.get_model_info()
 
         assert info["current_model"] == "claude-sonnet-4-20250514"
@@ -695,7 +695,7 @@ class TestModelSwitching:
 
     def test_get_model_info_haiku(self):
         """Test get_model_info for Haiku model"""
-        agent = WYN360Agent(api_key="test_key", model="claude-3-5-haiku-20241022")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-3-5-haiku-20241022")
         info = agent.get_model_info()
 
         assert info["display_name"] == "Haiku"
@@ -705,7 +705,7 @@ class TestModelSwitching:
 
     def test_switch_model_short_name(self):
         """Test switching model using short name"""
-        agent = WYN360Agent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
 
         # Switch to haiku using short name
         success = agent.switch_model("haiku")
@@ -718,7 +718,7 @@ class TestModelSwitching:
 
     def test_switch_model_full_name(self):
         """Test switching model using full model ID"""
-        agent = WYN360Agent(api_key="test_key", model="claude-sonnet-4-20250514")
+        agent = ClawdeckAgent(api_key="test_key", model="claude-sonnet-4-20250514")
 
         # Switch using full name
         success = agent.switch_model("claude-3-5-haiku-20241022")
@@ -729,7 +729,7 @@ class TestModelSwitching:
 
     def test_switch_model_case_insensitive(self):
         """Test model switching is case insensitive"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Try different cases
         success1 = agent.switch_model("HAIKU")
@@ -743,7 +743,7 @@ class TestModelSwitching:
 
     def test_switch_model_preserves_history(self):
         """Test that switching models preserves conversation history"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Add some history
         agent.conversation_history = [
@@ -760,7 +760,7 @@ class TestModelSwitching:
 
     def test_model_description(self):
         """Test _get_model_description method"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         desc_haiku = agent._get_model_description("claude-3-5-haiku-20241022")
         assert "Fast" in desc_haiku
@@ -780,7 +780,7 @@ class TestStreaming:
 
     def test_chat_stream_method_exists(self):
         """Test that chat_stream method exists"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         assert hasattr(agent, 'chat_stream')
         assert callable(agent.chat_stream)
@@ -788,7 +788,7 @@ class TestStreaming:
     @pytest.mark.asyncio
     async def test_chat_stream_returns_complete_response(self):
         """Test that chat_stream returns complete response text"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock run() to return a complete response
         class MockResult:
@@ -817,7 +817,7 @@ class TestStreaming:
     @pytest.mark.asyncio
     async def test_chat_stream_handles_errors(self):
         """Test that chat_stream handles errors gracefully"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock run() to raise an error
         async def mock_run_error(*args, **kwargs):
@@ -840,11 +840,11 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_check_hf_authentication_not_authenticated(self, mocker):
         """Test authentication check when not authenticated"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock execute_command_safe to simulate not authenticated
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(False, "not logged in", 1)
         )
 
@@ -856,11 +856,11 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_check_hf_authentication_authenticated(self, mocker):
         """Test authentication check when authenticated"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock execute_command_safe to simulate authenticated
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(True, "username: testuser\nemail: test@example.com", 0)
         )
 
@@ -872,7 +872,7 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_check_hf_authentication_auto_auth(self, mocker):
         """Test auto-authentication when HF_TOKEN is in environment"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Set HF_TOKEN in environment
         mocker.patch.dict('os.environ', {'HF_TOKEN': 'hf_test_token_12345'})
@@ -881,7 +881,7 @@ class TestHuggingFaceTools:
         # 1. whoami fails (not authenticated yet)
         # 2. auth login succeeds
         # 3. whoami succeeds after authentication
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (False, "not logged in", 1),  # First whoami fails
             (True, "Token is valid", 0),   # auth login succeeds
@@ -897,7 +897,7 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_authenticate_hf_invalid_token(self):
         """Test authentication with invalid token"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         result = await agent.authenticate_hf(None, "short")
 
@@ -906,10 +906,10 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_authenticate_hf_success(self, mocker):
         """Test successful authentication"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock both auth login and whoami commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "token is valid", 0),  # auth login
             (True, "username: testuser", 0)  # whoami
@@ -923,11 +923,11 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_authenticate_hf_failure(self, mocker):
         """Test failed authentication"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock auth login failure
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(False, "invalid token", 1)
         )
 
@@ -938,7 +938,7 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_create_hf_readme_streamlit(self, mocker, tmp_path):
         """Test README creation for Streamlit app"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Change to temp directory
         import os
@@ -974,7 +974,7 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_create_hf_readme_gradio(self, mocker, tmp_path):
         """Test README creation for Gradio app"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         import os
         original_dir = os.getcwd()
@@ -1006,11 +1006,11 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_create_hf_space_success(self, mocker):
         """Test successful Space creation"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock execute_command_safe to simulate successful space creation
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(True, "Repository created successfully", 0)
         )
 
@@ -1023,11 +1023,11 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_create_hf_space_already_exists(self, mocker):
         """Test Space creation when space already exists"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock execute_command_safe to simulate space already exists
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(False, "Repository already exists", 1)
         )
 
@@ -1039,7 +1039,7 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_create_hf_space_invalid_name(self):
         """Test Space creation with invalid name format"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         result = await agent.create_hf_space(None, "invalidname")
 
@@ -1049,7 +1049,7 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_push_to_hf_space_success(self, mocker, tmp_path):
         """Test successful file upload to Space"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Create test directory with app.py
         test_dir = tmp_path / "test_app"
@@ -1059,7 +1059,7 @@ class TestHuggingFaceTools:
 
         # Mock execute_command_safe to simulate successful upload
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(True, "Files uploaded successfully", 0)
         )
 
@@ -1072,7 +1072,7 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_push_to_hf_space_directory_not_found(self):
         """Test upload with non-existent directory"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         result = await agent.push_to_hf_space(None, "eagle0504/test-app", "/nonexistent/path")
 
@@ -1081,7 +1081,7 @@ class TestHuggingFaceTools:
     @pytest.mark.asyncio
     async def test_push_to_hf_space_invalid_name(self):
         """Test upload with invalid space name"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         result = await agent.push_to_hf_space(None, "invalidname", ".")
 
@@ -1094,7 +1094,7 @@ class TestGenerateTests:
     @pytest.mark.asyncio
     async def test_generate_tests_simple_function(self, tmp_path):
         """Test generating tests for simple functions"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Create a simple Python file
         test_file = tmp_path / "calculator.py"
@@ -1123,7 +1123,7 @@ def subtract(a, b):
     @pytest.mark.asyncio
     async def test_generate_tests_class(self, tmp_path):
         """Test generating tests for classes"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Create a class-based Python file
         test_file = tmp_path / "user.py"
@@ -1154,7 +1154,7 @@ def subtract(a, b):
     @pytest.mark.asyncio
     async def test_generate_tests_file_not_found(self):
         """Test error handling when file doesn't exist"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         result = await agent.generate_tests(None, "/nonexistent/file.py")
 
@@ -1163,7 +1163,7 @@ def subtract(a, b):
     @pytest.mark.asyncio
     async def test_generate_tests_not_python_file(self, tmp_path):
         """Test error handling for non-Python files"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Create a text file
         test_file = tmp_path / "readme.txt"
@@ -1176,7 +1176,7 @@ def subtract(a, b):
     @pytest.mark.asyncio
     async def test_generate_tests_syntax_error(self, tmp_path):
         """Test error handling for Python files with syntax errors"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Create a Python file with syntax error
         test_file = tmp_path / "broken.py"
@@ -1192,7 +1192,7 @@ def subtract(a, b):
     @pytest.mark.asyncio
     async def test_generate_tests_custom_output_path(self, tmp_path):
         """Test generating tests with custom output path"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Create a simple Python file
         test_file = tmp_path / "math_utils.py"
@@ -1216,10 +1216,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_check_gh_authentication_not_authenticated(self, mocker):
         """Test GitHub authentication check when not authenticated"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock execute_command_safe to simulate not authenticated
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (False, "not logged in", 1),  # gh auth status fails
         ]
@@ -1235,11 +1235,11 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_check_gh_authentication_authenticated(self, mocker):
         """Test GitHub authentication check when authenticated"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock execute_command_safe to simulate authenticated
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(True, "✓ Logged in to github.com as testuser", 0)
         )
 
@@ -1251,7 +1251,7 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_check_gh_authentication_auto_auth(self, mocker):
         """Test auto-authentication when GH_TOKEN is in environment"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Set GH_TOKEN in environment
         mocker.patch.dict('os.environ', {'GH_TOKEN': 'ghp_test_token_12345'})
@@ -1260,7 +1260,7 @@ class TestGitHubTools:
         # 1. gh auth status fails (not authenticated yet)
         # 2. auth login succeeds
         # 3. gh auth status succeeds (verification)
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (False, "not logged in", 1),  # First status check fails
             (True, "Authentication complete", 0),   # auth login succeeds
@@ -1275,7 +1275,7 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_authenticate_gh_invalid_token(self):
         """Test GitHub authentication with invalid token"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         result = await agent.authenticate_gh(None, "short")
 
@@ -1284,11 +1284,11 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_authenticate_gh_success(self, mocker):
         """Test successful GitHub authentication"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock auth login success
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(True, "Authentication complete", 0)
         )
 
@@ -1300,11 +1300,11 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_authenticate_gh_failure(self, mocker):
         """Test failed GitHub authentication"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock auth login failure
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(False, "invalid token", 1)
         )
 
@@ -1315,10 +1315,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_commit_changes_success(self, mocker):
         """Test successful commit and push"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock git commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "", 0),  # git rev-parse --git-dir
             (True, "M file.py\nA new_file.py", 0),  # git status --porcelain (has changes)
@@ -1337,11 +1337,11 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_commit_changes_not_a_repo(self, mocker):
         """Test commit when not in a git repository"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock git rev-parse failure
         mocker.patch(
-            'wyn360_cli.utils.execute_command_safe',
+            'clawdeck.utils.execute_command_safe',
             return_value=(False, "not a git repository", 128)
         )
 
@@ -1352,10 +1352,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_create_pr_success(self, mocker):
         """Test successful PR creation"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "✓ Logged in", 0),  # gh auth status
             (True, "feature/test", 0),  # git branch --show-current
@@ -1370,10 +1370,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_create_pr_on_main_branch(self, mocker):
         """Test PR creation fails when on main branch"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "✓ Logged in", 0),  # gh auth status
             (True, "main", 0),  # git branch --show-current
@@ -1387,10 +1387,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_create_branch_success(self, mocker):
         """Test successful branch creation"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock git commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "", 0),  # git rev-parse --git-dir
             (False, "fatal: Needed a single revision", 128),  # git rev-parse --verify (branch doesn't exist)
@@ -1406,10 +1406,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_create_branch_no_checkout(self, mocker):
         """Test branch creation without checkout"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock git commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "", 0),  # git rev-parse --git-dir
             (False, "fatal: Needed a single revision", 128),  # git rev-parse --verify (branch doesn't exist)
@@ -1424,10 +1424,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_checkout_branch_success(self, mocker):
         """Test successful branch checkout"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock git commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "", 0),  # git rev-parse --git-dir
             (True, "main", 0),  # git branch --show-current
@@ -1443,10 +1443,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_checkout_branch_not_exists(self, mocker):
         """Test checkout when branch doesn't exist"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock git commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "", 0),  # git rev-parse --git-dir
             (True, "main", 0),  # git branch --show-current
@@ -1461,10 +1461,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_merge_branch_success(self, mocker):
         """Test successful branch merge"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock git commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "", 0),  # git rev-parse --git-dir
             (True, "main", 0),  # git branch --show-current
@@ -1481,10 +1481,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_merge_branch_wrong_branch(self, mocker):
         """Test merge fails when on wrong branch"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock: currently on feature branch, trying to merge main into develop, but checkout fails
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "", 0),  # git rev-parse --git-dir
             (True, "feature/test", 0),  # git branch --show-current (on wrong branch)
@@ -1498,10 +1498,10 @@ class TestGitHubTools:
     @pytest.mark.asyncio
     async def test_gh_merge_branch_conflict(self, mocker):
         """Test merge with conflicts"""
-        agent = WYN360Agent(api_key="test_key")
+        agent = ClawdeckAgent(api_key="test_key")
 
         # Mock git commands
-        mock_execute = mocker.patch('wyn360_cli.utils.execute_command_safe')
+        mock_execute = mocker.patch('clawdeck.utils.execute_command_safe')
         mock_execute.side_effect = [
             (True, "", 0),  # git rev-parse --git-dir
             (True, "main", 0),  # git branch --show-current

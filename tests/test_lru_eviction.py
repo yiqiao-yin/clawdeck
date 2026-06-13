@@ -12,7 +12,7 @@ import pytest
 import tempfile
 import time
 from pathlib import Path
-from wyn360_cli.document_readers import ChunkCache, DocumentMetadata, ChunkMetadata
+from clawdeck.document_readers import ChunkCache, DocumentMetadata, ChunkMetadata
 
 
 class TestLRUEviction:

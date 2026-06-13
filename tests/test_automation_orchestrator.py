@@ -7,7 +7,7 @@ Tests decision-making logic, learning capabilities, and analytics.
 import pytest
 import time
 from unittest.mock import Mock, patch
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationOrchestrator,
     ActionRequest,
     ActionResult,

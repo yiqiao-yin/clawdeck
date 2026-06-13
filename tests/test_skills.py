@@ -4,7 +4,7 @@ import pytest
 import tempfile
 import shutil
 from pathlib import Path
-from wyn360_cli.skills import Skill, SkillRegistry
+from clawdeck.skills import Skill, SkillRegistry
 
 
 class TestSkill:

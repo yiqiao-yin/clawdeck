@@ -17,7 +17,7 @@ import sys
 # Mock sentence_transformers before importing EmbeddingModel
 sys.modules['sentence_transformers'] = MagicMock()
 
-from wyn360_cli.document_readers import EmbeddingModel
+from clawdeck.document_readers import EmbeddingModel
 
 
 class TestEmbeddingModel:
@@ -35,7 +35,7 @@ class TestEmbeddingModel:
     def test_model_lazy_loading(self):
         """Test model is loaded lazily on first use."""
         # Mock at import location inside _lazy_load method
-        with patch('wyn360_cli.document_readers.SentenceTransformer', create=True) as mock_st:
+        with patch('clawdeck.document_readers.SentenceTransformer', create=True) as mock_st:
             mock_st_instance = Mock()
             mock_st.return_value = mock_st_instance
 
@@ -57,7 +57,7 @@ class TestEmbeddingModel:
 
     def test_encode_single_text(self):
         """Test encoding a single text."""
-        with patch('wyn360_cli.document_readers.SentenceTransformer', create=True) as mock_st:
+        with patch('clawdeck.document_readers.SentenceTransformer', create=True) as mock_st:
             # Mock sentence transformer
             mock_st_instance = Mock()
             mock_embedding = np.array([[0.1, 0.2, 0.3, 0.4]])
@@ -79,7 +79,7 @@ class TestEmbeddingModel:
 
     def test_encode_multiple_texts(self):
         """Test encoding multiple texts in batch."""
-        with patch('wyn360_cli.document_readers.SentenceTransformer', create=True) as mock_st:
+        with patch('clawdeck.document_readers.SentenceTransformer', create=True) as mock_st:
             # Mock sentence transformer
             mock_st_instance = Mock()
             mock_embeddings = np.array([
@@ -162,7 +162,7 @@ class TestEmbeddingModel:
 
     def test_encode_empty_string(self):
         """Test encoding an empty string."""
-        with patch('wyn360_cli.document_readers.SentenceTransformer', create=True) as mock_st:
+        with patch('clawdeck.document_readers.SentenceTransformer', create=True) as mock_st:
             # Mock sentence transformer
             mock_st_instance = Mock()
             mock_embedding = np.array([[0.0, 0.0, 0.0, 0.0]])
@@ -178,7 +178,7 @@ class TestEmbeddingModel:
 
     def test_encode_special_characters(self):
         """Test encoding text with special characters."""
-        with patch('wyn360_cli.document_readers.SentenceTransformer', create=True) as mock_st:
+        with patch('clawdeck.document_readers.SentenceTransformer', create=True) as mock_st:
             # Mock sentence transformer
             mock_st_instance = Mock()
             mock_embedding = np.array([[0.1, 0.2, 0.3, 0.4]])
@@ -195,7 +195,7 @@ class TestEmbeddingModel:
 
     def test_lazy_load_called_once(self):
         """Test lazy load is only called once even with multiple operations."""
-        with patch('wyn360_cli.document_readers.SentenceTransformer', create=True) as mock_st:
+        with patch('clawdeck.document_readers.SentenceTransformer', create=True) as mock_st:
             mock_st_instance = Mock()
             mock_embedding = np.array([[0.1, 0.2, 0.3, 0.4]])
             mock_st_instance.encode.return_value = mock_embedding
@@ -213,7 +213,7 @@ class TestEmbeddingModel:
 
     def test_custom_model_name(self):
         """Test initialization with custom model name."""
-        with patch('wyn360_cli.document_readers.SentenceTransformer', create=True) as mock_st:
+        with patch('clawdeck.document_readers.SentenceTransformer', create=True) as mock_st:
             mock_st_instance = Mock()
             mock_st.return_value = mock_st_instance
 

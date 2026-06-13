@@ -15,7 +15,7 @@ The current browser authentication implementation (Phase 4.1-4.3) successfully p
 - ✅ CAPTCHA/2FA detection
 - ✅ 48/48 tests passing
 
-However, **real-world testing** revealed critical limitations when attempting to login to `wyn360search.com`:
+However, **real-world testing** revealed critical limitations when attempting to login to `clawdecksearch.com`:
 - ❌ Form detection failed
 - ❌ No debugging information available
 - ❌ No fallback strategies
@@ -28,7 +28,7 @@ However, **real-world testing** revealed critical limitations when attempting to
 
 **User Command:**
 ```
-You: can you log in http://wyn360search.com/ for me?
+You: can you log in http://clawdecksearch.com/ for me?
      My username is 'your_username' and password is 'your_password'
 ```
 
@@ -36,9 +36,9 @@ You: can you log in http://wyn360search.com/ for me?
 ```
 ❌ Login Form Detection Failed
 Could not detect login form at:
-- http://wyn360search.com/
-- http://wyn360search.com/login
-- http://wyn360search.com/signin
+- http://clawdecksearch.com/
+- http://clawdecksearch.com/login
+- http://clawdecksearch.com/signin
 ```
 
 ### Root Causes
@@ -222,7 +222,7 @@ async def login(self, url: str, username: str, password: str, debug: bool = Fals
     """Login with optional debug mode."""
 
     if debug:
-        debug_dir = Path.home() / '.wyn360' / 'debug' / 'browser_auth'
+        debug_dir = Path.home() / '.clawdeck' / 'debug' / 'browser_auth'
         debug_dir.mkdir(parents=True, exist_ok=True)
         timestamp = int(time.time())
 
@@ -278,7 +278,7 @@ async def login_with_selectors(
 
     Usage:
         login_with_selectors(
-            url="http://wyn360search.com/",
+            url="http://clawdecksearch.com/",
             username="your_username",
             password="your_password",
             username_selector='#user_login',
@@ -411,23 +411,23 @@ async def interactive_login(self, url: str) -> Dict:
 
 ## Testing Strategy
 
-### **Test Cases for wyn360search.com**
+### **Test Cases for clawdecksearch.com**
 
 1. **Test with Debug Mode:**
 ```bash
-wyn360 "login to http://wyn360search.com/ with your_username/your_password --debug"
+clawdeck "login to http://clawdecksearch.com/ with your_username/your_password --debug"
 ```
 
-Expected: Screenshots + HTML dump saved to `~/.wyn360/debug/browser_auth/`
+Expected: Screenshots + HTML dump saved to `~/.clawdeck/debug/browser_auth/`
 
 2. **Test Manual Selectors:**
 ```bash
-wyn360 "login to http://wyn360search.com/ with your_username/your_password using selectors #username, #password, #login-button"
+clawdeck "login to http://clawdecksearch.com/ with your_username/your_password using selectors #username, #password, #login-button"
 ```
 
 3. **Test Interactive Mode:**
 ```bash
-wyn360 "help me login to wyn360search.com interactively"
+clawdeck "help me login to clawdecksearch.com interactively"
 ```
 
 ---
@@ -446,26 +446,26 @@ wyn360 "help me login to wyn360search.com interactively"
 
 ## User Guidance (Immediate)
 
-**For your current issue with wyn360search.com:**
+**For your current issue with clawdecksearch.com:**
 
 1. **Enable Debug Mode:**
-   - Ask: "Login to wyn360search.com with debug mode enabled"
+   - Ask: "Login to clawdecksearch.com with debug mode enabled"
    - This will save screenshots and HTML
 
 2. **Try Manual Login:**
-   - Visit http://wyn360search.com/ in your browser
+   - Visit http://clawdecksearch.com/ in your browser
    - Inspect the login form (right-click → Inspect)
    - Find the CSS selectors for username/password fields
    - Use: "Login with custom selectors #user, #pass, #submit"
 
 3. **Interactive Fallback:**
-   - Ask: "Open browser for manual login to wyn360search.com"
+   - Ask: "Open browser for manual login to clawdecksearch.com"
    - Login manually, system captures cookies
 
 4. **Temporary Workaround:**
    - Login manually in browser
    - Export cookies using browser extension
-   - Provide cookies to WYN360 directly
+   - Provide cookies to Clawdeck directly
 
 ---
 

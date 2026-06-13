@@ -1,6 +1,6 @@
 # HuggingFace Integration
 
-Deploy applications to HuggingFace Spaces directly from WYN360 CLI with automated setup and deployment.
+Deploy applications to HuggingFace Spaces directly from Clawdeck CLI with automated setup and deployment.
 
 ## Features
 
@@ -24,7 +24,7 @@ export HUGGINGFACE_TOKEN=hf_your_huggingface_token
 ```
 You: Deploy my Streamlit app to HuggingFace
 
-WYN360:
+Clawdeck:
 ✓ Created HuggingFace Space: username/my-streamlit-app
 ✓ Generated professional README.md
 ✓ Uploaded application files
@@ -35,7 +35,7 @@ WYN360:
 ```
 You: Create a Gradio space for my ML model
 
-WYN360:
+Clawdeck:
 ✓ Generated Gradio interface code
 ✓ Created HuggingFace Space
 ✓ Deployed model and dependencies

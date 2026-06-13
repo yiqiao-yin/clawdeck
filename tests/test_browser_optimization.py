@@ -12,13 +12,13 @@ import os
 import pytest
 from unittest.mock import patch
 
-from wyn360_cli.config import (
-    WYN360Config,
+from clawdeck.config import (
+    ClawdeckConfig,
     get_progressive_timeout,
     get_site_profile,
     load_env_config
 )
-from wyn360_cli.browser_controller import BrowserConfig
+from clawdeck.browser_controller import BrowserConfig
 
 
 class TestProgressiveTimeouts:
@@ -97,9 +97,9 @@ class TestEnvironmentVariables:
     def test_timeout_environment_variables(self):
         """Test timeout environment variable loading"""
         with patch.dict(os.environ, {
-            'WYN360_NAVIGATION_TIMEOUT': '50000',
-            'WYN360_ACTION_TIMEOUT': '25000',
-            'WYN360_DEFAULT_TIMEOUT': '35000'
+            'CLAWDECK_NAVIGATION_TIMEOUT': '50000',
+            'CLAWDECK_ACTION_TIMEOUT': '25000',
+            'CLAWDECK_DEFAULT_TIMEOUT': '35000'
         }):
             env_config = load_env_config()
 
@@ -110,8 +110,8 @@ class TestEnvironmentVariables:
     def test_retry_environment_variables(self):
         """Test retry environment variable loading"""
         with patch.dict(os.environ, {
-            'WYN360_MAX_RETRIES': '4',
-            'WYN360_RETRY_DELAY': '2.5'
+            'CLAWDECK_MAX_RETRIES': '4',
+            'CLAWDECK_RETRY_DELAY': '2.5'
         }):
             env_config = load_env_config()
 
@@ -121,8 +121,8 @@ class TestEnvironmentVariables:
     def test_strategy_environment_variables(self):
         """Test strategy environment variable loading"""
         with patch.dict(os.environ, {
-            'WYN360_TIMEOUT_STRATEGY': 'fixed',
-            'WYN360_WAIT_STRATEGY': 'networkidle'
+            'CLAWDECK_TIMEOUT_STRATEGY': 'fixed',
+            'CLAWDECK_WAIT_STRATEGY': 'networkidle'
         }):
             env_config = load_env_config()
 
@@ -132,8 +132,8 @@ class TestEnvironmentVariables:
     def test_boolean_environment_variables(self):
         """Test boolean environment variable loading"""
         with patch.dict(os.environ, {
-            'WYN360_ENABLE_STEALTH': 'false',
-            'WYN360_AUTO_SITE_DETECTION': 'true'
+            'CLAWDECK_ENABLE_STEALTH': 'false',
+            'CLAWDECK_AUTO_SITE_DETECTION': 'true'
         }):
             env_config = load_env_config()
 
@@ -143,8 +143,8 @@ class TestEnvironmentVariables:
     def test_invalid_environment_variables(self):
         """Test handling of invalid environment variables"""
         with patch.dict(os.environ, {
-            'WYN360_TIMEOUT_STRATEGY': 'invalid_strategy',
-            'WYN360_WAIT_STRATEGY': 'invalid_wait'
+            'CLAWDECK_TIMEOUT_STRATEGY': 'invalid_strategy',
+            'CLAWDECK_WAIT_STRATEGY': 'invalid_wait'
         }):
             env_config = load_env_config()
 
@@ -165,7 +165,7 @@ class TestBrowserControllerIntegration:
 
     def test_browser_config_with_dynamic_config(self):
         """Test BrowserConfig with dynamic configuration"""
-        mock_config = WYN360Config()
+        mock_config = ClawdeckConfig()
         mock_config.browser_navigation_timeout = 50000
         mock_config.browser_timeout_strategy = "progressive"
         mock_config.browser_auto_site_detection = True
@@ -177,7 +177,7 @@ class TestBrowserControllerIntegration:
 
     def test_browser_config_with_site_profile(self):
         """Test BrowserConfig with site-specific optimization"""
-        mock_config = WYN360Config()
+        mock_config = ClawdeckConfig()
         mock_config.browser_navigation_timeout = 45000
         mock_config.browser_timeout_strategy = "progressive"
         mock_config.browser_auto_site_detection = True
@@ -190,7 +190,7 @@ class TestBrowserControllerIntegration:
 
     def test_browser_config_retry_settings(self):
         """Test BrowserConfig retry settings"""
-        mock_config = WYN360Config()
+        mock_config = ClawdeckConfig()
         mock_config.browser_max_retries = 3
         mock_config.browser_retry_delay = 2.0
         mock_config.browser_auto_site_detection = True
@@ -205,7 +205,7 @@ class TestBrowserControllerIntegration:
 
     def test_browser_config_wait_settings(self):
         """Test BrowserConfig wait settings"""
-        mock_config = WYN360Config()
+        mock_config = ClawdeckConfig()
         mock_config.browser_wait_after_navigation = 2.5
         mock_config.browser_wait_after_action = 1.5
         mock_config.browser_wait_strategy = "domcontentloaded"
@@ -229,7 +229,7 @@ class TestConfigurationDefaults:
 
     def test_optimized_defaults(self):
         """Test that defaults are optimized compared to previous version"""
-        config = WYN360Config()
+        config = ClawdeckConfig()
 
         # These should be optimized (reduced) from previous version
         assert config.browser_navigation_timeout == 45000  # Was 90000
@@ -242,7 +242,7 @@ class TestConfigurationDefaults:
 
     def test_improved_strategies(self):
         """Test that default strategies are improved"""
-        config = WYN360Config()
+        config = ClawdeckConfig()
 
         # These should use better strategies
         assert config.browser_timeout_strategy == "progressive"  # Was fixed

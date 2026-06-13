@@ -8,7 +8,7 @@ instances across all automation approaches (DOM, Stagehand, Vision).
 import pytest
 import asyncio
 from unittest.mock import Mock, patch, AsyncMock, MagicMock
-from src.wyn360.tools.browser.browser_manager import UnifiedBrowserManager, browser_manager
+from clawdeck.tools.browser.browser_manager import UnifiedBrowserManager, browser_manager
 
 
 class TestUnifiedBrowserManager:
@@ -39,7 +39,7 @@ class TestUnifiedBrowserManager:
         with patch.object(self.manager, 'playwright', None):
             with patch.object(self.manager, 'browser', None):
                 # Mock the async playwright and browser initialization
-                with patch('src.wyn360.tools.browser.browser_manager.async_playwright') as mock_pw:
+                with patch('clawdeck.tools.browser.browser_manager.async_playwright') as mock_pw:
                     mock_playwright_instance = AsyncMock()
                     mock_browser = AsyncMock()
                     mock_pw.return_value.start = AsyncMock(return_value=mock_playwright_instance)
@@ -158,7 +158,7 @@ class TestUnifiedBrowserManager:
 
     def test_browser_manager_global_instance(self):
         """Test that the global browser_manager is accessible"""
-        from src.wyn360.tools.browser.browser_manager import browser_manager
+        from clawdeck.tools.browser.browser_manager import browser_manager
 
         assert browser_manager is not None
         assert isinstance(browser_manager, UnifiedBrowserManager)

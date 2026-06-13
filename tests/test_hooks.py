@@ -1,7 +1,7 @@
 """Unit tests for the hook system."""
 
 import pytest
-from wyn360_cli.hooks import (
+from clawdeck.hooks import (
     HookManager, HookPoint, HookContext, HookResult, RegisteredHook,
 )
 

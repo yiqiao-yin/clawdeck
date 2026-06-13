@@ -3,9 +3,9 @@
 import pytest
 import asyncio
 from unittest.mock import Mock, AsyncMock, patch
-from wyn360_cli.browser_controller import BrowserController, BrowserConfig, BrowserControllerError
-from wyn360_cli.vision_engine import VisionDecisionEngine, VisionDecisionError
-from wyn360_cli.browser_task_executor import BrowserTaskExecutor
+from clawdeck.browser_controller import BrowserController, BrowserConfig, BrowserControllerError
+from clawdeck.vision_engine import VisionDecisionEngine, VisionDecisionError
+from clawdeck.browser_task_executor import BrowserTaskExecutor
 
 
 class TestBrowserConfigurationPhase54:
@@ -350,7 +350,7 @@ class TestErrorResiliencePhase54:
             call_count += 1
 
             if call_count == 1:
-                from wyn360_cli.vision_engine import VisionDecisionError
+                from clawdeck.vision_engine import VisionDecisionError
                 raise VisionDecisionError("Transient error")
             else:
                 return {

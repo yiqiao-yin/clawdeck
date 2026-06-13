@@ -8,12 +8,12 @@ and Vision approaches with intelligent fallback logic.
 import pytest
 import time
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from src.wyn360.tools.browser.enhanced_automation_orchestrator import (
+from clawdeck.tools.browser.enhanced_automation_orchestrator import (
     EnhancedAutomationOrchestrator,
     EnhancedActionRequest,
     StagehandExecutionPipeline
 )
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationApproach,
     ActionResult,
     DecisionContext
@@ -64,8 +64,8 @@ class TestEnhancedAutomationOrchestrator:
     @pytest.fixture
     def orchestrator(self):
         """Create enhanced orchestrator with mocked dependencies"""
-        with patch('src.wyn360.tools.browser.enhanced_automation_orchestrator.stagehand_integration'):
-            with patch('src.wyn360.tools.browser.enhanced_automation_orchestrator.browser_tools'):
+        with patch('clawdeck.tools.browser.enhanced_automation_orchestrator.stagehand_integration'):
+            with patch('clawdeck.tools.browser.enhanced_automation_orchestrator.browser_tools'):
                 return EnhancedAutomationOrchestrator()
 
     @pytest.fixture
@@ -95,7 +95,7 @@ class TestEnhancedAutomationOrchestrator:
             'dom_analysis_text': '<button>Login</button>'
         }
 
-        with patch('src.wyn360.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
+        with patch('clawdeck.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
             mock_tools.analyze_page_dom = AsyncMock(return_value=mock_result)
 
             result = await orchestrator._perform_dom_analysis(sample_request)
@@ -110,7 +110,7 @@ class TestEnhancedAutomationOrchestrator:
     @pytest.mark.asyncio
     async def test_dom_analysis_failure(self, orchestrator, sample_request):
         """Test DOM analysis failure handling"""
-        with patch('src.wyn360.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
+        with patch('clawdeck.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
             mock_tools.analyze_page_dom = AsyncMock(side_effect=Exception("Analysis failed"))
 
             result = await orchestrator._perform_dom_analysis(sample_request)
@@ -131,7 +131,7 @@ class TestEnhancedAutomationOrchestrator:
             'result': 'Button clicked'
         }
 
-        with patch('src.wyn360.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
+        with patch('clawdeck.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
             mock_tools.execute_dom_action = AsyncMock(return_value=execution_result)
 
             result = await orchestrator._execute_dom_approach(sample_request, dom_result)
@@ -152,7 +152,7 @@ class TestEnhancedAutomationOrchestrator:
             'error': 'Element not found'
         }
 
-        with patch('src.wyn360.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
+        with patch('clawdeck.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
             mock_tools.execute_dom_action = AsyncMock(return_value=execution_result)
 
             result = await orchestrator._execute_dom_approach(sample_request, dom_result)
@@ -270,7 +270,7 @@ class TestEnhancedAutomationOrchestrator:
         }
 
         with patch.object(orchestrator, '_perform_dom_analysis', return_value=dom_analysis):
-            with patch('src.wyn360.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
+            with patch('clawdeck.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_tools:
                 mock_tools.execute_dom_action = AsyncMock(return_value=execution_result)
 
                 result = await orchestrator.execute_automation_task(sample_request)

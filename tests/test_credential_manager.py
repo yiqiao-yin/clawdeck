@@ -16,7 +16,7 @@ import pytest
 import tempfile
 import os
 from pathlib import Path
-from wyn360_cli.credential_manager import CredentialManager
+from clawdeck.credential_manager import CredentialManager
 
 
 class TestCredentialManager:

@@ -10,7 +10,7 @@ Tests cover:
 """
 
 import pytest
-from wyn360_cli.document_readers import DocumentChunker
+from clawdeck.document_readers import DocumentChunker
 
 
 class TestOverlappingChunks:

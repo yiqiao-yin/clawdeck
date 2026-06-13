@@ -14,7 +14,7 @@ import pytest
 import tempfile
 from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch, AsyncMock
-from wyn360_cli.document_readers import WordReader, count_tokens
+from clawdeck.document_readers import WordReader, count_tokens
 
 
 class TestWordReader:
@@ -40,7 +40,7 @@ class TestWordReader:
         assert reader.chunk_size == 500
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', False)
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', False)
     async def test_read_without_python_docx(self):
         """Test error when python-docx not installed."""
         with tempfile.NamedTemporaryFile(suffix=".docx") as tmpfile:
@@ -52,8 +52,8 @@ class TestWordReader:
             assert "python-docx not installed" in str(exc_info.value)
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', True)
-    @patch('wyn360_cli.document_readers.Document')
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', True)
+    @patch('clawdeck.document_readers.Document')
     async def test_read_nonexistent_file(self, mock_document):
         """Test error when file doesn't exist."""
         reader = WordReader(file_path="/nonexistent/file.docx")
@@ -62,8 +62,8 @@ class TestWordReader:
             await reader.read()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', True)
-    @patch('wyn360_cli.document_readers.Document')
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', True)
+    @patch('clawdeck.document_readers.Document')
     async def test_read_simple_document(self, mock_document):
         """Test reading a simple Word document with sections."""
         with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as tmpfile:
@@ -116,8 +116,8 @@ class TestWordReader:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', True)
-    @patch('wyn360_cli.document_readers.Document')
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', True)
+    @patch('clawdeck.document_readers.Document')
     async def test_extract_multiple_sections(self, mock_document):
         """Test extracting multiple sections with different heading levels."""
         with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as tmpfile:
@@ -178,8 +178,8 @@ class TestWordReader:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', True)
-    @patch('wyn360_cli.document_readers.Document')
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', True)
+    @patch('clawdeck.document_readers.Document')
     async def test_extract_table(self, mock_document):
         """Test table extraction and markdown conversion."""
         with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as tmpfile:
@@ -340,8 +340,8 @@ class TestWordReader:
         assert any(c["position"]["chunk_type"] == "partial" for c in chunks)
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', True)
-    @patch('wyn360_cli.document_readers.Document')
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', True)
+    @patch('clawdeck.document_readers.Document')
     async def test_document_without_headings(self, mock_document):
         """Test document with no headings (all paragraphs)."""
         with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as tmpfile:
@@ -388,8 +388,8 @@ class TestWordReader:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', True)
-    @patch('wyn360_cli.document_readers.Document')
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', True)
+    @patch('clawdeck.document_readers.Document')
     async def test_empty_document(self, mock_document):
         """Test empty document with no content."""
         with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as tmpfile:
@@ -452,8 +452,8 @@ class TestWordReader:
         assert images[0]["context"]["index"] == 0
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', True)
-    @patch('wyn360_cli.document_readers.Document')
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', True)
+    @patch('clawdeck.document_readers.Document')
     async def test_image_extraction_with_vision_mode(self, mock_document):
         """Test reading document with vision mode enabled."""
         with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as tmpfile:
@@ -485,8 +485,8 @@ class TestWordReader:
             Path(tmpfile_path).unlink()
 
     @pytest.mark.asyncio
-    @patch('wyn360_cli.document_readers.HAS_PYTHON_DOCX', True)
-    @patch('wyn360_cli.document_readers.Document')
+    @patch('clawdeck.document_readers.HAS_PYTHON_DOCX', True)
+    @patch('clawdeck.document_readers.Document')
     async def test_image_extraction_skip_mode(self, mock_document):
         """Test that skip mode doesn't process images."""
         with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as tmpfile:

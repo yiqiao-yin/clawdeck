@@ -7,7 +7,7 @@ Tests the token counting functionality for Stagehand automation operations.
 import pytest
 import os
 from unittest.mock import Mock, AsyncMock, patch
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 class TestStagehandTokenCounting:
@@ -15,11 +15,11 @@ class TestStagehandTokenCounting:
 
     @pytest.fixture
     def mock_agent(self):
-        """Create a mock WYN360Agent for testing"""
+        """Create a mock ClawdeckAgent for testing"""
         with patch.dict(os.environ, {'ANTHROPIC_API_KEY': 'test-key'}):
-            with patch('wyn360_cli.agent.AnthropicModel'):
-                with patch('wyn360_cli.agent.Agent'):
-                    agent = WYN360Agent()
+            with patch('clawdeck.agent.AnthropicModel'):
+                with patch('clawdeck.agent.Agent'):
+                    agent = ClawdeckAgent()
                     return agent
 
     def test_stagehand_token_tracking_initialization(self, mock_agent):

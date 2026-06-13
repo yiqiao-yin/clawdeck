@@ -1,6 +1,6 @@
 # GitHub Integration
 
-Seamless repository management, commit operations, and pull request workflows directly from WYN360 CLI.
+Seamless repository management, commit operations, and pull request workflows directly from Clawdeck CLI.
 
 ## Features
 
@@ -25,7 +25,7 @@ export GITHUB_TOKEN=ghp_your_github_token
 ```
 You: Commit my changes with a good message
 
-WYN360: [Analyzes changes and creates descriptive commit]
+Clawdeck: [Analyzes changes and creates descriptive commit]
 ✓ Added 3 files, modified 2 files
 ✓ Generated commit: "feat: Add authentication middleware and user routes"
 ✓ Pushed to origin/main
@@ -35,7 +35,7 @@ WYN360: [Analyzes changes and creates descriptive commit]
 ```
 You: Create a PR for this feature branch
 
-WYN360: [Creates PR with auto-generated description]
+Clawdeck: [Creates PR with auto-generated description]
 ✓ Pull Request created: #42
 📋 Title: "Add user authentication system"
 🔗 URL: https://github.com/user/repo/pull/42
@@ -45,7 +45,7 @@ WYN360: [Creates PR with auto-generated description]
 ```
 You: Create a new feature branch for user profiles
 
-WYN360:
+Clawdeck:
 ✓ Created branch: feature/user-profiles
 ✓ Switched to new branch
 ✓ Ready for development

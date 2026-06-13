@@ -53,7 +53,7 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - `gemini-2.0-flash` (alternative)
 
 **Files modified:**
-- `wyn360_cli/agent.py` - Added GoogleModel, _get_client_choice(), _validate_gemini_credentials()
+- `clawdeck/agent.py` - Added GoogleModel, _get_client_choice(), _validate_gemini_credentials()
 
 **Tests:**
 - [x] Test Gemini model initialization - ✅ PASSED
@@ -69,7 +69,7 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - [x] Update credential validation for all providers
 
 **Files modified:**
-- `wyn360_cli/cli.py` - Updated credential validation, provider display
+- `clawdeck/cli.py` - Updated credential validation, provider display
 
 **Tests:**
 - [x] Test CHOOSE_CLIENT parsing - ✅ PASSED
@@ -89,8 +89,8 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - Gemini 2.0 Flash: $0.10/M input, $0.40/M output
 
 **Files to modify:**
-- `wyn360_cli/agent.py` (cost tracking) - TODO
-- `wyn360_cli/cli.py` (`/tokens` command) - TODO
+- `clawdeck/agent.py` (cost tracking) - TODO
+- `clawdeck/cli.py` (`/tokens` command) - TODO
 
 **Tests:**
 - [ ] Test token cost calculation for Gemini models
@@ -112,7 +112,7 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - [x] Browser tools confirmed available
 
 **Files verified:**
-- `wyn360_cli/agent.py` (all tool definitions) - ✅ ALL COMPATIBLE
+- `clawdeck/agent.py` (all tool definitions) - ✅ ALL COMPATIBLE
 
 **Tests:**
 - [x] Test basic chat with Gemini - ✅ PASSED (math question)
@@ -134,7 +134,7 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - Web search available for Anthropic API mode only
 
 **Files modified:**
-- `wyn360_cli/agent.py` - Disabled builtin_tools for Gemini
+- `clawdeck/agent.py` - Disabled builtin_tools for Gemini
 
 **Reason:**
 - pydantic-ai limitation: Gemini doesn't support mixing builtin_tools and custom function tools
@@ -154,7 +154,7 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - [ ] Test multi-image processing (up to 3,600 images)
 
 **Files to verify:**
-- `wyn360_cli/document_readers.py` (vision mode)
+- `clawdeck/document_readers.py` (vision mode)
 
 **Tests:**
 - [ ] Test image description with Gemini
@@ -171,8 +171,8 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - [ ] Update streaming logic to handle Gemini responses
 
 **Files to verify:**
-- `wyn360_cli/agent.py` (`chat_stream` method)
-- `wyn360_cli/cli.py` (streaming display)
+- `clawdeck/agent.py` (`chat_stream` method)
+- `clawdeck/cli.py` (streaming display)
 
 **Tests:**
 - [ ] Test text streaming with Gemini
@@ -189,7 +189,7 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - [ ] Test documents up to 1,000 pages (Gemini limit)
 
 **Files to verify:**
-- `wyn360_cli/document_readers.py`
+- `clawdeck/document_readers.py`
 
 **Tests:**
 - [ ] Test all document types with Gemini
@@ -206,8 +206,8 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - [ ] Add warning when approaching context limits
 
 **Files to modify:**
-- `wyn360_cli/agent.py`
-- `wyn360_cli/document_readers.py`
+- `clawdeck/agent.py`
+- `clawdeck/document_readers.py`
 
 **Tests:**
 - [ ] Test with very large documents
@@ -227,8 +227,8 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - Audio: MP3, WAV, FLAC, etc.
 
 **Files to create/modify:**
-- `wyn360_cli/agent.py` (new tools)
-- `wyn360_cli/multimedia_readers.py` (new file)
+- `clawdeck/agent.py` (new tools)
+- `clawdeck/multimedia_readers.py` (new file)
 
 **Tests:**
 - [ ] Test video processing
@@ -245,8 +245,8 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - [ ] Add provisioned throughput options
 
 **Files to modify:**
-- `wyn360_cli/agent.py`
-- `wyn360_cli/cli.py`
+- `clawdeck/agent.py`
+- `clawdeck/cli.py`
 
 **Tests:**
 - [ ] Test Vertex AI authentication
@@ -295,7 +295,7 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 - [ ] Add helpful error messages for users
 
 **Files to modify:**
-- `wyn360_cli/agent.py`
+- `clawdeck/agent.py`
 
 **Tests:**
 - [ ] Test error scenarios
@@ -308,14 +308,14 @@ Integrate Google Gemini models as an alternative AI provider alongside Anthropic
 
 #### 5.1 Version Update ⏳
 - [ ] Update version to 0.3.60 in `pyproject.toml`
-- [ ] Update version in `wyn360_cli/__init__.py`
+- [ ] Update version in `clawdeck/__init__.py`
 - [ ] Update version in README.md footer
 
 ---
 
 #### 5.2 Build & Publish ⏳
 - [ ] Run `poetry install` to verify dependencies
-- [ ] Run all tests: `WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v`
+- [ ] Run all tests: `CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v`
 - [ ] Build package: `poetry build`
 - [ ] Publish to PyPI: `poetry publish`
 

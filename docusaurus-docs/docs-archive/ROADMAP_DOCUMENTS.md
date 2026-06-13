@@ -1,4 +1,4 @@
-# WYN360 CLI - Document Readers Roadmap
+# Clawdeck CLI - Document Readers Roadmap
 
 **Status:** ✅ Phase 4 Complete - All Core Features Implemented
 **Start Date:** January 2025
@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-This roadmap outlines the implementation of intelligent document readers for Excel, Word, and PDF files. Unlike simple file reading, these tools implement a **chunking + summarization + tagging + retrieval** system that allows WYN360 to handle arbitrarily large documents while maintaining intelligent query capabilities.
+This roadmap outlines the implementation of intelligent document readers for Excel, Word, and PDF files. Unlike simple file reading, these tools implement a **chunking + summarization + tagging + retrieval** system that allows Clawdeck to handle arbitrarily large documents while maintaining intelligent query capabilities.
 
 ### Key Innovations
 
@@ -124,7 +124,7 @@ User Query: "What were April expenses?"
 ### Module Structure
 
 ```
-wyn360_cli/
+clawdeck/
 ├── document_readers.py          # NEW MODULE
 │   ├── DocumentChunker          # Chunk documents intelligently
 │   ├── ChunkSummarizer          # Summarize chunks using Claude
@@ -141,7 +141,7 @@ wyn360_cli/
 ### Cache Structure
 
 ```
-~/.wyn360/cache/documents/
+~/.clawdeck/cache/documents/
 ├── {file_hash_1}/
 │   ├── metadata.json           # File info, chunk count, timestamps
 │   ├── chunks_index.json       # Chunk summaries, tags, positions
@@ -156,7 +156,7 @@ wyn360_cli/
 ```mermaid
 graph TB
     User[User: Read expenses.xlsx]
-    Agent[WYN360Agent]
+    Agent[ClawdeckAgent]
     Tool[read_excel tool]
     Cache[ChunkCache]
     Reader[ExcelReader]
@@ -207,7 +207,7 @@ graph TB
   - [x] Prompt engineering for good summaries ✅
   - [x] Token tracking for summarization costs ✅
 - [x] Implement `ChunkCache` class ✅ COMPLETED
-  - [x] Cache directory management (`~/.wyn360/cache/documents/`) ✅
+  - [x] Cache directory management (`~/.clawdeck/cache/documents/`) ✅
   - [x] `save_chunks()` - Write chunks_index.json ✅
   - [x] `load_chunks()` - Read cached chunks ✅
   - [x] `get_stats()` - Retrieve cache statistics ✅
@@ -310,7 +310,7 @@ graph TB
 ```
 You: Read expenses.xlsx
 
-WYN360:
+Clawdeck:
 📊 Excel File: expenses.xlsx
 Sheets: 3 | Chunks: 9 | Cache: ✓ Generated
 
@@ -321,7 +321,7 @@ Summary:
 
 You: What were the April expenses?
 
-WYN360: [Retrieves Chunk 5]
+Clawdeck: [Retrieves Chunk 5]
 April expenses totaled $2,400 with breakdown:
 - Food: $680
 - Gas: $590 (15% increase from March)
@@ -564,8 +564,8 @@ April expenses totaled $2,400 with breakdown:
   - [ ] Performance monitoring and metrics dashboard
 
 **Files Modified:**
-- `wyn360_cli/document_readers.py`: +183 lines
-- `wyn360_cli/agent.py`: +139 lines (3 readers updated)
+- `clawdeck/document_readers.py`: +183 lines
+- `clawdeck/agent.py`: +139 lines (3 readers updated)
 - `tests/test_parallel_summarization.py`: NEW, 192 lines, 6 tests
 - `tests/test_cache_compression.py`: NEW, 472 lines, 9 tests
 - `tests/test_lru_eviction.py`: NEW, 364 lines, 7 tests
@@ -613,10 +613,10 @@ April expenses totaled $2,400 with breakdown:
   - ✅ Helps LLM quickly understand tool purpose without reading entire docstring
 
 **Files Modified:**
-- `wyn360_cli/agent.py`: System prompt +28 lines (lines 247-274)
-- `wyn360_cli/agent.py`: read_excel docstring +8 lines (lines 2005-2012)
-- `wyn360_cli/agent.py`: read_word docstring +8 lines (lines 2274-2281)
-- `wyn360_cli/agent.py`: read_pdf docstring +9 lines (lines 2563-2571)
+- `clawdeck/agent.py`: System prompt +28 lines (lines 247-274)
+- `clawdeck/agent.py`: read_excel docstring +8 lines (lines 2005-2012)
+- `clawdeck/agent.py`: read_word docstring +8 lines (lines 2274-2281)
+- `clawdeck/agent.py`: read_pdf docstring +9 lines (lines 2563-2571)
 
 **Expected Impact:**
 - ✅ Agent now correctly uses document tools for "read PDF" or "search Excel" requests
@@ -649,10 +649,10 @@ Agent: *Returns cached summary with relevant section*
 **User Report:**
 ```
 User: "Can you read this excel file: /content/Premium weekly chore schedule1.xlsm"
-WYN360: [Successfully reads and summarizes the Excel file]
+Clawdeck: [Successfully reads and summarizes the Excel file]
 
 User: "Has John taken out his trash?"
-WYN360: "I don't have access to information about John..."
+Clawdeck: "I don't have access to information about John..."
 ```
 
 **Root Cause Analysis:**
@@ -691,7 +691,7 @@ self.conversation_history.append({...})  # ❌ Never used!
   - Session persistence now works correctly
 
 **Files Modified:**
-- `wyn360_cli/agent.py`:
+- `clawdeck/agent.py`:
   - Import: Added `ModelMessagesTypeAdapter` (line 9)
   - `__init__`: Updated conversation_history type hint (line 90)
   - `chat()`: Pass message_history, update with all_messages() (lines 2910-2922)
@@ -831,7 +831,7 @@ Add section: **📄 Document Reading**
 ```markdown
 ### Reading Excel, Word, and PDF Files
 
-WYN360 can intelligently read and analyze structured documents:
+Clawdeck can intelligently read and analyze structured documents:
 
 You: Read expenses.xlsx
 You: Summarize research_paper.docx
@@ -934,7 +934,7 @@ Add architecture section:
 
 ## 📞 Feedback & Support
 
-- **GitHub Issues:** https://github.com/yiqiao-yin/wyn360-cli/issues
+- **GitHub Issues:** https://github.com/yiqiao-yin/clawdeck/issues
 - **Feature Requests:** Tag with `enhancement` and `document-readers`
 - **Bug Reports:** Tag with `bug` and `document-readers`
 

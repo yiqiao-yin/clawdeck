@@ -4,7 +4,7 @@ Unit Tests for Ask AI Documentation Search Algorithm
 
 This module tests the core semantic search functionality for the GitHub book
 Ask AI feature. These tests are specifically for documentation search performance
-and do not interfere with the main WYN360 CLI codebase.
+and do not interfere with the main Clawdeck CLI codebase.
 
 Focus Areas:
 - Search index structure and embeddings
@@ -389,38 +389,38 @@ class TestGitHubPagesUrls:
     """Test GitHub Pages URL generation and fixing"""
 
     def test_github_pages_url_fixing(self):
-        """Test that URLs are correctly prefixed with /wyn360-cli/ for GitHub Pages"""
+        """Test that URLs are correctly prefixed with /clawdeck-cli/ for GitHub Pages"""
 
         # Simulate GitHub Pages hostname check
         test_cases = [
             {
                 "input": "/architecture/system/",
-                "expected": "/wyn360-cli/architecture/system/",
-                "description": "Root-relative URL should get /wyn360-cli/ prefix"
+                "expected": "/clawdeck-cli/architecture/system/",
+                "description": "Root-relative URL should get /clawdeck-cli/ prefix"
             },
             {
                 "input": "/ROADMAP_PHASE5_SUMMARY/",
-                "expected": "/wyn360-cli/ROADMAP_PHASE5_SUMMARY/",
-                "description": "Documentation URL should get /wyn360-cli/ prefix"
+                "expected": "/clawdeck-cli/ROADMAP_PHASE5_SUMMARY/",
+                "description": "Documentation URL should get /clawdeck-cli/ prefix"
             },
             {
-                "input": "/wyn360-cli/features/browser-use/",
-                "expected": "/wyn360-cli/features/browser-use/",
-                "description": "URL already with /wyn360-cli/ should remain unchanged"
+                "input": "/clawdeck-cli/features/browser-use/",
+                "expected": "/clawdeck-cli/features/browser-use/",
+                "description": "URL already with /clawdeck-cli/ should remain unchanged"
             },
             {
                 "input": "features/overview/",
-                "expected": "/wyn360-cli/features/overview/",
-                "description": "Relative URL should get /wyn360-cli/ prefix"
+                "expected": "/clawdeck-cli/features/overview/",
+                "description": "Relative URL should get /clawdeck-cli/ prefix"
             }
         ]
 
         for case in test_cases:
             # Simulate the JavaScript _fixGitHubPagesUrl logic
             def fix_github_pages_url(url, is_github_pages=True):
-                if is_github_pages and '/wyn360-cli/' not in url:
+                if is_github_pages and '/clawdeck-cli/' not in url:
                     clean_url = url[1:] if url.startswith('/') else url
-                    return f"/wyn360-cli/{clean_url}"
+                    return f"/clawdeck-cli/{clean_url}"
                 return url
 
             result = fix_github_pages_url(case["input"])
@@ -441,9 +441,9 @@ class TestGitHubPagesUrls:
         for url in test_cases:
             # In local development, URLs should remain unchanged
             def fix_github_pages_url(url, is_github_pages=False):
-                if is_github_pages and '/wyn360-cli/' not in url:
+                if is_github_pages and '/clawdeck-cli/' not in url:
                     clean_url = url[1:] if url.startswith('/') else url
-                    return f"/wyn360-cli/{clean_url}"
+                    return f"/clawdeck-cli/{clean_url}"
                 return url
 
             result = fix_github_pages_url(url, is_github_pages=False)

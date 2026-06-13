@@ -10,7 +10,7 @@ from pathlib import Path
 # Add the package to the path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 async def test_pdf():
     """Simple PDF reading test."""
@@ -22,7 +22,7 @@ async def test_pdf():
 
     try:
         print("🔄 Creating Anthropic agent...")
-        agent = WYN360Agent()
+        agent = ClawdeckAgent()
         print(f"✅ Agent created: {agent.model_name}")
 
         print("🔄 Testing PDF reading...")

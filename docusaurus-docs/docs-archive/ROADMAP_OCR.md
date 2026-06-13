@@ -1,4 +1,4 @@
-# WYN360 CLI - OCR Support Implementation Roadmap
+# Clawdeck CLI - OCR Support Implementation Roadmap
 
 **Status:** ✅ Phase 5.3 - COMPLETED (v0.3.32)
 **Priority:** Medium
@@ -417,7 +417,7 @@ def assess_ocr_quality(self, ocr_result: Dict) -> str:
 
 ### Files Modified/Created
 - `pyproject.toml`: Added OCR dependencies
-- `wyn360_cli/document_readers.py` (+176 lines): OCRProcessor class and PDFReader integration
+- `clawdeck/document_readers.py` (+176 lines): OCRProcessor class and PDFReader integration
 - `tests/test_ocr_processor.py` (NEW, 275 lines): OCRProcessor unit tests
 - `tests/test_pdf_ocr_integration.py` (NEW, 331 lines): PDFReader OCR integration tests
 

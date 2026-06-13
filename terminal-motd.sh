@@ -1,5 +1,5 @@
 #!/bin/bash
-# WYN360 Terminal welcome message - shown on each new session
+# Clawdeck Terminal welcome message - shown on each new session
 
 # Green terminal colors
 export TERM=xterm-256color
@@ -13,12 +13,12 @@ cat << 'BANNER'
  ╚███╔███╔╝   ██║   ██║ ╚████║██████╔╝╚██████╔╝╚██████╔╝
   ╚══╝╚══╝    ╚═╝   ╚═╝  ╚═══╝╚═════╝  ╚═════╝  ╚═════╝
 
-  WYN360 Web Terminal
+  Clawdeck Web Terminal
   -------------------
 
 BANNER
 
-echo "  Welcome! This is a live terminal with wyn360 pre-installed."
+echo "  Welcome! This is a live terminal with clawdeck pre-installed."
 echo ""
 echo "  QUICK START:"
 echo "  ─────────────────────────────────────────────────────────"
@@ -28,7 +28,7 @@ echo "     export ANTHROPIC_API_KEY=sk-ant-your-key-here"
 echo ""
 echo "  2. Launch the assistant:"
 echo ""
-echo "     wyn360"
+echo "     clawdeck"
 echo ""
 echo "  OTHER PROVIDERS:"
 echo "  ─────────────────────────────────────────────────────────"
@@ -43,5 +43,5 @@ echo "                  export AWS_SECRET_ACCESS_KEY=your-secret"
 echo "                  export CHOOSE_CLIENT=2"
 echo ""
 echo "  ─────────────────────────────────────────────────────────"
-echo "  Type 'wyn360 --help' for all options."
+echo "  Type 'clawdeck --help' for all options."
 echo ""

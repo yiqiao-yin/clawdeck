@@ -80,11 +80,11 @@ test_cli_manual.py
 # Linters
 .ruff_cache/
 
-# WYN360 session/backup files
-.wyn360_sessions/
-.wyn360_backup/
+# Clawdeck session/backup files
+.clawdeck_sessions/
+.clawdeck_backup/
 sessions/
 *.session.json
 
-# WYN360 credentials and session data (Phase 4.2)
-.wyn360/
+# Clawdeck credentials and session data (Phase 4.2)
+.clawdeck/

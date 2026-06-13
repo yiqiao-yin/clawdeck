@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Add AWS Bedrock support to WYN360 CLI, allowing users to authenticate using AWS credentials instead of (or in addition to) direct Anthropic API keys.
+Add AWS Bedrock support to Clawdeck CLI, allowing users to authenticate using AWS credentials instead of (or in addition to) direct Anthropic API keys.
 
 **Current State:**
 - ✅ Authentication: `ANTHROPIC_API_KEY` only
@@ -29,7 +29,7 @@ Add AWS Bedrock support to WYN360 CLI, allowing users to authenticate using AWS 
 ```bash
 # User sets Anthropic API key (existing behavior)
 export ANTHROPIC_API_KEY="sk-ant-xxxxx"
-wyn360 "write a script to analyze data.csv"
+clawdeck "write a script to analyze data.csv"
 # ✅ Works as before - uses Anthropic API directly
 ```
 
@@ -43,7 +43,7 @@ export CLAUDE_CODE_USE_BEDROCK=1
 export AWS_REGION="us-west-2"  # Optional - defaults to us-east-1
 export ANTHROPIC_MODEL="us.anthropic.claude-sonnet-4-20250514-v1:0"  # Optional - custom model
 
-wyn360 "write a script to analyze data.csv"
+clawdeck "write a script to analyze data.csv"
 # ✅ Uses AWS Bedrock instead of Anthropic API
 ```
 
@@ -51,7 +51,7 @@ wyn360 "write a script to analyze data.csv"
 ```bash
 # User enables Bedrock but forgets AWS credentials
 export CLAUDE_CODE_USE_BEDROCK=1
-wyn360 "hello"
+clawdeck "hello"
 
 # ❌ Error message:
 # Error: AWS Bedrock mode enabled but credentials not found.
@@ -77,7 +77,7 @@ wyn360 "hello"
                   │
                   ▼
 ┌─────────────────────────────────────────┐
-│ WYN360Agent.__init__()                  │
+│ ClawdeckAgent.__init__()                  │
 │  - Creates AnthropicModel               │
 │  - Uses anthropic.Anthropic client      │
 └─────────────────┬───────────────────────┘
@@ -98,7 +98,7 @@ wyn360 "hello"
                  │
                  ▼
 ┌────────────────────────────────────────────────────────┐
-│ WYN360Agent.__init__()                                 │
+│ ClawdeckAgent.__init__()                                 │
 │  - Checks CLAUDE_CODE_USE_BEDROCK environment variable │
 │  - If "1": Creates AnthropicBedrock client             │
 │  - If not set: Creates Anthropic client (default)      │
@@ -157,7 +157,7 @@ poetry install
 
 #### 2.1: Add Bedrock Detection Helper
 
-**File:** `wyn360_cli/agent.py`
+**File:** `clawdeck/agent.py`
 
 **Location:** Add near top of file (after imports, around line 40)
 
@@ -205,9 +205,9 @@ Or disable Bedrock mode:
 
 ---
 
-#### 2.2: Update WYN360Agent.__init__()
+#### 2.2: Update ClawdeckAgent.__init__()
 
-**File:** `wyn360_cli/agent.py`
+**File:** `clawdeck/agent.py`
 
 **Current Code (lines ~66-100):**
 ```python
@@ -237,7 +237,7 @@ def __init__(
     use_bedrock: Optional[bool] = None  # New: explicit override
 ):
     """
-    Initialize WYN360 Agent with Anthropic or AWS Bedrock.
+    Initialize Clawdeck Agent with Anthropic or AWS Bedrock.
 
     Args:
         api_key: Anthropic API key (required if not using Bedrock)
@@ -304,9 +304,9 @@ def __init__(
 
 #### 2.3: Add Bedrock Model ID Mapper
 
-**File:** `wyn360_cli/agent.py`
+**File:** `clawdeck/agent.py`
 
-**Location:** Add as new method in `WYN360Agent` class
+**Location:** Add as new method in `ClawdeckAgent` class
 
 **New Method:**
 ```python
@@ -364,7 +364,7 @@ def _get_bedrock_model_id(self, model_name: str) -> str:
 
 #### 3.1: Update main() to Handle Bedrock Mode
 
-**File:** `wyn360_cli/cli.py`
+**File:** `clawdeck/cli.py`
 
 **Current Code:**
 ```python
@@ -374,14 +374,14 @@ def main():
         typer.echo("Error: ANTHROPIC_API_KEY not set")
         raise typer.Exit(code=1)
 
-    agent = WYN360Agent(api_key=api_key)
+    agent = ClawdeckAgent(api_key=api_key)
     # ...
 ```
 
 **New Code:**
 ```python
 def main():
-    """Main entry point for WYN360 CLI."""
+    """Main entry point for Clawdeck CLI."""
 
     # Check if Bedrock mode is enabled
     use_bedrock = os.getenv('CLAUDE_CODE_USE_BEDROCK', '0') == '1'
@@ -389,7 +389,7 @@ def main():
     if use_bedrock:
         # AWS Bedrock mode - no API key needed
         try:
-            agent = WYN360Agent(use_bedrock=True)
+            agent = ClawdeckAgent(use_bedrock=True)
         except ValueError as e:
             typer.echo(f"Error: {e}", err=True)
             raise typer.Exit(code=1)
@@ -407,7 +407,7 @@ def main():
             )
             raise typer.Exit(code=1)
 
-        agent = WYN360Agent(api_key=api_key)
+        agent = ClawdeckAgent(api_key=api_key)
 
     # ... rest of main() unchanged
 ```
@@ -418,7 +418,7 @@ def main():
 
 #### 4.1: Update switch_model() for Bedrock
 
-**File:** `wyn360_cli/agent.py`
+**File:** `clawdeck/agent.py`
 
 **Current Code (lines ~3574-3593):**
 ```python
@@ -485,13 +485,13 @@ async def switch_model(self, ctx: RunContext[None], model_name: str) -> str:
 ```markdown
 ## Authentication Methods
 
-WYN360 supports two authentication methods:
+Clawdeck supports two authentication methods:
 
 ### Method 1: Direct Anthropic API (Default)
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-xxxxx"
-wyn360 "write a script to analyze data.csv"
+clawdeck "write a script to analyze data.csv"
 ```
 
 **Pros:**
@@ -513,7 +513,7 @@ export AWS_SECRET_ACCESS_KEY="xxx..."
 export AWS_SESSION_TOKEN="xxx..."  # Optional
 export CLAUDE_CODE_USE_BEDROCK=1
 
-wyn360 "write a script to analyze data.csv"
+clawdeck "write a script to analyze data.csv"
 ```
 
 **Pros:**
@@ -557,7 +557,7 @@ unset CLAUDE_CODE_USE_BEDROCK
 
 ### Use Case 27.1: Basic AWS Bedrock Setup
 
-**Scenario:** You have an AWS account with Bedrock access and want to use WYN360 with AWS credentials.
+**Scenario:** You have an AWS account with Bedrock access and want to use Clawdeck with AWS credentials.
 
 **Setup:**
 ```bash
@@ -568,8 +568,8 @@ export AWS_SECRET_ACCESS_KEY="your_aws_secret_access_key"
 # Step 2: Enable Bedrock mode
 export CLAUDE_CODE_USE_BEDROCK=1
 
-# Step 3: Use WYN360
-wyn360 "write a Python script to process data.csv"
+# Step 3: Use Clawdeck
+clawdeck "write a Python script to process data.csv"
 ```
 
 **Output:**
@@ -577,14 +577,14 @@ wyn360 "write a Python script to process data.csv"
 🌩️  AWS Bedrock mode enabled
 📡 Using model: anthropic.claude-3-5-sonnet-20241022-v2:0
 
-WYN360: I'll create a Python script to process data.csv...
+Clawdeck: I'll create a Python script to process data.csv...
 ```
 
 ---
 
 ### Use Case 27.2: Using AWS IAM Roles (EC2/ECS/Lambda)
 
-**Scenario:** Running WYN360 on AWS infrastructure with IAM roles.
+**Scenario:** Running Clawdeck on AWS infrastructure with IAM roles.
 
 **Setup:**
 ```bash
@@ -594,7 +594,7 @@ WYN360: I'll create a Python script to process data.csv...
 # Just enable Bedrock mode
 export CLAUDE_CODE_USE_BEDROCK=1
 
-wyn360 "analyze logs.txt"
+clawdeck "analyze logs.txt"
 ```
 
 **IAM Policy Required:**
@@ -624,8 +624,8 @@ wyn360 "analyze logs.txt"
 ```bash
 # Get temporary credentials
 aws sts assume-role \
-  --role-arn arn:aws:iam::123456789012:role/WYN360Role \
-  --role-session-name wyn360-session \
+  --role-arn arn:aws:iam::123456789012:role/ClawdeckRole \
+  --role-session-name clawdeck-session \
   --output json > /tmp/aws-creds.json
 
 # Extract and export credentials
@@ -636,7 +636,7 @@ export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' /tmp/aws-creds.json
 # Enable Bedrock
 export CLAUDE_CODE_USE_BEDROCK=1
 
-wyn360 "help me debug this code"
+clawdeck "help me debug this code"
 ```
 
 ---
@@ -648,13 +648,13 @@ wyn360 "help me debug this code"
 **Commands:**
 ```bash
 # Start with default (Sonnet)
-wyn360 "switch to claude-3-opus-20240229"
+clawdeck "switch to claude-3-opus-20240229"
 # ✅ Now using: anthropic.claude-3-opus-20240229-v1:0
 
-wyn360 "switch to claude-3-haiku-20240307"
+clawdeck "switch to claude-3-haiku-20240307"
 # ✅ Now using: anthropic.claude-3-haiku-20240307-v1:0
 
-wyn360 "switch to sonnet"
+clawdeck "switch to sonnet"
 # ✅ Now using: anthropic.claude-3-5-sonnet-20241022-v2:0 (latest)
 ```
 
@@ -666,7 +666,7 @@ wyn360 "switch to sonnet"
 
 ```bash
 export CLAUDE_CODE_USE_BEDROCK=1
-wyn360 "hello"
+clawdeck "hello"
 
 # ❌ Error:
 # AWS Bedrock mode enabled but credentials not found.
@@ -708,7 +708,7 @@ export ANTHROPIC_API_KEY="sk-ant-xxx"
 import pytest
 import os
 from unittest.mock import Mock, patch, MagicMock
-from wyn360_cli.agent import WYN360Agent, _should_use_bedrock, _validate_aws_credentials
+from clawdeck.agent import ClawdeckAgent, _should_use_bedrock, _validate_aws_credentials
 
 
 class TestBedrockDetection:
@@ -763,17 +763,17 @@ class TestAWSCredentialValidation:
 
 
 class TestBedrockAgent:
-    """Test WYN360Agent with Bedrock mode."""
+    """Test ClawdeckAgent with Bedrock mode."""
 
-    @patch('wyn360_cli.agent.AnthropicBedrock')
-    @patch('wyn360_cli.agent.AnthropicModel')
+    @patch('clawdeck.agent.AnthropicBedrock')
+    @patch('clawdeck.agent.AnthropicModel')
     def test_bedrock_mode_initialization(self, mock_model, mock_bedrock):
         """Test agent initialization in Bedrock mode."""
         with patch.dict(os.environ, {
             'AWS_ACCESS_KEY_ID': 'AKIA...',
             'AWS_SECRET_ACCESS_KEY': 'secret',
         }):
-            agent = WYN360Agent(use_bedrock=True)
+            agent = ClawdeckAgent(use_bedrock=True)
 
             assert agent.use_bedrock is True
             assert agent.api_key is None
@@ -783,12 +783,12 @@ class TestBedrockAgent:
         """Test that Bedrock mode raises error with missing credentials."""
         with patch.dict(os.environ, {}, clear=True):
             with pytest.raises(ValueError, match="credentials not found"):
-                WYN360Agent(use_bedrock=True)
+                ClawdeckAgent(use_bedrock=True)
 
-    @patch('wyn360_cli.agent.AnthropicModel')
+    @patch('clawdeck.agent.AnthropicModel')
     def test_anthropic_mode_initialization(self, mock_model):
         """Test agent initialization in Anthropic API mode."""
-        agent = WYN360Agent(api_key="sk-ant-xxx", use_bedrock=False)
+        agent = ClawdeckAgent(api_key="sk-ant-xxx", use_bedrock=False)
 
         assert agent.use_bedrock is False
         assert agent.api_key == "sk-ant-xxx"
@@ -798,15 +798,15 @@ class TestBedrockAgent:
 class TestModelMapping:
     """Test Bedrock model ID mapping."""
 
-    @patch('wyn360_cli.agent.AnthropicBedrock')
-    @patch('wyn360_cli.agent.AnthropicModel')
+    @patch('clawdeck.agent.AnthropicBedrock')
+    @patch('clawdeck.agent.AnthropicModel')
     def test_sonnet_model_mapping(self, mock_model, mock_bedrock):
         """Test that Sonnet model maps to correct Bedrock ID."""
         with patch.dict(os.environ, {
             'AWS_ACCESS_KEY_ID': 'AKIA...',
             'AWS_SECRET_ACCESS_KEY': 'secret',
         }):
-            agent = WYN360Agent(
+            agent = ClawdeckAgent(
                 model_name="claude-sonnet-4-20250514",
                 use_bedrock=True
             )
@@ -829,7 +829,7 @@ class TestModelMapping:
 
 import pytest
 import os
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 @pytest.mark.skipif(
@@ -841,7 +841,7 @@ class TestBedrockIntegration:
 
     async def test_bedrock_simple_query(self):
         """Test a simple query using real Bedrock credentials."""
-        agent = WYN360Agent(use_bedrock=True)
+        agent = ClawdeckAgent(use_bedrock=True)
 
         result = await agent.agent.run("Say 'hello' in one word")
 
@@ -850,7 +850,7 @@ class TestBedrockIntegration:
 
     async def test_bedrock_model_switching(self):
         """Test switching models in Bedrock mode."""
-        agent = WYN360Agent(use_bedrock=True)
+        agent = ClawdeckAgent(use_bedrock=True)
 
         # Switch to Haiku
         from pydantic_ai import RunContext
@@ -884,7 +884,7 @@ class TestBedrockIntegration:
 
 #### 7.2: Enhanced Error Messages
 
-**File:** `wyn360_cli/agent.py`
+**File:** `clawdeck/agent.py`
 
 **Add to `__init__()` Bedrock section:**
 
@@ -941,8 +941,8 @@ except Exception as e:
 | File | Changes | Lines Changed |
 |------|---------|---------------|
 | `pyproject.toml` | Update anthropic dependency | ~1 |
-| `wyn360_cli/agent.py` | Add Bedrock support | ~150 |
-| `wyn360_cli/cli.py` | Update credential handling | ~20 |
+| `clawdeck/agent.py` | Add Bedrock support | ~150 |
+| `clawdeck/cli.py` | Update credential handling | ~20 |
 | `README.md` | Add authentication docs | ~80 |
 | `docs/USE_CASES.md` | Add Use Case 27 | ~200 |
 | `tests/test_bedrock.py` | New test file | ~120 |
@@ -963,7 +963,7 @@ except Exception as e:
 - [ ] Add `_should_use_bedrock()` helper
 - [ ] Add `_validate_aws_credentials()` helper
 - [ ] Add `_get_bedrock_model_id()` method
-- [ ] Update `WYN360Agent.__init__()` for dual-mode
+- [ ] Update `ClawdeckAgent.__init__()` for dual-mode
 - [ ] Update `switch_model()` for Bedrock
 
 ### Phase 3: CLI Integration ✅
@@ -997,7 +997,7 @@ except Exception as e:
 ```bash
 unset CLAUDE_CODE_USE_BEDROCK
 export ANTHROPIC_API_KEY="sk-ant-xxx"
-wyn360 "write a hello world script"
+clawdeck "write a hello world script"
 # ✅ Expected: Works as before
 ```
 
@@ -1006,7 +1006,7 @@ wyn360 "write a hello world script"
 export AWS_ACCESS_KEY_ID="AKIA..."
 export AWS_SECRET_ACCESS_KEY="xxx"
 export CLAUDE_CODE_USE_BEDROCK=1
-wyn360 "write a hello world script"
+clawdeck "write a hello world script"
 # ✅ Expected: Shows "AWS Bedrock mode enabled", generates code
 ```
 
@@ -1015,7 +1015,7 @@ wyn360 "write a hello world script"
 unset AWS_ACCESS_KEY_ID
 unset AWS_SECRET_ACCESS_KEY
 export CLAUDE_CODE_USE_BEDROCK=1
-wyn360 "hello"
+clawdeck "hello"
 # ✅ Expected: Clear error message with missing variables
 ```
 
@@ -1023,8 +1023,8 @@ wyn360 "hello"
 ```bash
 export CLAUDE_CODE_USE_BEDROCK=1
 # (AWS credentials set)
-wyn360 "switch to claude-3-opus-20240229"
-wyn360 "what model are you using?"
+clawdeck "switch to claude-3-opus-20240229"
+clawdeck "what model are you using?"
 # ✅ Expected: Confirms using Opus Bedrock ARN
 ```
 
@@ -1034,7 +1034,7 @@ export ANTHROPIC_API_KEY="sk-ant-xxx"
 export AWS_ACCESS_KEY_ID="AKIA..."
 export AWS_SECRET_ACCESS_KEY="xxx"
 export CLAUDE_CODE_USE_BEDROCK=1
-wyn360 "hello"
+clawdeck "hello"
 # ✅ Expected: Uses Bedrock (flag takes precedence)
 ```
 
@@ -1092,7 +1092,7 @@ If issues arise after deployment:
 
 2. **User mitigation:**
    ```bash
-   pip install wyn360-cli==0.3.44  # Downgrade to previous version
+   pip install clawdeck==0.3.44  # Downgrade to previous version
    ```
 
 3. **Feature disable:**

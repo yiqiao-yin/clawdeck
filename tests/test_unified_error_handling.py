@@ -10,14 +10,14 @@ import pytest
 import asyncio
 import time
 from unittest.mock import Mock, AsyncMock, patch
-from src.wyn360.tools.browser.unified_error_handling import (
+from clawdeck.tools.browser.unified_error_handling import (
     UnifiedErrorHandler,
     ErrorCategory,
     ErrorContext,
     RetryConfig,
     unified_error_handler
 )
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationApproach,
     ActionResult
 )
@@ -487,13 +487,13 @@ class TestGlobalErrorHandler:
 
     def test_global_instance_exists(self):
         """Test that global error handler instance exists"""
-        from src.wyn360.tools.browser.unified_error_handling import unified_error_handler
+        from clawdeck.tools.browser.unified_error_handling import unified_error_handler
         assert unified_error_handler is not None
         assert isinstance(unified_error_handler, UnifiedErrorHandler)
 
     def test_global_instance_categorization(self):
         """Test that global instance works correctly"""
-        from src.wyn360.tools.browser.unified_error_handling import unified_error_handler
+        from clawdeck.tools.browser.unified_error_handling import unified_error_handler
 
         context = unified_error_handler.categorize_error(
             "Network timeout occurred",

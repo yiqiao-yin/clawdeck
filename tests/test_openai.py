@@ -6,7 +6,7 @@ import asyncio
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 async def test_openai_pdf():
     """Test OpenAI PDF reading."""
@@ -16,7 +16,7 @@ async def test_openai_pdf():
 
     try:
         print("🔄 Creating OpenAI agent...")
-        agent = WYN360Agent()
+        agent = ClawdeckAgent()
         print(f"✅ Agent created: {agent.model_name}")
 
         print("🔄 Testing PDF reading...")

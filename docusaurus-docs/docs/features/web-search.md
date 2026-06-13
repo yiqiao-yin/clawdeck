@@ -4,14 +4,14 @@ Access real-time information from the web to enhance your development workflow.
 
 ## Overview
 
-WYN360 CLI integrates web search capabilities to help you find current information, libraries, documentation, and resources while coding.
+Clawdeck CLI integrates web search capabilities to help you find current information, libraries, documentation, and resources while coding.
 
 ## Basic Usage
 
 ```bash
 You: Find the latest Python web frameworks
 
-WYN360: [Searches the web for current information]
+Clawdeck: [Searches the web for current information]
 
 ## Popular Python Web Frameworks (2025)
 

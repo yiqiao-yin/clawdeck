@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# System deps: ttyd for web terminal, minimal wyn360 deps
+# System deps: ttyd for web terminal, minimal clawdeck deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libffi-dev \
@@ -18,9 +18,9 @@ WORKDIR /app
 
 # Copy source
 COPY pyproject.toml poetry.lock* README.md ./
-COPY wyn360_cli/ ./wyn360_cli/
+COPY clawdeck/ ./clawdeck/
 
-# Install wyn360-cli without the heavy optional deps
+# Install clawdeck without the heavy optional deps
 # (torch, sentence-transformers, playwright, tesseract, pdf tools)
 # Users can pip install extras inside the terminal if needed
 RUN pip install --no-cache-dir \
@@ -41,16 +41,16 @@ RUN pip install --no-cache-dir \
     && pip install --no-cache-dir -e . --no-deps
 
 # Create non-root user
-RUN useradd -m -s /bin/bash wyn360 && chown -R wyn360:wyn360 /app
-USER wyn360
+RUN useradd -m -s /bin/bash clawdeck && chown -R clawdeck:clawdeck /app
+USER clawdeck
 
 # Create cache/config directories
-RUN mkdir -p /home/wyn360/.wyn360/cache
+RUN mkdir -p /home/clawdeck/.clawdeck/cache
 
 # Custom bashrc with welcome message and terminal setup
-COPY --chown=wyn360:wyn360 terminal-motd.sh /home/wyn360/.terminal-motd.sh
-RUN echo 'source ~/.terminal-motd.sh' >> /home/wyn360/.bashrc && \
-    echo 'export PS1="\[\033[1;32m\]wyn360\[\033[0m\]@\[\033[0;36m\]terminal\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]\$ "' >> /home/wyn360/.bashrc
+COPY --chown=clawdeck:clawdeck terminal-motd.sh /home/clawdeck/.terminal-motd.sh
+RUN echo 'source ~/.terminal-motd.sh' >> /home/clawdeck/.bashrc && \
+    echo 'export PS1="\[\033[1;32m\]clawdeck\[\033[0m\]@\[\033[0;36m\]terminal\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]\$ "' >> /home/clawdeck/.bashrc
 
 EXPOSE 8360
 

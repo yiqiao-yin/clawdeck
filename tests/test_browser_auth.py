@@ -15,7 +15,7 @@ For integration testing with real browsers, use separate integration test suite.
 
 import pytest
 from unittest.mock import AsyncMock, Mock, patch, MagicMock
-from wyn360_cli.browser_auth import BrowserAuth
+from clawdeck.browser_auth import BrowserAuth
 
 
 class TestBrowserAuth:
@@ -146,7 +146,7 @@ class TestBrowserAuth:
         auth = BrowserAuth()
 
         # Mock playwright
-        with patch('wyn360_cli.browser_auth.async_playwright') as mock_playwright:
+        with patch('clawdeck.browser_auth.async_playwright') as mock_playwright:
             mock_browser = AsyncMock()
             mock_page = AsyncMock()
             mock_context = AsyncMock()
@@ -183,7 +183,7 @@ class TestBrowserAuth:
         """Test login when form cannot be detected."""
         auth = BrowserAuth()
 
-        with patch('wyn360_cli.browser_auth.async_playwright') as mock_playwright:
+        with patch('clawdeck.browser_auth.async_playwright') as mock_playwright:
             mock_browser = AsyncMock()
             mock_page = AsyncMock()
 

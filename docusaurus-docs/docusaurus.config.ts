@@ -5,9 +5,9 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'WYN360 CLI Documentation',
+  title: 'Clawdeck CLI Documentation',
   tagline: 'An intelligent AI coding assistant CLI tool powered by Anthropic Claude',
-  favicon: 'img/wyn360_logo.png',
+  favicon: 'img/clawdeck_logo.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -18,12 +18,12 @@ const config: Config = {
   url: 'https://yiqiao-yin.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/wyn360-cli/',
+  baseUrl: '/clawdeck/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'yiqiao-yin', // Usually your GitHub org/user name.
-  projectName: 'wyn360-cli', // Usually your repo name.
+  projectName: 'clawdeck', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -43,7 +43,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/yiqiao-yin/wyn360-cli/tree/main/docs/',
+            'https://github.com/yiqiao-yin/clawdeck/tree/main/docs/',
         },
         blog: false, // Disable blog for documentation-only site
         theme: {
@@ -86,10 +86,10 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'WYN360 CLI',
+      title: 'Clawdeck CLI',
       logo: {
-        alt: 'WYN360 CLI Logo',
-        src: 'img/wyn360_logo.png',
+        alt: 'Clawdeck CLI Logo',
+        src: 'img/clawdeck_logo.png',
       },
       items: [
         {
@@ -99,7 +99,7 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/yiqiao-yin/wyn360-cli',
+          href: 'https://github.com/yiqiao-yin/clawdeck',
           label: 'GitHub',
           position: 'right',
         },
@@ -139,7 +139,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/yiqiao-yin/wyn360-cli',
+              href: 'https://github.com/yiqiao-yin/clawdeck',
             },
           ],
         },

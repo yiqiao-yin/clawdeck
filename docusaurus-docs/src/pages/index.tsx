@@ -34,7 +34,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={siteConfig.title}
-      description="WYN360 CLI - An intelligent AI coding assistant CLI tool powered by Anthropic Claude">
+      description="Clawdeck CLI - An intelligent AI coding assistant CLI tool powered by Anthropic Claude">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

@@ -1,6 +1,6 @@
 # Testing
 
-Comprehensive guide to testing WYN360 CLI during development and contribution.
+Comprehensive guide to testing Clawdeck CLI during development and contribution.
 
 ## Test Structure
 
@@ -23,7 +23,7 @@ tests/
 
 **Run all tests:**
 ```bash
-WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v
+CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v
 ```
 
 **Run specific test file:**
@@ -38,14 +38,14 @@ poetry run pytest tests/test_utils.py::TestExecuteCommandSafe -v
 
 **Run with short traceback:**
 ```bash
-WYN360_SKIP_CONFIRM=1 poetry run pytest tests/ -v --tb=short
+CLAWDECK_SKIP_CONFIRM=1 poetry run pytest tests/ -v --tb=short
 ```
 
 ### Coverage Analysis
 
 **Generate coverage report:**
 ```bash
-poetry run pytest tests/ --cov=wyn360_cli --cov-report=html
+poetry run pytest tests/ --cov=clawdeck --cov-report=html
 ```
 
 **View coverage in browser:**
@@ -59,7 +59,7 @@ xdg-open htmlcov/index.html  # Linux
 ### Unit Tests
 
 **Agent Tests** (`test_agent.py`)
-- WYN360Agent initialization
+- ClawdeckAgent initialization
 - Tool method functionality
 - Conversation history management
 - Token tracking
@@ -109,7 +109,7 @@ xdg-open htmlcov/index.html  # Linux
 
 ```bash
 # Skip interactive confirmations during tests
-export WYN360_SKIP_CONFIRM=1
+export CLAWDECK_SKIP_CONFIRM=1
 
 # Test API keys (use test/mock keys)
 export ANTHROPIC_API_KEY=test_key_anthropic
@@ -124,7 +124,7 @@ Tests use mocking to avoid real API calls:
 
 ```python
 # Example from tests
-@patch('wyn360_cli.agent.WYN360Agent')
+@patch('clawdeck.agent.ClawdeckAgent')
 def test_agent_initialization(mock_agent):
     """Test agent initializes with correct parameters."""
     mock_agent.return_value = MagicMock()
@@ -138,7 +138,7 @@ def test_agent_initialization(mock_agent):
 ```python
 import pytest
 from unittest.mock import Mock, patch, MagicMock
-from wyn360_cli.your_module import YourClass
+from clawdeck.your_module import YourClass
 
 class TestYourClass:
     """Test suite for YourClass functionality."""
@@ -159,7 +159,7 @@ class TestYourClass:
         # Assert
         assert result == expected_output
 
-    @patch('wyn360_cli.your_module.external_dependency')
+    @patch('clawdeck.your_module.external_dependency')
     def test_with_mocking(self, mock_external):
         """Test functionality that depends on external services."""
         # Arrange
@@ -207,7 +207,7 @@ def test_utility_function():
 @pytest.mark.asyncio
 async def test_agent_tool_integration():
     """Test agent and tool work together."""
-    agent = WYN360Agent()
+    agent = ClawdeckAgent()
     result = await agent.read_file("test_file.py")
     assert "def " in result  # Contains function definition
 ```
@@ -255,7 +255,7 @@ def sample_config():
 
 def test_with_fixture(sample_config):
     """Test using the fixture."""
-    agent = WYN360Agent(config=sample_config)
+    agent = ClawdeckAgent(config=sample_config)
     assert agent.config["model"] == "test-model"
 ```
 
@@ -291,7 +291,7 @@ python -c "import sys; print('\n'.join(sys.path))"
 **API Key Errors:**
 ```bash
 # Ensure skip confirmation is set
-export WYN360_SKIP_CONFIRM=1
+export CLAWDECK_SKIP_CONFIRM=1
 
 # Use mock API keys
 export ANTHROPIC_API_KEY=test_key
@@ -315,7 +315,7 @@ poetry run pytest tests/ -v -s --tb=long
 
 **Run single test with debugging:**
 ```bash
-poetry run pytest tests/test_agent.py::TestWYN360Agent::test_specific_method -v -s
+poetry run pytest tests/test_agent.py::TestClawdeckAgent::test_specific_method -v -s
 ```
 
 ## Expected Test Output
@@ -326,15 +326,15 @@ When all tests pass:
 ============================= test session starts ==============================
 platform linux -- Python 3.10.12, pytest-8.4.2, pluggy-1.6.0
 cachedir: .pytest_cache
-rootdir: /home/workbench/wyn360-cli/wyn360-cli
+rootdir: /home/workbench/clawdeck/clawdeck
 configfile: pyproject.toml
 plugins: asyncio-1.2.0, mock-3.15.1
 collected 133 items
 
-tests/test_agent.py::TestWYN360Agent::test_agent_initialization PASSED   [  1%]
+tests/test_agent.py::TestClawdeckAgent::test_agent_initialization PASSED   [  1%]
 tests/test_agent.py::TestHistoryManagement::test_clear_history PASSED    [ 18%]
 tests/test_cli.py::TestSlashCommands::test_clear_command PASSED          [ 42%]
-tests/test_config.py::TestWYN360Config::test_default_values PASSED       [ 60%]
+tests/test_config.py::TestClawdeckConfig::test_default_values PASSED       [ 60%]
 tests/test_utils.py::TestExecuteCommandSafe::test_execute_command PASSED [100%]
 
 ============================== 133 passed in 2.64s

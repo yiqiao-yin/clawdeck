@@ -14,7 +14,7 @@ from pathlib import Path
 # Add the package to the path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 async def test_provider_pdf_reading(provider_name: str, choose_client: int, model_override: str = None):
@@ -34,7 +34,7 @@ async def test_provider_pdf_reading(provider_name: str, choose_client: int, mode
 
         # Create agent
         print(f"🔄 Creating {provider_name} agent...")
-        agent = WYN360Agent()
+        agent = ClawdeckAgent()
 
         print(f"✅ Agent created successfully")
         print(f"   - Provider: {provider_name}")
@@ -127,7 +127,7 @@ async def test_provider_pdf_reading(provider_name: str, choose_client: int, mode
 
 async def main():
     """Run comprehensive PDF reading tests across all providers."""
-    print("📊 WYN360 CLI - PDF Reading Provider Test Suite")
+    print("📊 Clawdeck CLI - PDF Reading Provider Test Suite")
     print("=" * 70)
 
     # Check if we have the required API keys

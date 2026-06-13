@@ -9,11 +9,11 @@ performance history, and system capabilities.
 import pytest
 import time
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from src.wyn360.tools.browser.enhanced_automation_orchestrator import (
+from clawdeck.tools.browser.enhanced_automation_orchestrator import (
     EnhancedAutomationOrchestrator,
     EnhancedActionRequest
 )
-from src.wyn360.tools.browser.automation_orchestrator import (
+from clawdeck.tools.browser.automation_orchestrator import (
     AutomationApproach,
     ActionResult,
     DecisionContext
@@ -361,7 +361,7 @@ class TestEnhancedIntelligentRouting:
             target_description="the button"
         )
 
-        with patch('src.wyn360.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_browser_tools:
+        with patch('clawdeck.tools.browser.enhanced_automation_orchestrator.browser_tools') as mock_browser_tools:
             mock_browser_tools.analyze_page_dom.return_value = {'success': True, 'confidence': 0.8}
 
             approach, context, reasoning = enhanced_orchestrator._make_intelligent_routing_decision(

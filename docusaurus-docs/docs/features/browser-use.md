@@ -4,7 +4,7 @@ Extract website content and perform basic browser automation using Playwright-po
 
 ## Overview
 
-WYN360 CLI provides website interaction capabilities:
+Clawdeck CLI provides website interaction capabilities:
 
 1. **Direct Website Fetching** ✅ - Read specific URLs with caching
 2. **Basic DOM Automation** ✅ - Simple element interactions (click, type, select)
@@ -17,13 +17,13 @@ WYN360 CLI provides website interaction capabilities:
 
 ### Basic Usage
 ```
-You: Read https://github.com/yiqiao-yin/wyn360-cli
+You: Read https://github.com/yiqiao-yin/clawdeck
 
-WYN360: [Fetches the specific URL directly]
+Clawdeck: [Fetches the specific URL directly]
 
-📄 **Fetched:** https://github.com/yiqiao-yin/wyn360-cli
+📄 **Fetched:** https://github.com/yiqiao-yin/clawdeck
 
-# WYN360 CLI
+# Clawdeck CLI
 An intelligent AI coding assistant CLI tool...
 
 [Full page content converted to markdown]
@@ -37,7 +37,7 @@ An intelligent AI coding assistant CLI tool...
 ## Current Browser Automation Features
 
 ### Multi-Tier Automation System
-WYN360 CLI implements a tiered approach for browser automation:
+Clawdeck CLI implements a tiered approach for browser automation:
 
 🌐 **Website Fetching** → 📄 **DOM Analysis** → 🤖 **Basic Automation**
 
@@ -57,11 +57,11 @@ WYN360 CLI implements a tiered approach for browser automation:
 
 ```bash
 # Show browser window during automation (for debugging)
-export WYN360_BROWSER_SHOW=1
-wyn360
+export CLAWDECK_BROWSER_SHOW=1
+clawdeck
 
 # Default headless mode (production)
-wyn360
+clawdeck
 ```
 
 ### Example: Website Content Extraction
@@ -69,7 +69,7 @@ wyn360
 ```
 You: Read the latest documentation from https://docs.python.org/3/library/asyncio.html
 
-WYN360: [Fetches the specific URL directly using crawl4ai]
+Clawdeck: [Fetches the specific URL directly using crawl4ai]
 
 📄 **Fetched:** https://docs.python.org/3/library/asyncio.html
 
@@ -95,7 +95,7 @@ asyncio is a library to write concurrent code using the async/await syntax.
 ```
 You: Login to this demo site and click the dashboard button
 
-WYN360: [Initiates DOM-based automation]
+Clawdeck: [Initiates DOM-based automation]
 
 🔍 **Analyzing page elements...**
 - Found login form with username and password fields
@@ -174,19 +174,19 @@ playwright --version
 ### Environment Configuration
 ```bash
 # Basic browser settings (Currently Supported)
-export WYN360_BROWSER_SHOW=1                    # Show browser (0 for headless)
+export CLAWDECK_BROWSER_SHOW=1                    # Show browser (0 for headless)
 
 # Website fetching configuration
-export WYN360_CACHE_TTL=1800                    # Cache duration (seconds)
-export WYN360_MAX_TOKENS=50000                  # Max content tokens per page
+export CLAWDECK_CACHE_TTL=1800                    # Cache duration (seconds)
+export CLAWDECK_MAX_TOKENS=50000                  # Max content tokens per page
 
 # Authentication settings
-export WYN360_SESSION_TTL=1800                  # Session cookie duration (seconds)
+export CLAWDECK_SESSION_TTL=1800                  # Session cookie duration (seconds)
 
 # Future features (not yet implemented)
-# export WYN360_ENHANCED_CODE_GENERATION=true   # Planned: AI code generation
-# export WYN360_STAGEHAND_API_URL=...           # Planned: Stagehand integration
-# export WYN360_PATTERN_CACHING=true            # Planned: Pattern learning
+# export CLAWDECK_ENHANCED_CODE_GENERATION=true   # Planned: AI code generation
+# export CLAWDECK_STAGEHAND_API_URL=...           # Planned: Stagehand integration
+# export CLAWDECK_PATTERN_CACHING=true            # Planned: Pattern learning
 ```
 
 ### Authentication Setup (Optional)
@@ -194,7 +194,7 @@ For sites requiring login:
 ```
 You: Login to GitHub using my credentials
 
-WYN360: [Initiates secure authentication flow]
+Clawdeck: [Initiates secure authentication flow]
 🔐 Please enter your credentials:
 Username: [securely prompted]
 Password: [securely masked]
@@ -212,7 +212,7 @@ Check detailed automation analytics:
 ```
 You: /tokens
 
-WYN360: 📊 **Token Usage & Cost Breakdown**
+Clawdeck: 📊 **Token Usage & Cost Breakdown**
 
 **Total Session Cost:** $0.14
 
@@ -295,21 +295,21 @@ cost_controls:
 **Solutions:**
 ```bash
 # Check environment variable
-echo $WYN360_BROWSER_SHOW
+echo $CLAWDECK_BROWSER_SHOW
 
 # Set explicitly
-export WYN360_BROWSER_SHOW=1
-wyn360
+export CLAWDECK_BROWSER_SHOW=1
+clawdeck
 
 # Or use CLI flag (overrides environment)
-wyn360 --show-browser
+clawdeck --show-browser
 ```
 
 ### Code Generation Issues
 **Problem:** Generated automation scripts fail to execute
 
 **Solutions:**
-1. **Enable browser visibility:** `wyn360 --show-browser`
+1. **Enable browser visibility:** `clawdeck --show-browser`
 2. **Check error recovery:** Review intelligent error analysis
 3. **Verify sandbox security:** Ensure safe execution environment
 4. **Enable pattern caching:** Reuse successful automation patterns
@@ -319,7 +319,7 @@ wyn360 --show-browser
 
 **Solutions:**
 1. **Check approach distribution:** Use `/tokens` command
-2. **Enable pattern caching:** Set `WYN360_PATTERN_CACHING=true`
+2. **Enable pattern caching:** Set `CLAWDECK_PATTERN_CACHING=true`
 3. **Monitor error recovery:** Too many regeneration attempts?
 4. **Use batch operations:** Combine multiple actions in single script
 
@@ -349,10 +349,10 @@ wyn360 --show-browser
 ### 2. Use Browser Visibility Strategically
 ```bash
 # Development & debugging
-wyn360 --show-browser
+clawdeck --show-browser
 
 # Production & scripts with enhanced automation
-wyn360  # headless for optimal performance
+clawdeck  # headless for optimal performance
 
 # Specific debugging with code generation
 "Browse to checkout and show me the generated automation script"
@@ -372,10 +372,10 @@ wyn360  # headless for optimal performance
 /tokens
 
 # Enable pattern caching for better performance
-export WYN360_PATTERN_CACHING=true
+export CLAWDECK_PATTERN_CACHING=true
 
 # Optimize code generation level
-export WYN360_CODE_OPTIMIZATION=advanced
+export CLAWDECK_CODE_OPTIMIZATION=advanced
 ```
 
 ## Real-World Examples
@@ -384,7 +384,7 @@ export WYN360_CODE_OPTIMIZATION=advanced
 ```
 You: Compare wireless earbuds prices across Amazon, Best Buy, and Target
 
-WYN360: [Enhanced automation with batch script generation]
+Clawdeck: [Enhanced automation with batch script generation]
 📝 **Generating cross-site comparison script...**
 
 Generated Automation Code:
@@ -416,7 +416,7 @@ for site in sites:
 ```
 You: Gather the latest iPhone reviews and ratings from tech websites
 
-WYN360: [Enhanced automation for data extraction]
+Clawdeck: [Enhanced automation for data extraction]
 📝 **Generating review compilation script...**
 
 Generated Code:
@@ -474,10 +474,10 @@ for site in tech_sites:
 For programmatic usage:
 
 ```python
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 # Initialize with enhanced automation control
-agent = WYN360Agent(
+agent = ClawdeckAgent(
     api_key="your_key",
     show_browser=False,  # Headless by default
     max_cost_per_task=0.20,
@@ -516,7 +516,7 @@ data = await agent.extract_page_data(
 
 ### ✅ Production Ready Features
 - **Website Fetching:** Full content extraction using crawl4ai + Playwright
-- **Smart Caching:** 30-minute TTL with compressed storage (~/.wyn360/cache/)
+- **Smart Caching:** 30-minute TTL with compressed storage (~/.clawdeck/cache/)
 - **Authenticated Browsing:** Session management with encrypted credential storage
 - **Basic DOM Automation:** Simple click, type, fill, select operations
 - **Multi-Provider Support:** Works with all AI providers (Anthropic, Gemini, OpenAI, Bedrock)
@@ -529,12 +529,12 @@ data = await agent.extract_page_data(
 - **Intelligent Error Recovery:** Adaptive code regeneration based on failure analysis
 
 ### 📋 Technical Implementation Files
-- **Website Fetching:** `wyn360_cli/browser_use.py` ✅
-- **DOM Analysis:** `wyn360_cli/tools/browser/dom_analyzer.py` ✅
-- **Basic Automation:** `wyn360_cli/tools/browser/browser_automation_tools.py` ✅
-- **Authentication:** `wyn360_cli/credential_manager.py`, `wyn360_cli/session_manager.py` ✅
-- **Enhanced Features:** `wyn360_cli/tools/browser/enhanced_code_generator.py` 🚧
-- **Stagehand:** `wyn360_cli/tools/browser/stagehand_*.py` 🚧
+- **Website Fetching:** `clawdeck/browser_use.py` ✅
+- **DOM Analysis:** `clawdeck/tools/browser/dom_analyzer.py` ✅
+- **Basic Automation:** `clawdeck/tools/browser/browser_automation_tools.py` ✅
+- **Authentication:** `clawdeck/credential_manager.py`, `clawdeck/session_manager.py` ✅
+- **Enhanced Features:** `clawdeck/tools/browser/enhanced_code_generator.py` 🚧
+- **Stagehand:** `clawdeck/tools/browser/stagehand_*.py` 🚧
 
 ## See Also
 
@@ -544,5 +544,5 @@ data = await agent.extract_page_data(
 
 ---
 
-*Updated for WYN360-CLI v0.3.60*
+*Updated for Clawdeck-CLI v0.3.60*
 *Website Fetching & Basic Browser Automation*

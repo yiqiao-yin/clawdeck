@@ -18,7 +18,7 @@ from dataclasses import asdict
 # Mock sentence_transformers before importing
 sys.modules['sentence_transformers'] = MagicMock()
 
-from wyn360_cli.document_readers import (
+from clawdeck.document_readers import (
     ChunkSummarizer,
     ChunkMetadata,
     EmbeddingModel
@@ -60,7 +60,7 @@ class TestExcelEmbeddingIntegration:
 
     def test_chunk_summarizer_with_embeddings_enabled(self):
         """Test ChunkSummarizer initializes with embeddings enabled."""
-        with patch('wyn360_cli.document_readers.EmbeddingModel') as MockEmbedding:
+        with patch('clawdeck.document_readers.EmbeddingModel') as MockEmbedding:
             mock_embedding_instance = Mock()
             MockEmbedding.return_value = mock_embedding_instance
 
@@ -84,7 +84,7 @@ class TestExcelEmbeddingIntegration:
 
     def test_add_embeddings_to_chunks_success(self):
         """Test adding embeddings to chunks."""
-        with patch('wyn360_cli.document_readers.EmbeddingModel') as MockEmbedding:
+        with patch('clawdeck.document_readers.EmbeddingModel') as MockEmbedding:
             # Mock embedding model
             mock_embedding_instance = Mock()
             mock_embeddings = np.array([
@@ -151,7 +151,7 @@ class TestExcelEmbeddingIntegration:
 
     def test_add_embeddings_combines_summary_and_tags(self):
         """Test that embeddings are generated from summary + tags."""
-        with patch('wyn360_cli.document_readers.EmbeddingModel') as MockEmbedding:
+        with patch('clawdeck.document_readers.EmbeddingModel') as MockEmbedding:
             mock_embedding_instance = Mock()
             mock_embeddings = np.array([[0.1, 0.2, 0.3]])
             mock_embedding_instance.encode.return_value = mock_embeddings
@@ -179,7 +179,7 @@ class TestExcelEmbeddingIntegration:
 
     def test_embedding_model_initialization_failure(self):
         """Test graceful handling when embedding model fails to initialize."""
-        with patch('wyn360_cli.document_readers.EmbeddingModel', side_effect=ImportError("No module")):
+        with patch('clawdeck.document_readers.EmbeddingModel', side_effect=ImportError("No module")):
             # Should not raise, just disable embeddings
             summarizer = ChunkSummarizer(
                 api_key="test-key",
@@ -192,7 +192,7 @@ class TestExcelEmbeddingIntegration:
 
     def test_embedding_model_custom_provider(self):
         """Test ChunkSummarizer with custom embedding provider."""
-        with patch('wyn360_cli.document_readers.EmbeddingModel') as MockEmbedding:
+        with patch('clawdeck.document_readers.EmbeddingModel') as MockEmbedding:
             mock_embedding_instance = Mock()
             MockEmbedding.return_value = mock_embedding_instance
 
@@ -212,7 +212,7 @@ class TestExcelEmbeddingIntegration:
 
     def test_embedding_preserves_other_chunk_fields(self):
         """Test that adding embeddings preserves other chunk fields."""
-        with patch('wyn360_cli.document_readers.EmbeddingModel') as MockEmbedding:
+        with patch('clawdeck.document_readers.EmbeddingModel') as MockEmbedding:
             mock_embedding_instance = Mock()
             mock_embeddings = np.array([[0.1, 0.2]])
             mock_embedding_instance.encode.return_value = mock_embeddings

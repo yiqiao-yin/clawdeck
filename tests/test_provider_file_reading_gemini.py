@@ -30,10 +30,10 @@ warnings.filterwarnings("ignore", category=UserWarning)
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(env_path)
 
-# Add the parent directory to sys.path so we can import from wyn360_cli
+# Add the parent directory to sys.path so we can import from clawdeck
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from wyn360_cli.agent import WYN360Agent
+from clawdeck.agent import ClawdeckAgent
 
 
 class TestGeminiFileReading:
@@ -70,7 +70,7 @@ class TestGeminiFileReading:
     def fresh_agent(self, setup_gemini_client):
         """Create a fresh agent instance for each test to avoid event loop issues."""
         def _create_agent():
-            return WYN360Agent()
+            return ClawdeckAgent()
         return _create_agent
 
     @pytest.fixture(autouse=True)

@@ -1,4 +1,4 @@
-# WYN360 CLI Documentation Migration: MkDocs → Docusaurus
+# Clawdeck CLI Documentation Migration: MkDocs → Docusaurus
 
 ## ✅ Migration Completed Successfully!
 
@@ -20,7 +20,7 @@ This document summarizes the successful migration from MkDocs Material to Docusa
 #### **1. Site Structure & Navigation**
 - **Framework**: Migrated from MkDocs Material to Docusaurus v3.9.2
 - **Navigation**: Custom sidebar configuration matching original structure
-- **URLs**: Proper baseUrl configuration for GitHub Pages (`/wyn360-cli/`)
+- **URLs**: Proper baseUrl configuration for GitHub Pages (`/clawdeck/`)
 - **Themes**: Modern Docusaurus Material theme with dark mode support
 
 #### **2. AI Search System Migration**
@@ -118,13 +118,13 @@ npm run build            # Production build
 ### **Production Deployment**
 - **Trigger**: Push to main branch (docusaurus-docs/ or docs/ changes)
 - **Pipeline**: GitHub Actions workflow
-- **URL**: https://yiqiao-yin.github.io/wyn360-cli/
+- **URL**: https://yiqiao-yin.github.io/clawdeck/
 - **Search Index**: Auto-generated during deployment
 
 ### **AI Search Usage**
 1. **Access**: Fixed position button (bottom-right) on all pages
-2. **Interface**: Click "🤖 Ask AI about WYN360 CLI" to open
-3. **Search**: Type questions about WYN360 CLI functionality
+2. **Interface**: Click "🤖 Ask AI about Clawdeck CLI" to open
+3. **Search**: Type questions about Clawdeck CLI functionality
 4. **Results**: Relevant documentation sections with source links
 5. **Fallback**: Automatic keyword search if semantic search fails
 
@@ -174,7 +174,7 @@ npm run build            # Production build
 ## 📝 Configuration Notes
 
 ### **Important Files Modified**
-- `docusaurus.config.ts`: Site configuration with WYN360 CLI details
+- `docusaurus.config.ts`: Site configuration with Clawdeck CLI details
 - `sidebars.ts`: Custom navigation matching MkDocs structure
 - `src/css/custom.css`: AI search styles adapted to Infima
 - `src/components/AISearch.tsx`: Main search functionality
@@ -192,7 +192,7 @@ npm run build            # Production build
 
 **Migration Status**: ✅ **COMPLETE AND SUCCESSFUL**
 
-The WYN360 CLI documentation has been successfully migrated from MkDocs to Docusaurus while:
+The Clawdeck CLI documentation has been successfully migrated from MkDocs to Docusaurus while:
 - Preserving all original functionality
 - Maintaining the sophisticated AI semantic search system
 - Enhancing the developer and user experience

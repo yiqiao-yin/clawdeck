@@ -3,11 +3,11 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Get up and running with WYN360 CLI in under 5 minutes!
+Get up and running with Clawdeck CLI in under 5 minutes!
 
 ## Step 1: Choose Your AI Provider
 
-WYN360 CLI supports multiple AI providers. Choose the one that works best for you:
+Clawdeck CLI supports multiple AI providers. Choose the one that works best for you:
 
 <Tabs>
 <TabItem value="anthropic" label="Anthropic Claude" default>
@@ -83,7 +83,7 @@ export OPENAI_MODEL=gpt-4o
 </TabItem>
 <TabItem value="auto" label="Auto-Detection">
 
-**Let WYN360 choose automatically** based on available credentials:
+**Let Clawdeck choose automatically** based on available credentials:
 
 ```bash
 # Just set your preferred API key - no CHOOSE_CLIENT needed
@@ -135,19 +135,19 @@ export GH_TOKEN=ghp_your_github_token        # For GitHub features
 export HF_TOKEN=hf_your_huggingface_token    # For HuggingFace features
 
 # Skip confirmations (useful for automation)
-export WYN360_SKIP_CONFIRM=0
+export CLAWDECK_SKIP_CONFIRM=0
 ```
 
-## Step 3: Start WYN360 CLI
+## Step 3: Start Clawdeck CLI
 
 ```bash
-wyn360
+clawdeck
 ```
 
 You should see:
 
 ```
-🤖 WYN360 CLI v0.3.60
+🤖 Clawdeck CLI v0.3.60
 🔍 AI Provider: Google Gemini (gemini-2.5-flash)
 💡 Model: gemini-2.5-flash | Context: 2M tokens
 💰 Cost: $0.075/$0.30 per M tokens (input/output)
@@ -162,7 +162,7 @@ You:
 ```
 You: Hello! Can you help me create a Python function?
 
-WYN360: Hello! I'd be happy to help you create a Python function.
+Clawdeck: Hello! I'd be happy to help you create a Python function.
 What kind of function would you like me to create for you?
 ```
 
@@ -170,7 +170,7 @@ What kind of function would you like me to create for you?
 ```
 You: Create a function that calculates the factorial of a number
 
-WYN360: I'll create a factorial function for you.
+Clawdeck: I'll create a factorial function for you.
 
 [Creates factorial.py with the function and saves it]
 
@@ -183,19 +183,19 @@ WYN360: I'll create a factorial function for you.
 ```
 You: List all Python files in this project
 
-WYN360: [Scans directory]
+Clawdeck: [Scans directory]
 
 📁 **Python Files Found:**
-- `wyn360_cli/cli.py` (840 lines)
-- `wyn360_cli/agent.py` (4,259 lines)
-- `wyn360_cli/config.py` (308 lines)
+- `clawdeck/cli.py` (840 lines)
+- `clawdeck/agent.py` (4,259 lines)
+- `clawdeck/config.py` (308 lines)
 - `tests/test_agent.py` (46 tests)
 [... complete listing]
 ```
 
 ## Step 5: Explore Slash Commands
 
-WYN360 CLI includes powerful slash commands for session management:
+Clawdeck CLI includes powerful slash commands for session management:
 
 | Command | Description | Example |
 |---------|-------------|---------|
@@ -212,7 +212,7 @@ WYN360 CLI includes powerful slash commands for session management:
 ```
 You: Create a web scraper for Python packages
 
-WYN360: [Creates scraper.py with full implementation]
+Clawdeck: [Creates scraper.py with full implementation]
 
 You: /save scraper_session.json
 ✓ Session saved to: scraper_session.json
@@ -259,7 +259,7 @@ You: What's the current weather in San Francisco?
 
 Now that you're set up, explore these advanced features:
 
-- **[Configuration →](configuration.md)** - Customize WYN360 for your workflow
+- **[Configuration →](configuration.md)** - Customize Clawdeck for your workflow
 - **[Features Overview →](../features/overview.md)** - Discover all capabilities
 - **[Usage Examples →](../usage/use-cases.md)** - Real-world workflows and examples
 - **[Cost Management →](../usage/cost.md)** - Optimize token usage and costs
