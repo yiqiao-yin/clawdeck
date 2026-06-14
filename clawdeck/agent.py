@@ -678,11 +678,16 @@ class ClawdeckAgent:
                 self.exit_plan_mode,
             ]
 
+        # Background workers reuse the base toolset (WITHOUT the background
+        # dispatcher itself, so a background worker can't recursively spawn more).
+        self._tools_list = list(tools_list)
+        main_tools = list(tools_list) + [self.run_in_background]
+
         self.agent = Agent(
             model=self.model,
             system_prompt=self._get_system_prompt(),
             builtin_tools=builtin_tools,
-            tools=tools_list,
+            tools=main_tools,
             retries=0  # No retries - show errors immediately to model for correction
         )
 
@@ -692,6 +697,192 @@ class ClawdeckAgent:
             system_prompt=self._get_system_prompt(),
             max_concurrent=3,
         )
+
+        # Background ("self-duplicating") jobs: the user can delegate a task that
+        # runs in parallel while the conversation keeps going. State lives here;
+        # the CLI sets on_bg_event to surface notifications above the live prompt.
+        self.bg_jobs: dict = {}
+        self._bg_counter = 0
+        self._bg_semaphore = None  # created lazily, bound to the running loop
+        self._loop = None          # main event loop, captured during a chat turn
+        self.on_bg_event = None    # optional callback(str) set by the CLI
+
+    # ------------------------------------------------------------------
+    # Background ("self-duplicating") jobs
+    # ------------------------------------------------------------------
+
+    def _emit_bg_event(self, message: str) -> None:
+        """Surface a background-job event (start/finish) to the CLI, if wired."""
+        cb = self.on_bg_event
+        if cb:
+            try:
+                cb(message)
+            except Exception:
+                pass
+
+    def run_in_background(self, task_description: str) -> str:
+        """Delegate a task to a background worker that runs in PARALLEL while you keep talking with the user.
+
+        Use this whenever the user wants you to start working on something but keep
+        the conversation going — e.g. they say "do X in the background", "in parallel",
+        "while we keep working", "don't wait for it", "kick this off and we'll continue",
+        or asks you to start a long task and keep chatting. The worker has the same
+        tools you do (read/write files, run commands, git, etc.) and will complete the
+        task autonomously. This returns immediately with a job id; you will be told the
+        result when it finishes, and the job's live status is shown to you each turn.
+
+        Args:
+            task_description: A complete, self-contained description of the task for the
+                background worker (it does not see the chat history, so include all
+                context it needs).
+        """
+        jid = self.dispatch_background(task_description)
+        return (f"Started background job #{jid}: '{task_description}'. It's running in "
+                f"parallel — we can keep working and I'll report the result when it's done.")
+
+    def dispatch_background(self, description: str, prompt: Optional[str] = None) -> int:
+        """Start a task in the background and return its job id immediately (non-blocking)."""
+        self._bg_counter += 1
+        jid = self._bg_counter
+        self.bg_jobs[jid] = {
+            "id": jid,
+            "description": description,
+            "prompt": prompt or description,
+            "status": "running",
+            "result": None,
+            "summary": None,
+            "error": None,
+            "started": time.time(),
+            "ended": None,
+            "task": None,
+            "acknowledged": False,  # finished-result folded into chat context yet?
+        }
+        coro = self._run_background_job(jid)
+        scheduled = False
+        try:
+            # In the event loop's own thread (e.g. /bg command): schedule directly.
+            loop = asyncio.get_running_loop()
+            self._loop = loop
+            self.bg_jobs[jid]["task"] = loop.create_task(coro)
+            scheduled = True
+        except RuntimeError:
+            # Called from a worker thread — pydantic-ai runs sync tools in an
+            # executor, so there's no running loop here. Hand the coroutine to the
+            # main loop we captured at the start of the chat turn.
+            loop = self._loop
+            if loop is not None and loop.is_running():
+                self.bg_jobs[jid]["task"] = asyncio.run_coroutine_threadsafe(coro, loop)
+                scheduled = True
+        if not scheduled:
+            coro.close()  # avoid 'coroutine was never awaited' warning
+            self.bg_jobs[jid]["status"] = "failed"
+            self.bg_jobs[jid]["error"] = "no running event loop to schedule background job"
+            self.bg_jobs[jid]["ended"] = time.time()
+            self._emit_bg_event(f"❌ Background job #{jid} could not start: {description}")
+            return jid
+        self._emit_bg_event(f"🟡 Background job #{jid} started: {description}")
+        return jid
+
+    async def _run_background_job(self, jid: int) -> None:
+        """Execute a background job as an isolated worker agent with full tools."""
+        job = self.bg_jobs.get(jid)
+        if not job:
+            return
+        if self._bg_semaphore is None:
+            # Created here so it binds to the active loop.
+            self._bg_semaphore = asyncio.Semaphore(3)
+        try:
+            async with self._bg_semaphore:
+                from pydantic_ai import Agent
+                worker = Agent(
+                    model=self.model,
+                    system_prompt=(
+                        self._get_system_prompt()
+                        + "\n\nYou are a BACKGROUND WORKER running a delegated task autonomously, "
+                          "in parallel with an ongoing conversation you cannot see. Complete the "
+                          "task fully using your tools. End your final message with a 1-2 sentence "
+                          "summary of what you did and the concrete outcome."
+                    ),
+                    tools=self._tools_list,
+                    retries=0,
+                )
+                result = await worker.run(job["prompt"])
+                text = getattr(result, "data", None) or getattr(result, "output", str(result))
+                if not isinstance(text, str):
+                    text = str(text)
+                job["result"] = text
+                job["summary"] = self._summarize_bg(text)
+                job["status"] = "done"
+        except asyncio.CancelledError:
+            job["status"] = "killed"
+            job["summary"] = "cancelled"
+            job["ended"] = time.time()
+            self._emit_bg_event(f"🛑 Background job #{jid} killed: {job['description']}")
+            raise
+        except Exception as e:
+            job["status"] = "failed"
+            job["error"] = str(e)
+            job["summary"] = f"failed: {e}"
+        finally:
+            if job.get("ended") is None:
+                job["ended"] = time.time()
+        if job["status"] in ("done", "failed"):
+            icon = "✅" if job["status"] == "done" else "❌"
+            self._emit_bg_event(f"{icon} Background job #{jid} {job['status']}: {job.get('summary') or job['description']}")
+
+    @staticmethod
+    def _summarize_bg(text: str) -> str:
+        """Cheap summary of a worker's result: prefer its final sentence(s)."""
+        text = (text or "").strip()
+        if not text:
+            return "(no output)"
+        # The worker is told to end with a short summary — take the last paragraph.
+        last = [p.strip() for p in text.split("\n") if p.strip()]
+        tail = last[-1] if last else text
+        return tail if len(tail) <= 280 else tail[:277] + "..."
+
+    def background_status_preamble(self) -> str:
+        """A context block describing live/finished background jobs, injected into each
+        turn so the assistant stays aware of its parallel selves. Finished jobs are
+        surfaced once (then marked acknowledged) so the assistant reports them, with
+        the full result included so it can answer follow-ups."""
+        if not self.bg_jobs:
+            return ""
+        running = [j for j in self.bg_jobs.values() if j["status"] == "running"]
+        newly_done = [j for j in self.bg_jobs.values()
+                      if j["status"] in ("done", "failed", "killed") and not j["acknowledged"]]
+        if not running and not newly_done:
+            return ""
+        lines = []
+        for j in running:
+            secs = int(time.time() - j["started"])
+            lines.append(f"- Job #{j['id']} [RUNNING ~{secs}s]: {j['description']}")
+        for j in newly_done:
+            j["acknowledged"] = True
+            lines.append(f"- Job #{j['id']} [{j['status'].upper()}]: {j['description']}")
+            if j["status"] == "done" and j.get("result"):
+                res = j["result"].strip()
+                res = res if len(res) <= 1200 else res[:1200] + "…[truncated]"
+                lines.append(f"  Result:\n  {res}")
+            elif j.get("summary"):
+                lines.append(f"  {j['summary']}")
+        return (
+            "[BACKGROUND JOBS — these are parallel workers you dispatched. Proactively tell "
+            "the user about any that just finished (report the outcome), and answer questions "
+            "about running ones. Do not re-run finished work.]\n"
+            + "\n".join(lines)
+            + "\n\n"
+        )
+
+    def kill_background(self, jid: int) -> bool:
+        """Cancel a running background job."""
+        job = self.bg_jobs.get(jid)
+        if not job or job["status"] != "running":
+            return False
+        task = job.get("task")
+        if task:
+            task.cancel()
+        return True
 
     def _get_system_prompt(self) -> str:
         """Get the system prompt for the coding assistant."""
@@ -1256,6 +1447,21 @@ You have access to `browse_and_find()` which enables autonomous multi-step brows
         plan_context = self.planner.get_plan_context()
         if plan_context:
             base_prompt += plan_context
+
+        # Parallel background work
+        base_prompt += (
+            "\n\n**Working in parallel:** You can delegate a task to a background worker "
+            "that runs concurrently while you keep talking with the user, using the "
+            "`run_in_background` tool. Reach for it when the user asks you to do something "
+            "'in the background' / 'in parallel' / 'while we keep working' / 'don't wait', "
+            "or to start a long task and keep the conversation going. Pass a complete, "
+            "self-contained task description (the worker can't see this chat). The "
+            "dispatch is instant and non-blocking, so in the SAME reply, after kicking off "
+            "the job, go on to answer anything else in the user's message and keep the "
+            "conversation moving — never make the user wait for the background work. Each "
+            "turn you're shown the live status of background jobs; when one finishes, "
+            "proactively tell the user the outcome."
+        )
 
         # Add planning instructions
         base_prompt += self.planner.get_planning_prompt()
@@ -4118,10 +4324,15 @@ You can restart the task by running the command again.
             Agent's response
         """
         try:
+            # Capture the main loop so background jobs dispatched from a tool thread
+            # can be scheduled back onto it.
+            self._loop = asyncio.get_running_loop()
             # Run the agent with message history (Phase 5.9: Fix context retention)
-            # Pass conversation history to maintain context across turns
+            # Pass conversation history to maintain context across turns.
+            # Prepend live background-job status so the assistant stays aware of its
+            # parallel workers (empty string when there are none).
             result = await self.agent.run(
-                user_message,
+                self.background_status_preamble() + user_message,
                 message_history=self.conversation_history if self.use_history else []
             )
 
@@ -4186,10 +4397,15 @@ You can restart the task by running the command again.
             # Track response time
             start_time = time.time()
 
+            # Capture the main loop so background jobs dispatched from a tool thread
+            # can be scheduled back onto it.
+            self._loop = asyncio.get_running_loop()
             # Run the agent with message history (Phase 5.9: Fix context retention)
-            # Pass conversation history to maintain context across turns
+            # Pass conversation history to maintain context across turns.
+            # Prepend live background-job status so the assistant stays aware of its
+            # parallel workers (empty string when there are none).
             result = await self.agent.run(
-                user_message,
+                self.background_status_preamble() + user_message,
                 message_history=self.conversation_history if self.use_history else []
             )
 
@@ -4732,26 +4948,29 @@ You can restart the task by running the command again.
             self.model = new_model
             self.model_name = full_model_name
 
-            # Recreate agent with new model
+            # Recreate agent with new model. Background workers reuse this base
+            # toolset; the main agent additionally gets the background dispatcher.
+            base_tools = [
+                self.read_file,
+                self.write_file,
+                self.list_files,
+                self.get_project_info,
+                self.execute_command,
+                self.git_status,
+                self.git_diff,
+                self.git_log,
+                self.git_branch,
+                self.search_files,
+                self.delete_file,
+                self.move_file,
+                self.create_directory
+            ]
+            self._tools_list = list(base_tools)
             from pydantic_ai import Agent
             self.agent = Agent(
                 model=self.model,
                 system_prompt=self._get_system_prompt(),
-                tools=[
-                    self.read_file,
-                    self.write_file,
-                    self.list_files,
-                    self.get_project_info,
-                    self.execute_command,
-                    self.git_status,
-                    self.git_diff,
-                    self.git_log,
-                    self.git_branch,
-                    self.search_files,
-                    self.delete_file,
-                    self.move_file,
-                    self.create_directory
-                ],
+                tools=base_tools + [self.run_in_background],
                 retries=3
             )
 

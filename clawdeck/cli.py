@@ -9,6 +9,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 from prompt_toolkit import PromptSession
 from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.patch_stdout import patch_stdout
 from .agent import ClawdeckAgent
 from .config import load_config, get_user_config_path, get_project_config_path
 from .planner import PlanStep
@@ -640,6 +641,7 @@ def handle_slash_command(command: str, agent: ClawdeckAgent) -> tuple[bool, str]
   [bold green]/tokens[/bold green]           Show token usage statistics
   [bold green]/stats[/bold green]            Show comprehensive performance metrics
   [bold green]/model [name][/bold green]    Show/switch AI model (haiku/sonnet/opus)
+  [bold green]/bg <task>[/bold green]        Run a task in the background (keep chatting); /bg lists jobs
   [bold green]/config[/bold green]           Show current configuration
   [bold green]/help[/bold green]             Show this help message
 
@@ -935,6 +937,48 @@ def handle_slash_command(command: str, agent: ClawdeckAgent) -> tuple[bool, str]
         lines.append(f"\nTotal execution time: {stats['total_execution_time_ms']:.1f}ms")
         return True, "\n".join(lines)
 
+    # ── Background jobs ──
+
+    elif cmd == "bg":
+        # /bg <task>            → dispatch a task to a parallel background worker
+        # /bg                   → list background jobs
+        # /bg kill <id>         → cancel a running job
+        # /bg show <id>         → print a finished job's full result
+        if not arg:
+            jobs = getattr(agent, "bg_jobs", {})
+            if not jobs:
+                return True, "No background jobs yet. Use: /bg <task>  (or just ask me to do something 'in the background')."
+            from rich.table import Table
+            table = Table(title="Background Jobs", show_lines=True)
+            table.add_column("#", style="cyan", width=4)
+            table.add_column("Status", style="magenta", width=9)
+            table.add_column("Age", style="yellow", width=7)
+            table.add_column("Task", style="white")
+            import time as _t
+            for j in jobs.values():
+                end = j["ended"] or _t.time()
+                age = f"{int(end - j['started'])}s"
+                icon = {"running": "🟡", "done": "✅", "failed": "❌", "killed": "🛑"}.get(j["status"], "")
+                table.add_row(str(j["id"]), f"{icon} {j['status']}", age, j["description"][:60])
+            console.print(table)
+            return True, ""
+        sub = arg.split(maxsplit=1)
+        if sub[0].lower() == "kill" and len(sub) > 1 and sub[1].strip().isdigit():
+            ok = agent.kill_background(int(sub[1].strip()))
+            return True, (f"Killing background job #{sub[1].strip()}." if ok
+                          else f"No running job #{sub[1].strip()} to kill.")
+        if sub[0].lower() == "show" and len(sub) > 1 and sub[1].strip().isdigit():
+            j = getattr(agent, "bg_jobs", {}).get(int(sub[1].strip()))
+            if not j:
+                return True, f"No background job #{sub[1].strip()}."
+            body = j["result"] or j.get("error") or "(no output yet)"
+            console.print(f"[bold cyan]Job #{j['id']} ({j['status']}):[/bold cyan] {j['description']}\n")
+            console.print(body)
+            return True, ""
+        # Otherwise treat the whole arg as a task to dispatch.
+        jid = agent.dispatch_background(arg)
+        return True, f"🟡 Dispatched background job #{jid}. Keep chatting — I'll report when it's done. (/bg to list, /bg show {jid} for output.)"
+
     # ── Workers commands ──
 
     elif cmd == "workers":
@@ -1208,6 +1252,13 @@ async def chat_loop(agent: ClawdeckAgent):
         editing_mode=editing_mode,
     )
 
+    # Wire background-job notifications. Thanks to patch_stdout (below), a print
+    # from a finished parallel worker lands cleanly above the live input line.
+    def _bg_notify(message: str):
+        console.print(f"[dim]{message}[/dim]")
+    agent.on_bg_event = _bg_notify
+    agent._loop = asyncio.get_running_loop()
+
     # Show buddy greeting if enabled
     if agent.buddy_manager.enabled:
         greeting = agent.buddy_manager.get_greeting()
@@ -1217,9 +1268,11 @@ async def chat_loop(agent: ClawdeckAgent):
 
     while True:
         try:
-            # Get user input
+            # Get user input. patch_stdout() lets background workers print status
+            # above the prompt without scrambling what the user is typing.
             console.print("[bold green]You:[/bold green]")
-            user_input = await session.prompt_async("")
+            with patch_stdout():
+                user_input = await session.prompt_async("")
 
             # Check for exit commands
             if user_input.lower().strip() in ['exit', 'quit', 'q']:
